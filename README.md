@@ -23,6 +23,10 @@ Consumiremos este conjunto de datos a través de una API que permite buscar y de
 
 ## Pregunta a responder
 
+**Aqui nos dijo que estamos siendo solamente descriptivos, pensemos bien las preguntas**
+
+**la pregunta que quedó tentativa sería:** ¿Se puede optimizar el tiempo de llegada de los trenes mediante la predicción de la afluencia que tendrá cierta estación durante el día para mejorar la distribución de los trenes y como consecuencia mejorar el servicio del metro?
+
 * ¿Cuales estaciones son las que presentan mayor afluencia?
 * analisis de donde se tiene mas necesidad de contruir nuevas estaciones de metro
 * Como optimizar el tiempo de espera en cada estacion con base a los flujos de personas 
@@ -47,12 +51,28 @@ Consumiremos este conjunto de datos a través de una API que permite buscar y de
 	Investigación de mercados para estratificación de consumidores.
 
 ## ETL
+
+**ETL MOCKUP (High-level)**
 ![ETL MOCKUP](https://1fykyq3mdn5r21tpna3wkdyi-wpengine.netdna-ssl.com/wp-content/uploads/2019/10/image1.png)
+
+**ETL MOCKUP 2 (with details of technology to be used)**
+![ETL-MOCKUP-2](https://1fykyq3mdn5r21tpna3wkdyi-wpengine.netdna-ssl.com/wp-content/uploads/2019/10/image9.png)
+
 Acrónimo de Extract Transform Load, no siempre se ejecutan en este orden, por ejemplo es posible tener un ELT, o solo partes del proceso como EL.
 
-En sus productos de datos, la parte de extracción estará asociada a ingestar los datos de algúna repositorio: bucket, API, web scraping, consultas a un FTP, etc. Es importante mencionar que las fuentes de datos pueden ser diversas y en diversos formatos o protocolos.
+La ingesta de datos se llevará a cabo mediante la API de la Afluencia diaria del metro de la CDMX. Debido a la pequeña cantidad de columnas del Data Set, se realizará la ingesta de datos ingresandolo en un _bucket_ en AWS con **Parquet**, debido a que tiene varias ventajas que nos servirán para optimizar la extracción de los datos:
 
-Por ejemplo, para los datos de NYC 311 existe el API desde donde se pueden hacer solicitudes para bajar sus datos de forma diaria, incluso se incluye el snippet de código asociado en diferentes lenguajes.
+![visulaizacion de API de Metro](https://raw.githubusercontent.com/valencig/data-product-architecture-Project/master/images/metroAPI.png)
+
+
+* Las categorías de la mayoría de las columnas (excepto la que muestra la afluencia de personas) pueden ser reducidas de una forma muy eficiente, por lo que un formato columnar podría ser mejor.
+
+Los datos son publicados de manera Mensual, por lo que la ingesta se realizaría de la misma manera.
+
+Debido a que nuestros datos parecen estar más o menos estandarizados en cuanto a algunas categorías, no sería necesario realizar transformaciones de limpieza al momento de ingestarlos a la base de datos.
+
+-------------------------------------------------------
+
 
 La parte de transfomración está asociada a los cambios que se les tienen que hacer a estos datos para que después puedan ser ocupados por otros (aplicaciones, servicios, scripts, otras personas, etc.). Estas transformaciones están más relacionadas a transformaciones de tipos de datos, formatos, estructura; que a transformción de datos para la parte de modelado.
 
