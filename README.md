@@ -47,6 +47,7 @@ Consumiremos este conjunto de datos a través de una API que permite buscar y de
 	Investigación de mercados para estratificación de consumidores.
 
 ## ETL
+![ETL MOCKUP](https://1fykyq3mdn5r21tpna3wkdyi-wpengine.netdna-ssl.com/wp-content/uploads/2019/10/image1.png)
 Acrónimo de Extract Transform Load, no siempre se ejecutan en este orden, por ejemplo es posible tener un ELT, o solo partes del proceso como EL.
 
 En sus productos de datos, la parte de extracción estará asociada a ingestar los datos de algúna repositorio: bucket, API, web scraping, consultas a un FTP, etc. Es importante mencionar que las fuentes de datos pueden ser diversas y en diversos formatos o protocolos.
