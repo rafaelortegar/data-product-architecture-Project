@@ -71,7 +71,7 @@ Los datos son publicados de manera Mensual, por lo que la ingesta se realizaría
 
 Debido a que nuestros datos parecen estar más o menos estandarizados en cuanto a algunas categorías, no sería necesario realizar transformaciones de limpieza al momento de ingestarlos a la base de datos.
 
-La ingesta de datos desde la API de afulencia de metro, se realizrá usando el servicio _Amazon Kinesis Data Firehose_ que ofrece una solución de carga de datos de streaming de manera fiable en lagos de datos, almacenes de datos y herramientas de análisis. De esta manera, ingestaremos, transformaremos y cargaremos los datos en Amazon S3 por medio de la lectura de archivos JSON.
+La ingesta de datos desde la API de afluencia diaria en estaciones de metro, se realizará usando el servicio _Amazon Kinesis Data Firehose_ que ofrece una solución de carga de datos de streaming de manera fiable en lagos de datos, almacenes de datos y herramientas de análisis. De esta manera, ingestaremos, transformaremos y cargaremos los datos en Amazon S3 por medio de la lectura de archivos JSON.
 
 El proceso de ETL se realizará en una máquina pública, mientras que el procesamiento de la información y el modelo se implementarán en redes privadas con acceso limitado a grupos de usuarios. De la misma forma, los resultados del modelo se almacenarán en una máquina privada. 
 
