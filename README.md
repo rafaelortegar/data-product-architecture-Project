@@ -60,7 +60,7 @@ Consumiremos este conjunto de datos a través de una API que permite buscar y de
 
 Acrónimo de Extract Transform Load, no siempre se ejecutan en este orden, por ejemplo es posible tener un ELT, o solo partes del proceso como EL.
 
-La ingesta de datos se llevará a cabo mediante la API de la Afluencia diaria del metro de la CDMX. Debido a la pequeña cantidad de columnas del Data Set, se realizará la ingesta de datos ingresandolo en un _bucket_ en AWS con **Parquet**, debido a que tiene varias ventajas que nos servirán para optimizar la extracción de los datos:
+La ingesta de datos se llevará a cabo mediante la API de la Afluencia diaria del metro de la CDMX. Debido a la pequeña cantidad de columnas del Data Set, se realizará la ingesta de datos ingresandolo en un _bucket S3_ en AWS con **Parquet**, debido a que tiene varias ventajas que nos servirán para optimizar la extracción de los datos:
 
 ![visulaizacion de API de Metro](https://raw.githubusercontent.com/valencig/data-product-architecture-Project/master/images/metroAPI.png)
 
@@ -70,6 +70,10 @@ La ingesta de datos se llevará a cabo mediante la API de la Afluencia diaria de
 Los datos son publicados de manera Mensual, por lo que la ingesta se realizaría de la misma manera.
 
 Debido a que nuestros datos parecen estar más o menos estandarizados en cuanto a algunas categorías, no sería necesario realizar transformaciones de limpieza al momento de ingestarlos a la base de datos.
+
+La ingesta de datos desde la API de afulencia de metro, se realizrá usando el servicio _Amazon Kinesis Data Firehose_ que ofrece una solución de carga de datos de streaming de manera fiable en lagos de datos, almacenes de datos y herramientas de análisis. De esta manera, ingestaremos, transformaremos y cargaremos los datos en Amazon S3 por medio de la lectura de archivos JSON.
+
+El proceso de ETL se realizará en una máquina pública, mientras que el procesamiento de la información y el modelo se implementarán en redes privadas con acceso limitado a grupos de usuarios. De la misma forma, los resultados del modelo se almacenarán en una máquina privada. 
 
 -------------------------------------------------------
 
