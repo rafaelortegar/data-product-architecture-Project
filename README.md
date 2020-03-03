@@ -27,11 +27,18 @@ Consumiremos este conjunto de datos a través de una API que permite buscar y de
 
 **la pregunta que quedó tentativa sería:** ¿Se puede optimizar el tiempo de llegada de los trenes mediante la predicción de la afluencia que tendrá cierta estación durante el día para mejorar la distribución de los trenes y como consecuencia mejorar el servicio del metro?
 
+Queremos predecir la saturación diaria en estaciones de metro (vs la media/mediana de afluencia mensual) a partir de las siguientes variables:
+*Mes
+*Día de la semana
+*Línea 
+*Estación 
+
+Donde la saturación será una variable binaria que indicará si ese día la afleuncia en el metro estará por arriba o por debajo del promedio mensual.
+
 * ¿Cuales estaciones son las que presentan mayor afluencia?
 * analisis de donde se tiene mas necesidad de contruir nuevas estaciones de metro
 * Como optimizar el tiempo de espera en cada estacion con base a los flujos de personas 
 * ¿Qué líneas necesitan mayor mantenimiento?
-
 * ¿En qué líneas hay mayor tráfico de usuarios?
 
 ## ¿A quien va dirigido?
@@ -47,8 +54,9 @@ Consumiremos este conjunto de datos a través de una API que permite buscar y de
 * Particulares
 
 	Venta estratificada de espacios publicitarios dependiendo del flujo diario de personas.
-    Colocación de comercios por estaciones.
+    	Colocación de comercios por estaciones.
 	Investigación de mercados para estratificación de consumidores.
+	Recomendación a los usuarios del metro para tomar o no tomar el metro en ciertas líneas/estaciones
 
 ## ETL
 
