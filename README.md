@@ -120,6 +120,9 @@ En nuestro caso ocuparemos el objeto resource para las interacciones más genera
 
 ## Análisis
 
+Modelo de regresión logística que estimará si el metro se encontrará saturado dependiendo de la estación, línea, mes y día de la semana.
+
+
 ## Entregable
 
 Dashboard desarrollado en Dash que tendrá las siguientes secciones:
