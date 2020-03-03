@@ -120,7 +120,7 @@ Dashboard desarrollado en Dash que tendrá las siguientes secciones:
 - Análisis de estacionalidad
 - Análisis de afluencia diaria
 
-![Dashboard Mockup](https://raw.githubusercontent.com/valencig/data-product-architecture-Project/master/images/dashboard_mockup.png)
+![Dashboard Mockup](https://raw.githubusercontent.com/valencig/data-product-architecture-Project/master/images/dashboard_mockup.PNG)
 
 Otros proyectos similares:
 https://www.kaggle.com/dashaa/a-geospatial-analysis-of-the-nyc-subway-in-r  
