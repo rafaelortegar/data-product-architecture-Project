@@ -5,14 +5,12 @@
 import luigi
 import luigi.contrib.s3
 import boto3
-import csv
-from urllib2 import urlopen
-import io
+import pandas as pd
 import os
 
 
 class S3Task(luigi.Task):
-    task_name = "demo2"
+    task_name = "EL"
 
     bucket = luigi.Parameter()
 
@@ -26,15 +24,14 @@ class S3Task(luigi.Task):
         
         #Extraccion de base de datos
         url = 'https://datos.cdmx.gob.mx/explore/dataset/afluencia-diaria-del-metro-cdmx/download/?format=csv&refine.ano=2019&refine.linea=Linea+3&refine.estacion=Potrero&timezone=America/Mexico_City&lang=es&use_labels_for_header=true&csv_separator=%2C'
-        url_open = urlopen(url)
-        csvfile = csv.reader(io.StringIO(url_open.read().decode('utf-8')), delimiter=',')
+        file = pd.read_csv(url)
 
         with self.output().open('w') as output_file:
-            output_file.write(csvfile)
+            file.to_csv(output_file)
 
 
     def output(self):
-        output_path = "s3://{}/{}/test.csv".\
+        output_path = "s3://{}/{}/bd.csv".\
         format(self.bucket,
         self.task_name)
 
