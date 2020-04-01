@@ -36,4 +36,4 @@ class S3Task(luigi.Task):
         self.task_name)
 
         #return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/test.csv')
-        return luigi.contrib.s3.S3Target(path=output_path)
+        return luigi.contrib.s3.S3Target(path=output_path) 
