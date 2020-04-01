@@ -4,6 +4,7 @@ Final project of Data product architecture class
 
 # Análisis de las estaciones de metro de CDMX según su afluencia diaria
 
+
 La base de datos a analizar concentra información sobre la alfuencia diaria en las estaciones del sistema de transporte colectivo Metro en la ciudad de México. Su frecuencia de actualización es mensual y los datos se encuentran detallados a nivel diario. Las columnas que componen la base son las siguientes:
 
 - Fecha
@@ -114,8 +115,6 @@ En nuestro caso ocuparemos el objeto resource para las interacciones más genera
 
 ## Análisis
 
-## Entregable
-
 Dashboard desarrollado en Dash que tendrá las siguientes secciones:
 
 - Top 10 estaciones con respecto a su tráfico anual
@@ -150,7 +149,7 @@ https://www.excelsior.com.mx/comunidad/hasta-un-millon-de-usuarios-no-pagan-en-e
 
 Igualmente, en el tema de venta de espacios publicitarios, para realizar discriminación de precios por las temporadas para mejorar el ingreso en ese rubro.
 
-Pero sería de gran ayuda para los usuarios del sistema
+Pero sería de gran ayuda para los usuarios del sistema al momento de planear sus viajes.
 
 - Capa de interacción con el usuario/cliente/partner: Dashboard, App, API, etc. Mostrar el diseño mockup que ya hicieron.
 
@@ -163,6 +162,8 @@ Debido a que la actualización de los datos es de forma mensual, las recomendaci
 En cuanto a implicaciones éticas del producto no identificamos alguna importante ya que los datos que estamos usando son publicos y no tienen información personal o sensible. Solo tendríamos que preocuparnos de que la información mostrada sea precisa para que los tomadores de decisiones no tomen una decisión equivocada que impacte a personas de manera negativa. 
 
 Pensamos durante un largo timepo como podría usarse para hacer daño esta información y lo único que identificamos fue que **podría usarse para planear un atentado terrorista**.    
+
+Se está utilizando un algoritmo de balanceo y se corré el riesgo de enviar demasiada gente a una estación y satuararla.
 
   [Major ethical issues in conducting research:](http://www.hsj.gr/medicine/what-are-the-major-ethical-issues-in-conducting-research-is-there-a-conflict-between-the-research-ethics-and-the-nature-of-nursing.php?aid=3485)
   Informed consent, Beneficence- Do not harm, Respect for anonymity and confidentiality, Respect for privacy, Vulnerable groups of people. 
@@ -193,6 +194,72 @@ Aquí un ejemplo cómo luciría una visualización de afluencia utilizando Porwe
  
  ![Imagen dashboard-PowerBI](https://raw.githubusercontent.com/valencig/data-product-architecture-Project/master/images/metro.png)
 
+## Data governance
+
+Tiene la función de diseñar y garantizar los estándares que asuguren el flujo de información constante y calidad a través de los sistemas y fuentes de la empresa.
+
+El gobierno de datos conforma una unidad que funciona de forma coordinada para aumentar la eficiencia en el uso y gestión de la información.
+
+El gobierno de datos se ocupa:
+
+- Cumplir los objetivos relacionados con los datos de la empresa.
+
+- Gestión y administración de los datos como un activo estratégico de la organización.
+
+- Cumplimiento eficiente a reducir costos.
+
+- Planificar, establecer procesos, desarrollos y supervisar la gestión de datos para un uso óptimo.
+
+- Encontrar la tecnología adecuada para cubrir las distintas necesidades.
+
+### Metadata
+-  Raw
+    - Día/mes/año de acceso
+    - Hora de acceso
+    - Cuenta de quien accede (usuario)
+    - Lugar de acceso (ip, instancia EC2)
+    - Nombre del archivo generado
+    - Nombres de la bases de datos
+    - Tipos de datos
+    - Variables
+    - Tipo de Archivos
+
+- Preprocessed
+    - Día/mes/año de acceso
+    - Hora de acceso
+    - Cuenta de quien accede (usuario)
+    - Lugar de acceso (ip, instancia EC2)
+    - Nombre del archivo generado
+    - Nombres de la bases de datos
+    - Tipos de datos
+    - Variables
+    - Tipo de Archivos
+    - Modificaciones a variables
+    - Número de modificaciones
+    - Estatus de ejecución: fallido, exitoso, etc.
+
+- Clean
+    - Día/mes/año de acceso
+    - Hora de acceso
+    - Cuenta de quien accede (usuario)
+    - Lugar de acceso (ip, instancia EC2)
+    - Nombre del archivo generado
+    - Nombres de la bases de datos
+    - Tipos de datos
+    - Variables
+    - Tipo de Archivos
+    - Modificaciones a variables
+    - Número de modificaciones
+    - Estatus de ejecución: fallido, exitoso, etc.
+
+
+### Linaje de datos
+
+El linaje de datos es sumamente importante debido a que los datos durante el proceso de análisis son transformados en repetidas ocasiones. Lo cual crea una especie de telefono descompuesto, los datos originales no se parecen a los finales y puede crear confusión. Para evitar eso está el linaje de datos que le da confiabilidad a los datos a través de las diversas transformaciones que se realicen.
+
+Describe el origen, movimientos, características y calidad de los datos. Dónde comienza cada dato y cómo se transforma hasta llegar a resultados en distintos proyectos empresariales.
+
+
 
 **Otros proyectos similares:**
 
@@ -205,9 +272,11 @@ https://www.kaggle.com/bigshane/simple-visualization-for-xgb
 https://www.kaggle.com/ramyahr/metro-interstate-traffic-volume  
 
 
-![Dashboard Mockup](https://raw.githubusercontent.com/valencig/data-product-architecture-Project/master/images/dashboard_mockup.PNG)
+**Referencias**
 
+https://blog.powerdata.es/el-valor-de-la-gestion-de-datos/bid/243575/data-governance-el-gobierno-de-la-gesti-n-de-datos
 
+https://blog.powerdata.es/el-valor-de-la-gestion-de-datos/entendiendo-lo-que-es-data-lineage
 
 
 
