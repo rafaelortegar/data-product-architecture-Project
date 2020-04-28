@@ -12,6 +12,7 @@ import luigi.contrib.s3
 import os
 
 class extractToJson(luigi.Task):
+    """ Extrae los datos de la Base de datos y los guarda en un archivo con formato JSON"""
   task_name = "EL74"
   date = luigi.Parameter()
   bucket = luigi.Parameter()
