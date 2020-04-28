@@ -10,6 +10,7 @@ import os
 
 # Task A
 class Extract(luigi.Task):
+    """ Extrae los datos de la Base de datos"""
     def requires(self):
         return None
 
@@ -28,6 +29,7 @@ class Extract(luigi.Task):
 
 # Task B
 class Load(luigi.Task):
+    """ Carga los datos en una instancia S3"""
     task_name = "EL4"
 
     bucket = luigi.Parameter()
