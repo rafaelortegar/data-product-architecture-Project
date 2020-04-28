@@ -37,7 +37,7 @@ class Load(luigi.Task):
 
 
     def run(self):
-        ses = boto3.session.Session(profile_name='gabster', region_name='us-west-2')
+        ses = boto3.session.Session() # profile_name='rafael-dpa-proj') #, region_name='us-west-2')
         s3_resource = ses.resource('s3')
 
         obj = s3_resource.Bucket(self.bucket)
