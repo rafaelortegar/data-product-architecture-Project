@@ -58,7 +58,4 @@ class Load(luigi.Task):
         return luigi.contrib.s3.S3Target(path=output_path)
 
 
-        
 
-
-    
