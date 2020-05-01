@@ -137,4 +137,6 @@ dmypy.json
 .doc
 .xlsx
 *.csv
+*credentials.csv
+*credentials_postgres.csv
 *credentials
