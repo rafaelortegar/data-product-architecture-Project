@@ -9,6 +9,7 @@ import luigi
 import boto3
 import pandas as pd
 import luigi.contrib.s3
+import luigi.contrib.postgres
 import os
 
 class extractToJson(luigi.Task):
@@ -19,6 +20,31 @@ class extractToJson(luigi.Task):
   
   def requires(self):
     return None
+  
+  def insert_metadata(self, conn, inspections):
+    params_string = "year={} month={} day={}".format(str(self.year), str(self.month), str(self.day))
+    if len(inspections) > 0:
+        inserted_vars = ",".join(inspections[0].keys())
+    else:
+        inserted_vars =  ""
+
+    metadata = "'{}','{}',{},'{}','{}','{}','{}','{}','{}','{}','{}'".format(
+        str(datetime.now(tz=None)),
+        params_string,
+        str(len(inspections)),
+        get_os_user(),
+        get_current_ip(),
+        get_database_name(),
+        "raw",
+        get_database_table(),
+        get_database_user(),
+        inserted_vars,
+        "etl"
+    )
+    with conn.cursor() as cur:
+        cur.execute(
+            'INSERT INTO raw.etl_metadata(executed_at, task_params, record_count, execution_user, source_ip, database_name, database_schema, database_table, database_user, vars, script_tag) VALUES (%s)'%metadata
+        )
   
   def run(self):
     ses = boto3.session.Session(profile_name='gabster', region_name='us-west-2')
