@@ -1,5 +1,7 @@
 import os
-directorio = 'C:\\Users\\valen\\Documents\\Maestria-Data-Science\\Spring-2020\\MetodosGranEscala\\proyecto2\\data-product-architecture-Project\\modeloML'
+#directorio = 'C:\\Users\\valen\\Documents\\Maestria-Data-Science\\Spring-2020\\MetodosGranEscala\\proyecto2\\data-product-architecture-Project\\modeloML'
+print (os.getcwd())
+directorio= os.getcwd()
 os.chdir(directorio)
 import luigi
 import numpy as np
@@ -8,6 +10,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
 
+
 class MetroDataIngestion(luigi.Task):
 
     def run(self):
@@ -15,9 +18,9 @@ class MetroDataIngestion(luigi.Task):
         X.to_csv(self.output().path, index=False)
 
     def output(self):
-        return luigi.LocalTarget("./Xtrain.csv")
+        return luigi.LocalTarget("OK")
 
-#X = pd.read_csv('afluencia-diaria-del-metro-cdmx.csv')
+X = pd.read_csv('afluencia-diaria-del-metro-cdmx.csv')
 
 def rmse(y, pred):
     return(np.sqrt(np.mean((y-pred)**2)))
