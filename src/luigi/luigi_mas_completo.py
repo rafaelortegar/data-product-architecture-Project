@@ -97,7 +97,7 @@ class metadataExtract(luigi.Task):
         json_content = json.loads(file_content)
 
         # Inicializa el data frame que se va a meter la información de los metadatos
-        df = pd.DataFrame(columns=["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"])
+#        df = pd.DataFrame(columns=["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"])
         
         #función de EC2 para describir la instancia en la que se está trabajando
         information_metadata_ours = clientEC2.describe_instances()
@@ -109,23 +109,23 @@ class metadataExtract(luigi.Task):
         fecha_ejecucion = pd.Timestamp.now()
         user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
         fecha_json = self.date
-        ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
+        ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
         ruta_bucket = self.bucket
         status = 'Loaded'
         
 #        client.get('Reservations')[0].get('Instances')[0].get('KeyName')
 
+        
 
-
-        for i in range(len(json_content['records'])):
-            a_row = pd.Series(
-                [json_content['records'][i]["fields"]["fecha"], json_content['records'][i]["fields"]["anio"],
-                 json_content['records'][i]["fields"]["linea"], json_content['records'][i]["fields"]["estacion"],
-                 int(json_content['records'][i]["fields"]["afluencia"])])
-            row_df = pd.DataFrame([a_row])
-            row_df.columns = ["fecha", "anio", "linea", "estacion", "afluencia"]
-            df = pd.concat([df, row_df], ignore_index=True)
-
+#        for i in range(len(json_content['records'])):
+#            a_row = pd.Series(
+#                [json_content['records'][i]["fields"]["fecha"], json_content['records'][i]["fields"]["anio"],
+#                 json_content['records'][i]["fields"]["linea"], json_content['records'][i]["fields"]["estacion"],
+#                 int(json_content['records'][i]["fields"]["afluencia"])])
+#            row_df = pd.DataFrame([a_row])
+#            row_df.columns = ["fecha", "anio", "linea", "estacion", "afluencia"]
+#            df = pd.concat([df, row_df], ignore_index=True)
+#
 
         connection = psycopg2.connect(user=creds.user[0],
                                       password=creds.password[0],
@@ -136,11 +136,11 @@ class metadataExtract(luigi.Task):
 
         cursor = connection.cursor()
 
-        for i in df.index:
-            text = "INSERT INTO raw  VALUES ('%s', '%s', '%s', '%s', %d);" % (
-            df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i])
-            print(text)
-            cursor.execute(text)
+        text = "INSERT INTO metadata_extract  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
+        fecha_ejecucion, fecha_json, user, ip_ec2, ruta_bucket, columns_read)
+        print(text)
+        cursor.execute(text)
+
         connection.commit()
         cursor.close()
         connection.close()
