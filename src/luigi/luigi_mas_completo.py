@@ -199,7 +199,53 @@ class copyToPostgres(luigi.Task):
         connection.close()
 
 ############################################################# METADATA  LOAD TASK ####################################
+class Metadata_load(luigi.Task):
+    """
+    Function to get metadata from the loading process from mexico city metro data set on the database on postgres.
+    It stores the metadata from uploading into the specified S3 bucket on AWS. Note: user MUST have the credentials 
+    to use the aws s3 bucket.
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter()
 
+    def requires(self):
+        return extractToJson(bucket=self.bucket, date=self.date)
+
+    def run(self):
+        file_to_read = self.task_name + '/metro_' + self.date + '.json'
+        creds = pd.read_csv("../../credentials/credentials_postgres.csv")
+        creds_aws = pd.read_csv("../../credentials/credentials.csv")
+        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
+                            aws_secret_access_key=creds_aws.Secret_access_key[0])
+        content_object = s3.Object(self.bucket, file_to_read)
+        file_content = content_object.get()['Body'].read().decode('utf-8')
+        json_content = json.loads(file_content)
+
+        df = pd.DataFrame(columns=["fecha", "anio", "linea", "estacion", "afluencia"])
+
+        for i in range(len(json_content['records'])):
+            a_row = pd.Series(
+                [json_content['records'][i]["fields"]["fecha"], json_content['records'][i]["fields"]["anio"],
+                 json_content['records'][i]["fields"]["linea"], json_content['records'][i]["fields"]["estacion"],
+                 int(json_content['records'][i]["fields"]["afluencia"])])
+            row_df = pd.DataFrame([a_row])
+            row_df.columns = ["fecha", "anio", "linea", "estacion", "afluencia"]
+            df = pd.concat([df, row_df], ignore_index=True)
+        connection = psycopg2.connect(user=creds.user[0],
+                                      password=creds.password[0],
+                                      host=creds.host[0],
+                                      port=creds.port[0],
+                                      database=creds.db[0])
+        cursor = connection.cursor()
+        for i in df.index:
+            text = "INSERT INTO raw  VALUES ('%s', '%s', '%s', '%s', %d);" % (
+            df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i])
+            print(text)
+            cursor.execute(text)
+        connection.commit()
+        cursor.close()
+        connection.close()
 
 
 
