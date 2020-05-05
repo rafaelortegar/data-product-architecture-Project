@@ -13,6 +13,8 @@ import sys
 import pandas as pd
 import luigi.contrib.s3
 import os
+import datetime
+from luigi.contrib.postgres import CopyToTable, PostgresQuery
 
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
@@ -24,13 +26,15 @@ class extractToJson(luigi.Task):
     date = luigi.Parameter()
     bucket = luigi.Parameter()
 
+    #Dado que es el iniio del pipeline, no requiere ninguna task antes
     def requires(self):
         return None
 
-    def run(self):
-        ses = boto3.session.Session(profile_name='gabster', region_name='us-west-2')
-        s3_resource = ses.resource('s3')
-        obj = s3_resource.Bucket(self.bucket)
+    # este código se va a ejecutar cuando se mande llamar a este task
+    def run(self): 
+        ses = boto3.session.Session(profile_name='gabster', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        s3_resource = ses.resource('s3') #Inicialzamos e recursoS3
+        obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
         # Obtiene los datos en formato raw desde la liga de la api
         data_raw = requests.get(
@@ -47,7 +51,7 @@ class extractToJson(luigi.Task):
     # Envía el output al S# bucket especificado con el nombre de output_path
     def output(self):
         output_path = "s3://{}/{}/metro_{}.json". \
-            format(self.bucket, self.task_name, self.date)
+            format(self.bucket, self.task_name, self.date) #Formato del json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
 
@@ -56,7 +60,7 @@ class metadataExtract(luigi.Task):
     """
     Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
     uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
-    bucket.
+    bucket. Requires extractToJson
     """
     task_name = 'raw_api'
     date = luigi.Parameter()
@@ -94,13 +98,22 @@ class metadataExtract(luigi.Task):
 
         # Inicializa el data frame que se va a meter la información de los metadatos
         df = pd.DataFrame(columns=["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"])
-
+        
+        #función de EC2 para describir la instancia en la que se está trabajando
+        information_metadata_ours = clientEC2.describe_instances()
+        
+        
+        
         # Columns read indica la cantidad de columnas leidas
         columns_read = len(json_content['records'])
-        fecha_ejecucion =
-        clientEC2
-
-        client.get('Reservations')[0].get('Instances')[0].get('KeyName')
+        fecha_ejecucion = pd.Timestamp.now()
+        user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
+        fecha_json = self.date
+        ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
+        ruta_bucket = self.bucket
+        status = 'Loaded'
+        
+#        client.get('Reservations')[0].get('Instances')[0].get('KeyName')
 
 
 
@@ -214,3 +227,466 @@ class run_all(luigi.Task):
 
     def requires(self):
         return extractToJson(bucket=self.bucket, date=self.date)
+
+
+
+############################################################# CLEANED ###################################
+#aqui
+class create_clean_schema(luigi.Task):
+    """
+    Function to copy raw data from the extracting process from mexico city metro data set on the database on postgres.
+    It uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket.
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter()
+
+    def requires(self):
+        return extractToJson(bucket=self.bucket, date=self.date)
+
+   # Esta sección indica lo que se va a correr:
+    def run(self):
+        # Lee nuevamente el archivo JSON que se subió al S3 bucket
+        file_to_read = self.task_name + '/metro_' + self.date + '.json'
+
+        #Lee las credenciales de los archivos correspondientes
+        creds = pd.read_csv("../../credentials/credentials_postgres.csv")
+        creds_aws = pd.read_csv("../../credentials/credentials.csv")
+
+        # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
+        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
+                            aws_secret_access_key=creds_aws.Secret_access_key[0])
+
+        # Metemos el s3 actuales en un objeto, para poder obtener los datos
+        clientS3 = boto3.client('s3')
+
+        # El content object está especificando el objeto que se va a extraer del bucket S3
+        # (la carga que se acaba de hacer desde la API)
+        content_object = s3.Object(self.bucket, file_to_read)
+
+        # Esta línea lee el archivo especificado en content_object
+        file_content = content_object.get()['Body'].read().decode('utf-8')
+        # Carga el Json content desde el archivo leído de la S3 Bucket
+        json_content = json.loads(file_content)
+
+
+        df = pd.DataFrame(columns=["fecha", "anio", "linea", "estacion", "afluencia"])
+
+        for i in range(len(json_content['records'])):
+            a_row = pd.Series(
+                [json_content['records'][i]["fields"]["fecha"], json_content['records'][i]["fields"]["anio"],
+                 json_content['records'][i]["fields"]["linea"], json_content['records'][i]["fields"]["estacion"],
+                 int(json_content['records'][i]["fields"]["afluencia"])])
+            row_df = pd.DataFrame([a_row])
+            row_df.columns = ["fecha", "anio", "linea", "estacion", "afluencia"]
+            df = pd.concat([df, row_df], ignore_index=True)
+
+        #aqui empiecen el código
+        #df
+
+        df['fecha'] = pd.to_datetime(df['fecha'])
+        
+        connection = psycopg2.connect(user=creds.user[0],
+                                      password=creds.password[0],
+                                      host=creds.host[0],
+                                      port=creds.port[0],
+                                      database=creds.db[0])
+
+
+        cursor = connection.cursor()
+
+        #crear schema cleaned
+        
+        
+        
+        text = "CREATE TABLE ..... "
+        create schema if not exists cleaned;
+
+        drop table if exists cleaned.etl_execution;
+
+        create table cleaned.etl_execution (
+        "name" TEXT,
+        "extention" TEXT,
+        "schema" TEXT,
+        "action" TEXT,
+        "creator" TEXT,
+        "machine" TEXT,
+        "ip" TEXT,
+        "creation_date" TEXT,
+        "size" TEXT,
+        "location" TEXT,
+        "status" TEXT,
+        "param_year" TEXT,
+        "param_month" TEXT,
+        "param_day" TEXT,
+        "param_bucket" TEXT
+        );
+
+
+
+        for i in df.index:
+            text = "INSERT INTO cleaned  VALUES ('%s', '%s', '%s', '%s', %d);" % (
+            df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i])
+            print(text)
+            cursor.execute(text)
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+
+############################################################# SEMANTIC ###################################
+
+
+#X['Dia'] = pd.DatetimeIndex(X['Fecha']).day.astype('object')
+#X['Mes'] = pd.DatetimeIndex(X['Fecha']).month.astype('object')
+#X['Dia_Semana'] = (pd.DatetimeIndex(X['Fecha']).weekday + 1).astype('object')
+
+
+class create_semantic_schema(luigi.Task):
+    """
+    Function to copy raw data from the extracting process from mexico city metro data set on the database on postgres.
+    It uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket.
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter()
+
+    def requires(self):
+        return extractToJson(bucket=self.bucket, date=self.date)
+
+   # Esta sección indica lo que se va a correr:
+    def run(self):
+        # Lee nuevamente el archivo JSON que se subió al S3 bucket
+        file_to_read = self.task_name + '/metro_' + self.date + '.json'
+
+        #Lee las credenciales de los archivos correspondientes
+        creds = pd.read_csv("../../credentials/credentials_postgres.csv")
+        creds_aws = pd.read_csv("../../credentials/credentials.csv")
+
+        # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
+        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
+                            aws_secret_access_key=creds_aws.Secret_access_key[0])
+
+        # Metemos el s3 actuales en un objeto, para poder obtener los datos
+        clientS3 = boto3.client('s3')
+
+        # El content object está especificando el objeto que se va a extraer del bucket S3
+        # (la carga que se acaba de hacer desde la API)
+        content_object = s3.Object(self.bucket, file_to_read)
+
+        # Esta línea lee el archivo especificado en content_object
+        file_content = content_object.get()['Body'].read().decode('utf-8')
+        # Carga el Json content desde el archivo leído de la S3 Bucket
+        json_content = json.loads(file_content)
+
+
+        df = pd.DataFrame(columns=["fecha", "anio", "linea", "estacion", "afluencia"])
+
+        for i in range(len(json_content['records'])):
+            a_row = pd.Series(
+                [json_content['records'][i]["fields"]["fecha"], json_content['records'][i]["fields"]["anio"],
+                 json_content['records'][i]["fields"]["linea"], json_content['records'][i]["fields"]["estacion"],
+                 int(json_content['records'][i]["fields"]["afluencia"])])
+            row_df = pd.DataFrame([a_row])
+            row_df.columns = ["fecha", "anio", "linea", "estacion", "afluencia"]
+            df = pd.concat([df, row_df], ignore_index=True)
+
+        ## Modificaciones al df
+
+
+
+
+        ######
+
+
+        #aqui empiecen el código
+        #df
+
+        #df['fecha'] = pd.to_datetime(df['fecha'])
+        
+        connection = psycopg2.connect(user=creds.user[0],
+                                      password=creds.password[0],
+                                      host=creds.host[0],
+                                      port=creds.port[0],
+                                      database=creds.db[0])
+
+
+        cursor = connection.cursor()
+
+        #crear schema semantic
+        connection=connect()
+        cursor=connection.cursor()
+        sql='DROP SCHEMA IF EXISTS semantic cascade; CREATE SCHEMA semantic;'
+        try:
+            cursor.execute(sql)
+            connection.commit()
+        except Exception as error:
+            print ("error", error)
+            cursor.close()
+            connection.close()
+
+        # text = "CREATE TABLE ..... "
+    connection=connect()
+    cursor=connection.cursor()
+    sql1=("""
+        CREATE TABLE semantic.metro (
+            fecha VARCHAR,
+            anio VARCHAR, 
+            linea VARCHAR,
+            estacion VARCHAR,
+            afluencia INT
+            );
+        """)
+    try:
+        cursor.execute(sql1)
+        connection.commit()  
+    except Exception as error:
+        print ("I can't create tables", error)
+ 
+#class createTable(CopyToTable):
+#
+#    def run(self):
+#        credentials = pd.read_csv("credentials_postgres.csv")
+#        user = credentials.user[0]
+#        password = credentials.password[0]
+#        database = credentials.db[0]
+#        host = credentials.host[0]
+#        table = 'raw'
+#
+#        columns = [("fecha", "VARCHAR"),
+#                   ("anio", "VARCHAR"), 
+#                   ("linea", "VARCHAR"),
+#                   ("estacion", "VARCHAR"),
+#                   ("afluencia", "INT")]
+#
+
+
+
+
+    cursor.close()
+    connection.close() 
+       
+        # create schema if not exists cleaned;
+
+        # drop table if exists cleaned.etl_execution;
+
+        #create table cleaned.etl_execution (
+        # "name" TEXT,
+        # "extention" TEXT,
+        # "schema" TEXT,
+        # "action" TEXT,
+        # "creator" TEXT,
+        # "machine" TEXT,
+        # "ip" TEXT,
+        # "creation_date" TEXT,
+        # "size" TEXT,
+        # "location" TEXT,
+        # "status" TEXT,
+        # "param_year" TEXT,
+        # "param_month" TEXT,
+        # "param_day" TEXT,
+        # "param_bucket" TEXT
+        # );
+
+
+
+        for i in df.index:
+            text = "INSERT INTO semantic  VALUES ('%s', '%s', '%s', '%s', %d);" % (
+            df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i])
+            print(text)
+            cursor.execute(text)
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+
+''''
+Falta saber qué variables agregar en el modelo
+Para este ejemplo se agregarán dos variables enteras: var1, var2
+
+        for i in df.index:
+            text = "INSERT INTO semantic  VALUES ('%s', '%s', '%s', '%s', %d, %d, %d);" % (
+            df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i], df["var1"][i], df["var"][i])
+            print(text)
+            cursor.execute(text)
+        connection.commit()
+        cursor.close()
+        connection.close()
+''''
+
+
+
+
+############################################################# EMPEZAR MODELADO ###################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+#import os
+#directorio = 'C:\\Users\\valen\\Documents\\Maestria-Data-Science\\Spring-2020\\MetodosGranEscala\\proyecto2\\data-product-architecture-Project\\modeloML'
+#os.chdir(directorio)
+#import luigi
+#import numpy as np
+#import pandas as pd
+#from sklearn.impute import SimpleImputer
+#from sklearn.linear_model import LogisticRegression
+#from sklearn.metrics import confusion_matrix
+#
+#class MetroDataIngestion(luigi.Task):
+#
+#    def run(self):
+#        X = pd.read_csv('afluencia-diaria-del-metro-cdmx.csv')
+#        X.to_csv(self.output().path, index=False)
+#
+#    def output(self):
+#        return luigi.LocalTarget("./Xtrain.csv")
+#
+##X = pd.read_csv('afluencia-diaria-del-metro-cdmx.csv')
+#
+#def rmse(y, pred):
+#    return(np.sqrt(np.mean((y-pred)**2)))
+#
+#def categorias(x, y):
+#    n = len(x)
+#    z = np.array(x, dtype = str)    
+#    q25 = np.quantile(y, 0.25)
+#    q75 = np.quantile(y, 0.75)
+#    z[x <= q25] = 'Bajo'
+#    z[(x >= q25) & (x <= q75)] = 'Normal'
+#    z[x >= q75] = 'Alto'
+#    return(z)
+#
+#X['Fecha'] = pd.to_datetime(X['Fecha'])
+#X['Dia'] = pd.DatetimeIndex(X['Fecha']).day.astype('object')
+#X['Mes'] = pd.DatetimeIndex(X['Fecha']).month.astype('object')
+#X['Dia_Semana'] = (pd.DatetimeIndex(X['Fecha']).weekday + 1).astype('object')
+#
+#indice_ent = X['Fecha'] <= '2019-11-30'
+#
+#variables_a_eliminar = ['Fecha', 'Año', 'Afluencia']
+#
+#variables_categoricas = X.dtypes.pipe(lambda x: x[x == 'object']).index
+#
+#num_cols = X.dtypes.pipe(lambda x: x[x != 'object']).index
+#for x in num_cols:
+#    imp = SimpleImputer(missing_values = np.nan, strategy = 'median')
+#    imp.fit(np.array(X[x]).reshape(-1, 1))
+#    X[x] = imp.transform(np.array(X[x]).reshape(-1, 1))
+#
+#nominal_cols = X.dtypes.pipe(lambda x: x[x == 'object']).index
+#for x in nominal_cols:
+#    imp = SimpleImputer(missing_values = np.nan, strategy = 'most_frequent')
+#    imp.fit(np.array(X[x]).reshape(-1, 1))
+#    X[x] = imp.transform(np.array(X[x]).reshape(-1, 1))
+#
+#x_mat = pd.get_dummies(X, columns = variables_categoricas, drop_first = True)
+#
+#x_ent = x_mat[indice_ent].drop(variables_a_eliminar, axis = 1)
+#x_pr = x_mat[~indice_ent].drop(variables_a_eliminar, axis = 1)
+#y_ent = categorias(x_mat['Afluencia'][indice_ent], 
+#                   x_mat['Afluencia'][indice_ent])
+#y_pr = categorias(x_mat['Afluencia'][~indice_ent], 
+#                  x_mat['Afluencia'][indice_ent])
+#
+#def modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc):
+#
+#    y_ent1 = np.where(y_ent == cat, 1, 0)
+#    y_pr1 = np.where(y_pr == cat, 1, 0)
+#
+#    modelo = LogisticRegression()
+#    modelo.fit(x_ent, y_ent1)
+#
+#    pred = modelo.predict_proba(x_pr)[:,1]
+#    prob = pred.copy()
+#    pred = np.where(pred >= sc, 1, 0)
+#    TP = np.sum((pred == 1) & (y_pr1 == 1))
+#    TN = np.sum((pred == 0) & (y_pr1 == 0))
+#    FP = np.sum((pred == 1) & (y_pr1 == 0))
+#    FN = np.sum((pred == 0) & (y_pr1 == 1))
+#
+#    accuracy = (TP+TN)/(TP+TN+FP+FN)
+#
+#    precision = TP/(TP+FP)
+#
+#    recall = TP/(TP+FN)
+#
+#    a = {'modelo':modelo, 'pred':pred, 'prob':prob, 
+#         'accuracy':accuracy, 'precision':precision, 'recall':recall}
+#    return(a)
+#
+#cat = 'Bajo'
+#sc = 0.56
+#modelo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)
+#
+#modelo['accuracy']
+#modelo['precision']
+#modelo['recall']
+#pred_bajo = modelo['pred']
+#prob_bajo = modelo['prob']
+#
+#cat = 'Normal'
+#sc = 0.50
+#modelo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)
+#
+#modelo['accuracy']
+#modelo['precision']
+#modelo['recall']
+#pred_normal = modelo['pred']
+#prob_normal = modelo['prob']
+#
+#cat = 'Alto'
+#sc = 0.50
+#modelo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)
+#
+#modelo['accuracy']
+#modelo['precision']
+#modelo['recall']
+#pred_alto = modelo['pred']
+#prob_alto = modelo['prob']
+#
+#def pred_final(pred_bajo, prob_bajo, 
+#               pred_normal, prob_normal, 
+#               pred_alto, prob_alto):
+#
+#    n = len(pred_normal)
+#    pred_final = np.array(pred_normal, dtype = str)
+#    pred = pd.DataFrame({'Bajo':pred_bajo, 
+#                         'Normal':pred_normal, 
+#                         'Alto':pred_alto})
+#    prob = pd.DataFrame({'Bajo':prob_bajo, 
+#                         'Normal':prob_normal, 
+#                         'Alto':prob_alto})
+#    
+#    for i in np.arange(1, n+1):
+#        if pred.iloc[i-1, :].sum() == 1:
+#            pred_final[i-1] = pred.iloc[i-1, :].idxmax()
+#        else:
+#            pred_final[i-1] = prob.iloc[i-1, :].idxmax()
+#    
+#    return(pred_final)
+#
+#pred_f = pred_final(pred_bajo, prob_bajo, 
+#               pred_normal, prob_normal, 
+#               pred_alto, prob_alto)
+#
+#conf = pd.DataFrame(confusion_matrix(y_pr, pred_f), 
+#                    index = ['real Bajo', 'real Normal', 'real Alto'], 
+#                    columns = ['pred Bajo', 'pred Normal', 'pred Alto'])
+#conf
+#
+#accuracy = np.sum(np.diag(conf))/np.sum(conf).sum()
+#accuracy
+#
+#if __name__ == '__main__':
+#    luigi.run()

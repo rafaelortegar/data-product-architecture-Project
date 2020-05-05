@@ -24,7 +24,7 @@ def rmse(y, pred):
 
 def categorias(x, y):
     n = len(x)
-    z = np.array(x, dtype = str)
+    z = np.array(x, dtype = str)    
     q25 = np.quantile(y, 0.25)
     q75 = np.quantile(y, 0.75)
     z[x <= q25] = 'Bajo'
