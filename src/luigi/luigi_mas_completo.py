@@ -202,7 +202,7 @@ class copyToPostgres(luigi.Task):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
         file_to_read = self.task_name + '/metro_' + self.date + '.json'
         creds = pd.read_csv("../../credentials_postgres.csv")
-        creds_aws = pd.read_csv("../../credentials.csv")
+        creds_aws = pd.read_csv("../../credentials")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
         s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
                             aws_secret_access_key=creds_aws.Secret_access_key[0])
