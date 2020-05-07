@@ -35,7 +35,7 @@ class extractToJson(luigi.Task):
 
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
-        ses = boto3.session.Session(profile_name='gabster', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') #Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
@@ -56,7 +56,7 @@ class extractToJson(luigi.Task):
     # Envía el output al S# bucket especificado con el nombre de output_path
     def output(self):
         output_path = "s3://{}/{}/metro_{}.json". \
-            format(self.bucket, self.task_name, self.date) #Formato del json que entra al bucket S3
+            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
 
@@ -424,7 +424,7 @@ class create_clean_schema(luigi.Task):
                                       host=creds.host[0],
                                       port=creds.port[0],
                                       database=creds.db[0])
-                                      
+
         cursor=connection.cursor()
         sql1=("""
             CREATE TABLE cleaned.metro (
