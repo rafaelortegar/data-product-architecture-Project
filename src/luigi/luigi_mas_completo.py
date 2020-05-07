@@ -398,7 +398,11 @@ class create_clean_schema(luigi.Task):
         cursor = connection.cursor()
 
         #crear schema cleaned
-        connection=connect()
+ #       connection=psycopg2.connect(user=creds.user[0],
+ #                                     password=creds.password[0],
+ #                                     host=creds.host[0],
+ #                                     port=creds.port[0],
+ #                                     database=creds.db[0])
         cursor=connection.cursor()
         sql='DROP SCHEMA IF EXISTS cleaned cascade; CREATE SCHEMA cleaned;'
         try:
@@ -410,23 +414,33 @@ class create_clean_schema(luigi.Task):
             connection.close()
 
         # text = "CREATE TABLE ..... "
-    connection=connect()
-    cursor=connection.cursor()
-    sql1=("""
-        CREATE TABLE cleaned.metro (
-            fecha VARCHAR,
-            anio VARCHAR, 
-            linea VARCHAR,
-            estacion VARCHAR,
-            afluencia INT
-            );
-        """)
-    try:
-        cursor.execute(sql1)
-        connection.commit()  
-    except Exception as error:
-        print ("Error could not create the table", error)   
-        
+#        connection=psycopg2.connect(user=creds.user[0],
+#                                      password=creds.password[0],
+#                                      host=creds.host[0],
+#                                      port=creds.port[0],
+#                                      database=creds.db[0]))
+        connection = psycopg2.connect(user=creds.user[0],
+                                      password=creds.password[0],
+                                      host=creds.host[0],
+                                      port=creds.port[0],
+                                      database=creds.db[0])
+                                      
+        cursor=connection.cursor()
+        sql1=("""
+            CREATE TABLE cleaned.metro (
+                fecha VARCHAR,
+                anio VARCHAR, 
+                linea VARCHAR,
+                estacion VARCHAR,
+                afluencia INT
+                );
+            """)
+        try:
+            cursor.execute(sql1)
+            connection.commit()  
+        except Exception as error:
+            print ("Error could not create the table", error)   
+
         
         # text = "CREATE TABLE ..... "
         # create schema if not exists cleaned;
@@ -687,39 +701,49 @@ class SeparaBase(luigi.Task):
 
     def run(self):
 
-       with self.input().open('r') as infile:
+        with self.input().open('r') as infile:
              dataframe = pd.read_csv(infile, sep="\t")
             #print('Pude leer el csv\n' , dataframe.head(5))
-             vars_modelo = ['delegacion_inicio','mes','dia_semana','hora', 'tipo_entrada', 'incidente_c4_rec', 'target']
-             var_target = 'target'
-             [X_train, X_test, y_train, y_test] = funciones_mod.separa_train_y_test(dataframe, vars_modelo, var_target)
+            
+            
+            indice_ent = X['Fecha'] <= '2019-11-30'
+            
+            variables_a_eliminar = ['Fecha', 'Año', 'Afluencia']
 
-        x_mat = pd.get_dummies(X, columns = variables_categoricas, drop_first = True)
+            x_mat = pd.get_dummies(X, columns = variables_categoricas, drop_first = True)
         
-        x_ent = x_mat[indice_ent].drop(variables_a_eliminar, axis = 1)
-        x_pr = x_mat[~indice_ent].drop(variables_a_eliminar, axis = 1)
-        y_ent = categorias(x_mat['Afluencia'][indice_ent], 
+            x_ent = x_mat[indice_ent].drop(variables_a_eliminar, axis = 1)
+            x_pr = x_mat[~indice_ent].drop(variables_a_eliminar, axis = 1)
+            y_ent = categorias(x_mat['Afluencia'][indice_ent], 
                            x_mat['Afluencia'][indice_ent])
-        y_pr = categorias(x_mat['Afluencia'][~indice_ent], 
+            y_pr = categorias(x_mat['Afluencia'][~indice_ent], 
                           x_mat['Afluencia'][indice_ent])
 
+
+            vars_modelo = ['delegacion_inicio','mes','dia_semana','hora', 'tipo_entrada', 'incidente_c4_rec', 'target']
+            var_target = 'target'
+            [X_train, X_test, y_train, y_test] = funciones_mod.separa_train_y_test(dataframe, vars_modelo, var_target)
+
+            
+
+        
 
 
        ses = boto3.session.Session(profile_name='default', region_name='us-east-1')
        s3_resource = ses.resource('s3')
        obj = s3_resource.Bucket(self.bucket)
 
-       with self.output()['X_train'].open('w') as outfile1:
-            X_train.to_csv(outfile1, sep='\t', encoding='utf-8', index=None)
+       with self.output()['x_ent'].open('w') as outfile1:
+            x_ent.to_csv(outfile1, sep='\t', encoding='utf-8', index=None)
 
-       with self.output()['X_test'].open('w') as outfile2:
-           X_test.to_csv(outfile2, sep='\t', encoding='utf-8', index=None)
+       with self.output()['x_pr'].open('w') as outfile2:
+            x_pr.to_csv(outfile2, sep='\t', encoding='utf-8', index=None)
 
-       with self.output()['y_train'].open('w') as outfile3:
-           y_train.to_csv(outfile3, sep='\t', encoding='utf-8', index=None)
+       with self.output()['y_ent'].open('w') as outfile3:
+            y_ent.to_csv(outfile3, sep='\t', encoding='utf-8', index=None)
 
-       with self.output()['y_test'].open('w') as outfile4:
-           y_test.to_csv(outfile4, sep='\t', encoding='utf-8', index=None)
+       with self.output()['y_pr'].open('w') as outfile4:
+            y_pr.to_csv(outfile4, sep='\t', encoding='utf-8', index=None)
 
 #import os
 #directorio = 'C:\\Users\\valen\\Documents\\Maestria-Data-Science\\Spring-2020\\MetodosGranEscala\\proyecto2\\data-product-architecture-Project\\modeloML'
@@ -876,5 +900,7 @@ class SeparaBase(luigi.Task):
 #accuracy = np.sum(np.diag(conf))/np.sum(conf).sum()
 #accuracy
 #
-#if __name__ == '__main__':
-#    luigi.run()
+
+
+if __name__ == '__main__':
+    luigi.run_all()
