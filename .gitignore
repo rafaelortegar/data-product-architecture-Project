@@ -143,3 +143,4 @@ dmypy.json
 *credentials.csv
 *credentials_postgres.csv
 *credentials
+*metadatos.py.save
