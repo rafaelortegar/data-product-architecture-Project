@@ -39,6 +39,12 @@ class extractToJson(luigi.Task):
         s3_resource = ses.resource('s3') #Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
+        print("#...")
+        print("##...")
+        print("###...")
+        print("####...")
+        print("#####...")
+        print("######...")
         print("Iniciando extracción de datos...")
         # Obtiene los datos en formato raw desde la liga de la api
         data_raw = requests.get(
@@ -48,7 +54,13 @@ class extractToJson(luigi.Task):
         # Escribe un JSON con la información descargada de la API
         with self.output().open('w') as json_file:
             json.dump(data_raw.json(), json_file)
-        print("Extracción de los datos completa")
+        print("#...")
+        print("##...")
+        print("###...")
+        print("####...")
+        print("#####...")
+        print("######...")
+        print("Extracción de los datos completa!! :)")
 
     # Envía el output al S# bucket especificado con el nombre de output_path
     def output(self):
@@ -74,6 +86,12 @@ class metadataExtract(luigi.Task):
 
     # Esta sección indica lo que se va a correr:
     def run(self):
+        print("#...")
+        print("##...")
+        print("###...")
+        print("####...")
+        print("#####...")
+        print("######...")
         print("Inicia la carga de los metadatos del extract...")
         # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
         file_to_read = self.task_name + '/metro_' + self.date + '.json'
@@ -82,6 +100,12 @@ class metadataExtract(luigi.Task):
         creds = pd.read_csv("../../credentials/credentials_postgres.csv")
         creds_aws = pd.read_csv("../../credentials/credentials.csv")
 
+        print("#...")
+        print("##...")
+        print("###...")
+        print("####...")
+        print("#####...")
+        print("######...")
         print("Conectando al S3 Bucket...")
         # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
         s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
@@ -119,7 +143,13 @@ class metadataExtract(luigi.Task):
         
 #        client.get('Reservations')[0].get('Instances')[0].get('KeyName')
 
-        print("Conectandose a la instancia S3 con los datos RAW...")
+        print("#...")
+        print("##...")
+        print("###...")
+        print("####...")
+        print("#####...")
+        print("######...")
+        print("Conectandose a la instancia RDS con los datos RAW...")
         #Se conecta a la postgres en el RDS con las credenciales correspondientes
         connection = psycopg2.connect(user=creds.user[0],
                                       password=creds.password[0],
@@ -143,6 +173,12 @@ class metadataExtract(luigi.Task):
         connection.commit() # This method sends a COMMIT statement to the MySQL server, committing the current transaction. 
         cursor.close()# Close the cursor now (rather than whenever del is executed). The cursor will be unusable from this point forward
         connection.close() # For a connection obtained from a connection pool, close() does not actually close it but returns it to the pool and makes it available for subsequent connection requests.
+        print("#...")
+        print("##...")
+        print("###...")
+        print("####...")
+        print("#####...")
+        print("######...")
         print("Carga de metadatos de Extract completada! :)")
 
 ############################################################# COPY TO POSTGRESS TASK ###################################
@@ -165,8 +201,8 @@ class copyToPostgres(luigi.Task):
     def run(self):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
         file_to_read = self.task_name + '/metro_' + self.date + '.json'
-        creds = pd.read_csv("../../credentials/credentials_postgres.csv")
-        creds_aws = pd.read_csv("../../credentials/credentials.csv")
+        creds = pd.read_csv("../../credentials_postgres.csv")
+        creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
         s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
                             aws_secret_access_key=creds_aws.Secret_access_key[0])
