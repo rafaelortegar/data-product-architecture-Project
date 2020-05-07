@@ -640,14 +640,14 @@ class create_semantic_schema(luigi.Task):
 
 
 
-        for i in df.index:
-            text = "INSERT INTO semantic  VALUES ('%s', '%s', '%s', '%s', %d);" % (
-            df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i])
-            print(text)
-            cursor.execute(text)
-        connection.commit()
-        cursor.close()
-        connection.close()
+    for i in df.index:
+           text = "INSERT INTO semantic  VALUES ('%s', '%s', '%s', '%s', %d);" % (
+           df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i])
+           print(text)
+           cursor.execute(text)
+    connection.commit()
+    cursor.close()
+    connection.close()
 
 
 ''''
