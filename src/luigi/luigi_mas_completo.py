@@ -210,7 +210,7 @@ class createTables(luigi.Task):
         dev_s3_client = session.client('s3')
         #creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-#        s3 = boto3.resource('s3')
+        s3 = boto3.resource('s3')
 
         
         connection = psycopg2.connect(user=creds.user[0],
@@ -276,8 +276,8 @@ class createTables(luigi.Task):
         print("Schemas y tablas creados correctamente :)")
         
     
-    def output(self):
-        is_complete = self.complete()
+#    def output(self):
+#        is_complete = self.complete()
 
 
 ############################################################# COPY TO POSTGRESS TASK ###################################
@@ -341,8 +341,8 @@ class copyToPostgres(luigi.Task):
         connection.close()
         print("Carga de datos a la instancia RDS completada :)")
     
-    def output(self):
-        is_complete = self.complete()
+#    def output(self):
+#        is_complete = self.complete()
 
 ############################################################# METADATA LOAD TASK ####################################
 class Metadata_load(luigi.Task):
