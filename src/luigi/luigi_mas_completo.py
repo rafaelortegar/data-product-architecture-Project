@@ -35,7 +35,7 @@ class extractToJson(luigi.Task):
 
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
-        ses = boto3.session.Session() #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        ses = boto3.session.Session() #profile_name='rafael-dpa-proj') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') #Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
@@ -97,6 +97,7 @@ class metadataExtract(luigi.Task):
         file_to_read = self.task_name + '/metro_' + self.date + '.json'
 
         #Lee las credenciales de los archivos correspondientes
+        session = boto3.Session(profile_name='default')
         creds = pd.read_csv("../../credentials/credentials_postgres.csv")
         creds_aws = pd.read_csv("../../credentials/credentials.csv")
 
@@ -110,8 +111,8 @@ class metadataExtract(luigi.Task):
         # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
  #       s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
  #                           aws_secret_access_key=creds_aws.aws_secret_access_key[0])
-        s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id,
-                            aws_secret_access_key=aws_secret_access_key)
+        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
+                            aws_secret_access_key=creds_aws.aws_secret_access_key[0])
 
         # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
         clientEC2 = boto3.client('ec2')
@@ -203,11 +204,13 @@ class copyToPostgres(luigi.Task):
     def run(self):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
         file_to_read = self.task_name + '/metro_' + self.date + '.json'
-        creds = pd.read_csv("../../credentials_postgres.csv")
-        creds_aws = pd.read_csv("../../credentials")
+        #creds = pd.read_csv("../../credentials_postgres.csv")
+        session = boto3.Session(profile_name='default')
+        dev_s3_client = session.client('s3')
+        #creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
-                            aws_secret_access_key=creds_aws.aws_secret_access_key[0])
+        s3 = boto3.resource('s3')#, aws_access_key_id=creds_aws.aws_access_key_id[0],
+                            #aws_secret_access_key=creds_aws.aws_secret_access_key[0])
         print("Conexión Exitosa! :)")
         content_object = s3.Object(self.bucket, file_to_read)
         file_content = content_object.get()['Body'].read().decode('utf-8')
