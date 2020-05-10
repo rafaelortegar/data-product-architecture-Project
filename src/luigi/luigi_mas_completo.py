@@ -196,6 +196,7 @@ class createTables(luigi.Task):
     # Parameters
     #----------------
     task_name = 'raw_api'
+    date = luigi.Parameter()
     bucket = luigi.Parameter()
 
     def requires(self):
@@ -206,6 +207,10 @@ class createTables(luigi.Task):
         print("Iniciando conexión a la base de datos...")
         creds = pd.read_csv("../../credentials_postgres.csv")
         session = boto3.Session(profile_name='default')
+        dev_s3_client = session.client('s3')
+        #creds_aws = pd.read_csv("../../credentials.csv")
+        print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
+        s3 = boto3.resource('s3')
 
         
         connection = psycopg2.connect(user=creds.user[0],
