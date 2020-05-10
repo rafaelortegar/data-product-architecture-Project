@@ -277,8 +277,8 @@ class createTables(luigi.Task):
         print("Schemas y tablas creados correctamente :)")
         
     
-#    def output(self):
-#        is_complete = self.complete()
+    def output(self):
+        is_complete = self.complete()
 
 
 ############################################################# COPY TO POSTGRESS TASK ###################################
@@ -342,8 +342,8 @@ class copyToPostgres(luigi.Task):
         connection.close()
         print("Carga de datos a la instancia RDS completada :)")
     
-#    def output(self):
-#        is_complete = self.complete()
+    def output(self):
+        is_complete = self.complete()
 
 ############################################################# METADATA LOAD TASK ####################################
 class Metadata_load(luigi.Task):
