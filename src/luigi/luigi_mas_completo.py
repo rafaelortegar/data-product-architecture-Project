@@ -295,7 +295,7 @@ class copyToPostgres(luigi.Task):
     bucket = luigi.Parameter()
 
     def requires(self):
-        return createTables()
+        return createTables(self.bucket,self.date)
 
     def run(self):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
@@ -340,6 +340,9 @@ class copyToPostgres(luigi.Task):
         cursor.close()
         connection.close()
         print("Carga de datos a la instancia RDS completada :)")
+    
+#    def output(self):
+#        is_complete = task.complete()
 
 ############################################################# METADATA LOAD TASK ####################################
 class Metadata_load(luigi.Task):
