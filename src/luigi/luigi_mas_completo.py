@@ -29,7 +29,7 @@ class extractToJson(luigi.Task):
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')#, region='us-west-2')
 
-    #Dado que es el iniio del pipeline, no requiere ninguna task antes
+    #Dado que es el inicio del pipeline, no requiere ninguna task antes
     def requires(self):
         return None
 
@@ -99,7 +99,7 @@ class metadataExtract(luigi.Task):
         #session = boto3.Session(profile_name='default')
 
         #Lee las credenciales de los archivos correspondientes
-        session = boto3.Session(profile_name='default')
+        session = boto3.Session(profile_name='rafael-dpa-proj')
         creds = pd.read_csv("../../credentials/credentials_postgres.csv")
         #creds_aws = pd.read_csv("../../credentials/credentials.csv")
 
@@ -207,7 +207,7 @@ class createTables(luigi.Task):
     def run(self):
         print("Iniciando conexión a la base de datos...")
         creds = pd.read_csv("../../credentials_postgres.csv")
-        session = boto3.Session(profile_name='default')
+        session = boto3.Session(profile_name='rafael-dpa-proj')
         dev_s3_client = session.client('s3')
         #creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
@@ -307,7 +307,7 @@ class copyToPostgres(luigi.Task):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
         file_to_read = self.task_name + '/metro_' + self.date + '.json'
         creds = pd.read_csv("../../credentials_postgres.csv")
-        session = boto3.Session(profile_name='default')
+        session = boto3.Session(profile_name='rafael-dpa-proj')
         dev_s3_client = session.client('s3')
         #creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
