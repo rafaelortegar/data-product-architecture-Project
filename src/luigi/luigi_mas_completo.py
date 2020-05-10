@@ -108,8 +108,10 @@ class metadataExtract(luigi.Task):
         print("######...")
         print("Conectando al S3 Bucket...")
         # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
-        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
-                            aws_secret_access_key=creds_aws.Secret_access_key[0])
+ #       s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
+ #                           aws_secret_access_key=creds_aws.aws_secret_access_key[0])
+        s3 = boto3.resource('s3', aws_access_key_id=aws_access_key_id,
+                            aws_secret_access_key=aws_secret_access_key)
 
         # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
         clientEC2 = boto3.client('ec2')
@@ -204,8 +206,8 @@ class copyToPostgres(luigi.Task):
         creds = pd.read_csv("../../credentials_postgres.csv")
         creds_aws = pd.read_csv("../../credentials")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
-                            aws_secret_access_key=creds_aws.Secret_access_key[0])
+        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
+                            aws_secret_access_key=creds_aws.aws_secret_access_key[0])
         print("Conexión Exitosa! :)")
         content_object = s3.Object(self.bucket, file_to_read)
         file_content = content_object.get()['Body'].read().decode('utf-8')
