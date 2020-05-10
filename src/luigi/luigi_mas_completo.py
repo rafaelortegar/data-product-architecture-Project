@@ -256,7 +256,8 @@ class createTables(luigi.Task):
                 estacion VARCHAR,
                 afluencia INT
             );
-            CREATE SCHEMA IF NOT EXISTS semantic(
+            CREATE SCHEMA IF NOT EXISTS semantic;
+            CREATE TABLE IF NOT EXISTS semantic.metro(
                 fecha DATE, 
                 anio VARCHAR, 
                 linea VARCHAR, 
