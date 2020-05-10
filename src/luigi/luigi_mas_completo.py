@@ -35,8 +35,10 @@ class extractToJson(luigi.Task):
 
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
+        creds_aws = pd.read_csv("../../credentials/credentials.csv")
         ses = boto3.session.Session(profile_name='rafael-dpa-proj')#, region='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-        s3_resource = ses.resource('s3') #Inicialzamos e recursoS3
+        s3_resource = ses.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
+                            aws_secret_access_key=creds_aws.aws_secret_access_key[0]) #Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
         print("#...")
@@ -101,7 +103,7 @@ class metadataExtract(luigi.Task):
         #Lee las credenciales de los archivos correspondientes
         session = boto3.Session(profile_name='rafael-dpa-proj')
         creds = pd.read_csv("../../credentials/credentials_postgres.csv")
-        #creds_aws = pd.read_csv("../../credentials/credentials.csv")
+        creds_aws = pd.read_csv("../../credentials/credentials.csv")
 
         print("#...")
         print("##...")
@@ -111,8 +113,8 @@ class metadataExtract(luigi.Task):
         print("######...")
         print("Conectando al S3 Bucket...")
         # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
- #       s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
- #                           aws_secret_access_key=creds_aws.aws_secret_access_key[0])
+        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
+                            aws_secret_access_key=creds_aws.aws_secret_access_key[0])
         s3 = boto3.resource('s3')
         
         # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
