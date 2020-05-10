@@ -288,7 +288,7 @@ class createTables(luigi.Task):
         
     
     def output(self):
-        output_path = "s3://{}/{}/metro_{}_create_Table.json". \
+        output_path = "s3://{}/{}/metro_{}_create_Table.txt". \
             format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
@@ -366,7 +366,7 @@ class copyToPostgres(luigi.Task):
         print("Carga de datos a la instancia RDS completada :)")
     
     def output(self):
-        output_path = "s3://{}/{}/metro_{}_copyToPostgres.json". \
+        output_path = "s3://{}/{}/metro_{}_copyToPostgres.txt". \
             format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 #        is_complete = self.complete()
