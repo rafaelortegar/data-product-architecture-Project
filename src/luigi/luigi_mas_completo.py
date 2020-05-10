@@ -17,7 +17,7 @@ import os
 import datetime
 import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable, PostgresQuery
-from luigi import flatten
+#from luigi import flatten
 
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
@@ -317,8 +317,8 @@ class copyToPostgres(luigi.Task):
         return createTables(self.bucket,self.date)
 
 
-    def _requires(self):
-        return  flatten(self.requires())
+#    def _requires(self):
+#        return  flatten(self.requires())
 
 
     def run(self):
