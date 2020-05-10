@@ -27,7 +27,7 @@ class extractToJson(luigi.Task):
     task_name = 'raw_api'
 #    ece2 = boto3.client('ec2')
     date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3', region='us-west-2')
+    bucket = luigi.Parameter(default='dpaprojs3')#, region='us-west-2')
 
     #Dado que es el iniio del pipeline, no requiere ninguna task antes
     def requires(self):
@@ -35,7 +35,7 @@ class extractToJson(luigi.Task):
 
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
-        ses = boto3.session.Session(profile_name='rafael-dpa-proj', region='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj')#, region='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') #Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
