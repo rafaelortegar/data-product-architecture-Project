@@ -95,11 +95,13 @@ class metadataExtract(luigi.Task):
         print("Inicia la carga de los metadatos del extract...")
         # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
         file_to_read = self.task_name + '/metro_' + self.date + '.json'
+        #creds = pd.read_csv("../../credentials_postgres.csv")
+        #session = boto3.Session(profile_name='default')
 
         #Lee las credenciales de los archivos correspondientes
         session = boto3.Session(profile_name='default')
         creds = pd.read_csv("../../credentials/credentials_postgres.csv")
-        creds_aws = pd.read_csv("../../credentials/credentials.csv")
+        #creds_aws = pd.read_csv("../../credentials/credentials.csv")
 
         print("#...")
         print("##...")
@@ -111,9 +113,8 @@ class metadataExtract(luigi.Task):
         # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
  #       s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
  #                           aws_secret_access_key=creds_aws.aws_secret_access_key[0])
-        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
-                            aws_secret_access_key=creds_aws.aws_secret_access_key[0])
-
+        s3 = boto3.resource('s3')
+        
         # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
         clientEC2 = boto3.client('ec2')
         clientS3 = boto3.client('s3')
@@ -183,6 +184,72 @@ class metadataExtract(luigi.Task):
         print("#####...")
         print("######...")
         print("Carga de metadatos de Extract completada! :)")
+
+############################################################ CREATE TABLES #############################################
+class createTables():
+    """
+    Function to create tables on RDS. Note: user MUST have the credentials to use the aws s3
+    bucket and the RDS instance.
+    """    
+
+    #----------------
+    # Parameters
+    #----------------
+    task_name = 'raw_api'
+
+    def requires(self):
+        return extractToJson(bucket=self.bucket, date=self.date)
+
+
+    def run(self):
+        print("Iniciando conexión a la base de datos...")
+        creds = pd.read_csv("../../credentials_postgres.csv")
+        session = boto3.Session(profile_name='default')
+
+        
+        connection = psycopg2.connect(user=creds.user[0],
+                                      password=creds.password[0],
+                                      host=creds.host[0],
+                                      port=creds.port[0],
+                                      database=creds.db[0])
+        print("Creando los schemas...")
+        cursor = connection.cursor()
+        cursor.execute("""
+        CREATE SCHEMA IF NOT EXISTS raw;
+        CREATE TABLE IF NOT EXISTS raw.metro(
+            Fecha VARCHAR, 
+            Ano VARCHAR, 
+            Linea VARCHAR, 
+            Estacion VARCHAR,
+            Afluencia INT            
+        );
+        CREATE TABLE IF NOT EXISTS raw.metadataextract;
+        CREATE TABLE IF NOT EXISTS raw.metadataload;
+        CREATE SCHEMA IF NOT EXISTS cleaned;
+        CREATE TABLE IF NOT EXISTS cleaned.metro (
+            fecha DATE, 
+            anio VARCHAR, 
+            linea VARCHAR, 
+            estacion VARCHAR,
+            afluencia INT
+        );
+        CREATE SCHEMA IF NOT EXISTS semantic(
+            fecha DATE, 
+            anio VARCHAR, 
+            linea VARCHAR, 
+            estacion VARCHAR,
+            afluencia INT            
+        );
+        """)
+        cursor.close()
+        connection.close()
+        
+        print("Schemas y tablas creados correctamente :)")
+        
+    
+    def output(self):
+        return None
+
 
 ############################################################# COPY TO POSTGRESS TASK ###################################
 
@@ -475,7 +542,9 @@ class create_clean_schema(luigi.Task):
             """)
         try:
             cursor.execute(sql1)
-            connection.commit()  
+            connection.commit()
+            cursor.close()
+            connection.close()  
         except Exception as error:
             print ("Error could not create the table", error)   
 
