@@ -280,6 +280,10 @@ class createTables(luigi.Task):
     def output(self):
         is_complete = self.complete()
 
+    def complete(self):
+        print("Task createTables completado exitosamente")
+        #print("Para la fecha", self.data_text)
+        return True
 
 ############################################################# COPY TO POSTGRESS TASK ###################################
 
@@ -344,6 +348,11 @@ class copyToPostgres(luigi.Task):
     
     def output(self):
         is_complete = self.complete()
+
+    def complete(self):
+        print("Task copyToPostgres completado exitosamente")
+        print("Para la fecha", self.date)
+        return True
 
 ############################################################# METADATA LOAD TASK ####################################
 class Metadata_load(luigi.Task):
