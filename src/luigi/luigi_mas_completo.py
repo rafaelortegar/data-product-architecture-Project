@@ -206,8 +206,8 @@ class createTables(luigi.Task):
     def run(self):
         print("Iniciando conexión a la base de datos...")
         creds = pd.read_csv("../../credentials_postgres.csv")
-        session = boto3.Session(profile_name='default')
-        dev_s3_client = session.client('s3')
+        #session = boto3.Session(profile_name='default')
+        #dev_s3_client = session.client('s3')
         #creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
         s3 = boto3.resource('s3')
@@ -302,8 +302,8 @@ class copyToPostgres(luigi.Task):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
         file_to_read = self.task_name + '/metro_' + self.date + '.json'
         creds = pd.read_csv("../../credentials_postgres.csv")
-        session = boto3.Session(profile_name='default')
-        dev_s3_client = session.client('s3')
+        #session = boto3.Session(profile_name='default')
+        #dev_s3_client = session.client('s3')
         #creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
         s3 = boto3.resource('s3')#, aws_access_key_id=creds_aws.aws_access_key_id[0],
