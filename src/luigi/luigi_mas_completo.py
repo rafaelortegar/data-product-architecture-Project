@@ -466,7 +466,7 @@ class runAll(luigi.WrapperTask):
 
     def requires(self):
         yield extractToJson(bucket=self.bucket, date=self.date)
-        yield copyToPostgres(bucket=self.bucket, date=self.date)
+        #yield copyToPostgres(bucket=self.bucket, date=self.date)
         yield createTables()
 
 
