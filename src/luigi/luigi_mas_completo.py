@@ -236,7 +236,7 @@ class copyToPostgres(luigi.Task):
         cursor = connection.cursor()
         print("Conexión realizada exitosamente! :) --> Cargando datos a la base...")
         for i in df.index:
-            text = "INSERT INTO raw  VALUES ('%s', '%s', '%s', '%s', %d);" % (
+            text = "INSERT INTO raw.metro  VALUES ('%s', '%s', '%s', '%s', %d);" % (
             df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i])
             print(text)
             cursor.execute(text)
