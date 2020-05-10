@@ -196,18 +196,18 @@ class createTables(luigi.Task):
     # Parameters
     #----------------
     task_name = 'raw_api'
-    date = luigi.Parameter()
-    bucket = luigi.Parameter()
+    #date = luigi.Parameter()
+    #bucket = luigi.Parameter()
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date)
+        return None #extractToJson(bucket=self.bucket, date=self.date)
 
 
     def run(self):
         print("Iniciando conexión a la base de datos...")
         creds = pd.read_csv("../../credentials_postgres.csv")
-        #session = boto3.Session(profile_name='default')
-        #dev_s3_client = session.client('s3')
+        session = boto3.Session(profile_name='default')
+        dev_s3_client = session.client('s3')
         #creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
         s3 = boto3.resource('s3')
@@ -302,8 +302,8 @@ class copyToPostgres(luigi.Task):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
         file_to_read = self.task_name + '/metro_' + self.date + '.json'
         creds = pd.read_csv("../../credentials_postgres.csv")
-        #session = boto3.Session(profile_name='default')
-        #dev_s3_client = session.client('s3')
+        session = boto3.Session(profile_name='default')
+        dev_s3_client = session.client('s3')
         #creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
         s3 = boto3.resource('s3')#, aws_access_key_id=creds_aws.aws_access_key_id[0],
@@ -454,7 +454,7 @@ class Metadata_load(luigi.Task):
 
 ############################################################# RUN ALL TASK ####################################
 
-class run_all(luigi.Task):
+class run_all(luigi.WrapperTask):
     """
     Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
     uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
@@ -465,7 +465,9 @@ class run_all(luigi.Task):
     bucket = luigi.Parameter()
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date)
+        yield copyToPostgres(bucket=self.bucket, date=self.date)
+        yield createTables()
+
 
 
 
