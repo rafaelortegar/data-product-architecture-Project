@@ -200,7 +200,7 @@ class createTables(luigi.Task):
     #bucket = luigi.Parameter()
 
     def requires(self):
-        return None #extractToJson(bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date)
 
 
     def run(self):
@@ -300,7 +300,7 @@ class copyToPostgres(luigi.Task):
     bucket = luigi.Parameter()
 
     def requires(self):
-        return extractToJson(self.bucket,self.date)
+        return createTables(self.bucket,self.date)
 
     def run(self):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
