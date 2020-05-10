@@ -202,7 +202,7 @@ class createTables(luigi.Task):
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
 
-    def requires(self):
+    def _requires(self):
         return extractToJson(bucket=self.bucket, date=self.date)
 
 
