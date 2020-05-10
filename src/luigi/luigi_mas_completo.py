@@ -27,7 +27,7 @@ class extractToJson(luigi.Task):
     task_name = 'raw_api'
 #    ece2 = boto3.client('ec2')
     date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3')
+    bucket = luigi.Parameter(default='dpaprojs3', region_name='us-west-2')
 
     #Dado que es el iniio del pipeline, no requiere ninguna task antes
     def requires(self):
