@@ -186,7 +186,7 @@ class metadataExtract(luigi.Task):
         print("Carga de metadatos de Extract completada! :)")
 
 ############################################################ CREATE TABLES #############################################
-class createTables():
+class createTables(luigi.Task):
     """
     Function to create tables on RDS. Note: user MUST have the credentials to use the aws s3
     bucket and the RDS instance.
@@ -214,35 +214,58 @@ class createTables():
                                       database=creds.db[0])
         print("Creando los schemas...")
         cursor = connection.cursor()
-        cursor.execute("""
-        CREATE SCHEMA IF NOT EXISTS raw;
-        CREATE TABLE IF NOT EXISTS raw.metro(
-            Fecha VARCHAR, 
-            Ano VARCHAR, 
-            Linea VARCHAR, 
-            Estacion VARCHAR,
-            Afluencia INT            
-        );
-        CREATE TABLE IF NOT EXISTS raw.metadataextract;
-        CREATE TABLE IF NOT EXISTS raw.metadataload;
-        CREATE SCHEMA IF NOT EXISTS cleaned;
-        CREATE TABLE IF NOT EXISTS cleaned.metro (
-            fecha DATE, 
-            anio VARCHAR, 
-            linea VARCHAR, 
-            estacion VARCHAR,
-            afluencia INT
-        );
-        CREATE SCHEMA IF NOT EXISTS semantic(
-            fecha DATE, 
-            anio VARCHAR, 
-            linea VARCHAR, 
-            estacion VARCHAR,
-            afluencia INT            
-        );
-        """)
-        cursor.close()
-        connection.close()
+        try:
+            cursor.execute("""
+            CREATE SCHEMA IF NOT EXISTS raw;
+            CREATE TABLE IF NOT EXISTS raw.metro(
+                Fecha VARCHAR, 
+                Ano VARCHAR, 
+                Linea VARCHAR, 
+                Estacion VARCHAR,
+                Afluencia INT            
+            );
+            CREATE TABLE IF NOT EXISTS raw.metadataextract(
+                usuario VARCHAR,
+                fecha_ejecucion DATE,
+                fecha_json DATE,
+                ip_ec2 VARCHAR,
+                nombre_bucket VARCHAR,
+                columns_read INT,
+                
+            );
+            CREATE TABLE IF NOT EXISTS raw.metadataload(
+                usuario VARCHAR,
+                fecha_ejecucion DATE,
+                fecha_json DATE,
+                ip_ec2 VARCHAR,
+                nombre_bucket VARCHAR,
+                columns_loaded INT,
+    
+            );
+            CREATE SCHEMA IF NOT EXISTS cleaned;
+            CREATE TABLE IF NOT EXISTS cleaned.metro (
+                fecha DATE, 
+                anio VARCHAR, 
+                linea VARCHAR, 
+                estacion VARCHAR,
+                afluencia INT
+            );
+            CREATE SCHEMA IF NOT EXISTS semantic(
+                fecha DATE, 
+                anio VARCHAR, 
+                linea VARCHAR, 
+                estacion VARCHAR,
+                afluencia INT            
+            );
+            """)
+            connection.commit()
+            cursor.close()
+            connection.close()  
+        except Exception as error:
+            print ("Error, no pudo crear las tablas", error)  
+
+            cursor.close()
+            connection.close()
         
         print("Schemas y tablas creados correctamente :)")
         
@@ -266,7 +289,7 @@ class copyToPostgres(luigi.Task):
     bucket = luigi.Parameter()
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date)
+        return createTables()
 
     def run(self):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
