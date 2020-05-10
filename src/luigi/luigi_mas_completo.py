@@ -196,8 +196,8 @@ class createTables(luigi.Task):
     # Parameters
     #----------------
     task_name = 'raw_api'
-    #date = luigi.Parameter()
-    #bucket = luigi.Parameter()
+    date = luigi.Parameter()
+    bucket = luigi.Parameter()
 
     def requires(self):
         return extractToJson(bucket=self.bucket, date=self.date)
