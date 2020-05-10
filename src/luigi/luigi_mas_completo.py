@@ -203,8 +203,11 @@ class createTables(luigi.Task):
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
 
-    def _requires(self):
+    def requires(self):
         return extractToJson(bucket=self.bucket, date=self.date)
+    
+#    def _requires(self):
+#        return flatten[extractToJson(bucket=self.bucket, date=self.date)]
 
 
     def run(self):
@@ -284,7 +287,11 @@ class createTables(luigi.Task):
         print("Schemas y tablas creados correctamente :)")
         
     
-#    def output(self):
+    def output(self):
+        output_path = "prueba_createTables.txt" # . \
+            #format(self.bucket, self.task_name, self.date)
+        return luigi.contrib.s3.S3Target(path=output_path)
+
 #        is_complete = self.complete()
 #
 #    def complete(self):
@@ -358,7 +365,10 @@ class copyToPostgres(luigi.Task):
         connection.close()
         print("Carga de datos a la instancia RDS completada :)")
     
-#    def output(self):
+    def output(self):
+        output_path = "prueba_copyToPostgres.txt" # . \
+            # format(self.bucket, self.task_name, self.date)
+        return luigi.contrib.s3.S3Target(path=output_path)
 #        is_complete = self.complete()
 #
 #    def complete(self):
