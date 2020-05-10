@@ -236,7 +236,7 @@ class createTables(luigi.Task):
                 fecha_json DATE,
                 ip_ec2 VARCHAR,
                 nombre_bucket VARCHAR,
-                columns_read INT,
+                columns_read INT
                 
             );
             CREATE TABLE IF NOT EXISTS raw.metadataload(
@@ -245,7 +245,7 @@ class createTables(luigi.Task):
                 fecha_json DATE,
                 ip_ec2 VARCHAR,
                 nombre_bucket VARCHAR,
-                columns_loaded INT,
+                columns_loaded INT
     
             );
             CREATE SCHEMA IF NOT EXISTS cleaned;
