@@ -27,7 +27,7 @@ class extractToJson(luigi.Task):
     task_name = 'raw_api'
 #    ece2 = boto3.client('ec2')
     date = luigi.Parameter()
-    bucket = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
 
     #Dado que es el iniio del pipeline, no requiere ninguna task antes
     def requires(self):
@@ -35,7 +35,7 @@ class extractToJson(luigi.Task):
 
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
-        ses = boto3.session.Session(profile_name='default') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj', region_name='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') #Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
@@ -78,7 +78,7 @@ class metadataExtract(luigi.Task):
     """
     task_name = 'raw_api'
     date = luigi.Parameter()
-    bucket = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
@@ -192,12 +192,13 @@ class createTables(luigi.Task):
     bucket and the RDS instance.
     """    
 
-    #----------------
+    #==============================================================================================================
     # Parameters
-    #----------------
+    #==============================================================================================================
     task_name = 'raw_api'
     date = luigi.Parameter()
-    bucket = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
+    #==============================================================================================================
 
     def requires(self):
         return extractToJson(bucket=self.bucket, date=self.date)
@@ -297,7 +298,7 @@ class copyToPostgres(luigi.Task):
     """
     task_name = 'raw_api'
     date = luigi.Parameter()
-    bucket = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
 
     def requires(self):
         return createTables(self.bucket,self.date)
@@ -363,7 +364,7 @@ class Metadata_load(luigi.Task):
     """
     task_name = 'raw_api'
     date = luigi.Parameter()
-    bucket = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
     
     #Dado que este metadata hace referencia a la carga de datos en el bucket s3, requiere que se haya finalizado la ejecución de CopyToPostgres
     def requires(self):
@@ -471,7 +472,7 @@ class runAll(luigi.WrapperTask):
     """
     task_name='raw_api'
     date = luigi.Parameter()
-    bucket = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
 
     def requires(self):
         yield extractToJson(bucket=self.bucket, date=self.date)
@@ -491,7 +492,7 @@ class create_clean_schema(luigi.Task):
     """
     task_name = 'raw_api'
     date = luigi.Parameter()
-    bucket = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
 
     def requires(self):
         return copyToPostgres(bucket=self.bucket, date=self.date)
@@ -651,7 +652,7 @@ class create_clean_schema(luigi.Task):
 #    """
 #    task_name = 'raw_api'
 #    date = luigi.Parameter()
-#    bucket = luigi.Parameter()
+#    bucket = luigi.Parameter(default='dpaprojs3')
 #
 #    def requires(self):
 #        return extractToJson(bucket=self.bucket, date=self.date)
@@ -1055,4 +1056,4 @@ class create_clean_schema(luigi.Task):
 #
 #
 if __name__ == '__main__':
-    luigi.run_all()
+    luigi.runAll()
