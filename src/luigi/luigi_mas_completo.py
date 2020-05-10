@@ -62,7 +62,7 @@ class extractToJson(luigi.Task):
         print("######...")
         print("Extracción de los datos completa!! :)")
 
-    # Envía el output al S# bucket especificado con el nombre de output_path
+    # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
         output_path = "s3://{}/{}/metro_{}.json". \
             format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
@@ -454,7 +454,7 @@ class Metadata_load(luigi.Task):
 
 ############################################################# RUN ALL TASK ####################################
 
-class run_all(luigi.WrapperTask):
+class runAll(luigi.WrapperTask):
     """
     Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
     uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
@@ -465,6 +465,7 @@ class run_all(luigi.WrapperTask):
     bucket = luigi.Parameter()
 
     def requires(self):
+        yield extractToJson(bucket=self.bucket, date=self.date)
         yield copyToPostgres(bucket=self.bucket, date=self.date)
         yield createTables()
 
