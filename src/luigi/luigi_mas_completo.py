@@ -211,9 +211,10 @@ class createTables(luigi.Task):
         creds = pd.read_csv("../../credentials_postgres.csv")
         session = boto3.Session(profile_name='rafael-dpa-proj')
         dev_s3_client = session.client('s3')
-        #creds_aws = pd.read_csv("../../credentials.csv")
+        creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-        s3 = boto3.resource('s3')
+        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
+                            aws_secret_access_key=creds_aws.aws_secret_access_key[0])
 
         
         connection = psycopg2.connect(user=creds.user[0],
