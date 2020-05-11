@@ -81,7 +81,7 @@ class metadataExtract(luigi.Task):
     """
     task_name = 'raw_api'
     date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3')
+    bucket = luigi.Parameter() # default='dpaprojs3')
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
@@ -102,9 +102,15 @@ class metadataExtract(luigi.Task):
         #session = boto3.Session(profile_name='default')
 
         #Lee las credenciales de los archivos correspondientes
-        session = boto3.Session(profile_name='rafael-dpa-proj')
+        #session = boto3.Session(profile_name='rafael-dpa-proj')
         creds = pd.read_csv("../../credentials/credentials_postgres.csv")
+        #creds_aws = pd.read_csv("../../credentials/credentials.csv")
+
         creds_aws = pd.read_csv("../../credentials/credentials.csv")
+        ses = boto3.session.Session(profile_name='default') #, region='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        s3_resource = ses.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
+                            # aws_secret_access_key=creds_aws.aws_secret_access_key[0]) #Inicialzamos e recursoS3
+        obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
         print("#...")
         print("##...")
@@ -114,9 +120,9 @@ class metadataExtract(luigi.Task):
         print("######...")
         print("Conectando al S3 Bucket...")
         # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
-        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
-                            aws_secret_access_key=creds_aws.aws_secret_access_key[0])
-        s3 = boto3.resource('s3')
+        #s3 = boto3.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
+                           # aws_secret_access_key=creds_aws.aws_secret_access_key[0])
+        #s3 = boto3.resource('s3')
         
         # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
         clientEC2 = boto3.client('ec2')
@@ -124,7 +130,7 @@ class metadataExtract(luigi.Task):
 
         # El content object está especificando el objeto que se va a extraer del bucket S3
         # (la carga que se acaba de hacer desde la API)
-        content_object = s3.Object(self.bucket, file_to_read)
+        content_object = obj.Object(self.bucket, file_to_read)
 
         # Esta línea lee el archivo especificado en content_object
         file_content = content_object.get()['Body'].read().decode('utf-8')
@@ -145,7 +151,7 @@ class metadataExtract(luigi.Task):
         user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
         fecha_json = self.date
         ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
-        ruta_bucket = self.bucket
+        nombre_bucket = self.bucket
         status = 'Loaded'
         
 #        client.get('Reservations')[0].get('Instances')[0].get('KeyName')
@@ -170,8 +176,8 @@ class metadataExtract(luigi.Task):
         
 
         # Inserta los metadatos en la tabla metadata_extract
-        text = "INSERT INTO metadata_extract  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
-        fecha_ejecucion, fecha_json, user, ip_ec2, ruta_bucket, columns_read)
+        text = "INSERT INTO raw.metadataextract  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
+        user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket, columns_read)
         print(text)
         
         cursor.execute(text) #Execute a database operation (query or command).
@@ -187,6 +193,9 @@ class metadataExtract(luigi.Task):
         print("#####...")
         print("######...")
         print("Carga de metadatos de Extract completada! :)")
+
+    def output(self):
+        return luigi.LocalTarget('1.ETL_metadataExtract.txt')
 
 ############################################################ CREATE TABLES #############################################
 class createTables(luigi.Task):
