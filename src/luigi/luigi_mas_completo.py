@@ -318,7 +318,7 @@ class copyToPostgres(luigi.Task):
     bucket = luigi.Parameter()
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date)
+        return createTables(bucket=self.bucket, date=self.date)
 
     def run(self):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
@@ -366,8 +366,8 @@ class copyToPostgres(luigi.Task):
 
 
     
-#    def output(self):
-#        return luigi.LocalTarget('1.ETL_copyToPosgres.txt')
+    def output(self):
+        return luigi.LocalTarget('1.ETL_copyToPosgres.txt')
     
 #    def output(self):
 #        output_path = "s3://{}/{}/metro_{}_copyToPostgres.txt". \
