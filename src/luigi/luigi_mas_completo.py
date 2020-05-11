@@ -392,7 +392,7 @@ class copyToPostgres(luigi.Task):
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
-        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+        #obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
         print("Conexión Exitosa! :)")
 
         #archivoquenosirve_object = s3_resource.Object(self.bucket, archivoquenosirve)
