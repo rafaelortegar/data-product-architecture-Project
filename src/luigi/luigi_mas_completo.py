@@ -1086,6 +1086,13 @@ class featureEngineering(luigi.Task):
         df2 = fb.FeatureBuilder()
         df2 = df2.featurize(df)
         print(df2.shape)
+        #sqlalchemy engine to psycopg2
+        #dialect+driver://username:password@host:port/database
+        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        #user,password,host,port,db
+        #postgres,12345678,database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com,5432,dpa
+        df.to_sql("metro", engine, schema='semantic',if_exists='replace')
+        
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
