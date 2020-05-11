@@ -897,6 +897,7 @@ class featureEngineering(luigi.Task):
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         #user,password,host,port,db
         #postgres,12345678,database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com,5432,dpa
+<<<<<<< HEAD
         table_name='metro'
         scheme='semantic'
         df2.to_sql("metro", engine, schema='semantic',if_exists='replace')
@@ -909,6 +910,10 @@ class featureEngineering(luigi.Task):
         pandas_a_csv(output().path, index=False)
         print("archivo creado correctamente")    
 
+=======
+        df2.to_sql("metro", engine, schema='semantic',if_exists='replace')
+        
+>>>>>>> bae51192ec45656266b7a6173c2c77d82ba18c96
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):

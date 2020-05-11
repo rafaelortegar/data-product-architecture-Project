@@ -18,7 +18,7 @@ class FeatureEngineeringTestCase(marbles.core.TestCase):
                         note = 'file has no rows')
         self.assertTrue(self.df.shape[1] != 0, 
                         note = 'file has no columns')
-        self.assertTrue(self.df.shape[1] == 223, 
+        self.assertTrue(self.df.shape[1] > 5, 
                         note = 'expected different number of columns')
         now = datetime.datetime.now()
         print (now.strftime("%Y-%m-%d %H:%M:%S"))
