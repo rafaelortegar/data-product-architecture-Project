@@ -482,10 +482,14 @@ class Metadata_load(luigi.Task):
         information_metadata_ours = clientEC2.describe_instances()
         print("ec2 descrita correctamente")
         
+        columnas_leidas = pd.read_csv('../../columnas_leidas.csv')
+        print("csv leido correctamente")
         
         
         # Columns read indica la cantidad de columnas leidas
-        columns_loaded = len(json_content['records'])
+        columns_loaded = columnas_leidas['datos a cargar'][0]
+        print("se cargaron")
+        print(columns_loaded)
         fecha_ejecucion = pd.Timestamp.now()
         user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
         fecha_json = self.date
