@@ -8,31 +8,27 @@ from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
 
-X = pd.read_csv('afluencia-diaria-del-metro-cdmx.csv')
+X = pd.read_csv('afluencia-diaria-del-metro-cdmx.csv') #IFE
 
 def rmse(y, pred):
     return(np.sqrt(np.mean((y-pred)**2)))
 
-def categorias(x, y):
-    n = len(x)
-    z = np.array(x, dtype = str)
-    q25 = np.quantile(y, 0.25)
-    q75 = np.quantile(y, 0.75)
-    z[x <= q25] = 'Bajo'
-    z[(x >= q25) & (x <= q75)] = 'Normal'
-    z[x >= q75] = 'Alto'
-    return(z)
+def categorias(x, y): #Al empezar modelado #EN EL MODELADO
+    n = len(x) #EN EL MODELADO
+    z = np.array(x, dtype = str) #EN EL MODELADO
+    q25 = np.quantile(y, 0.25) #EN EL MODELADO
+    q75 = np.quantile(y, 0.75) #EN EL MODELADO
+    z[x <= q25] = 'Bajo' #EN EL MODELADO
+    z[(x >= q25) & (x <= q75)] = 'Normal' #EN EL MODELADO
+    z[x >= q75] = 'Alto' #EN EL MODELADO
+    return(z) #EN EL MODELADO
 
-X['Fecha'] = pd.to_datetime(X['Fecha'])
+X['Fecha'] = pd.to_datetime(X['Fecha'])     #IFE
 X['Dia'] = pd.DatetimeIndex(X['Fecha']).day.astype('object')
 X['Mes'] = pd.DatetimeIndex(X['Fecha']).month.astype('object')
-X['Dia_Semana'] = (pd.DatetimeIndex(X['Fecha']).weekday + 1).astype('object')
+X['Dia_Semana'] = (pd.DatetimeIndex(X['Fecha']).weekday + 1).astype('object') #FFE
 
-indice_ent = X['Fecha'] <= '2019-11-30'
-
-variables_a_eliminar = ['Fecha', 'Año', 'Afluencia']
-
-variables_categoricas = X.dtypes.pipe(lambda x: x[x == 'object']).index
+variables_categoricas = X.dtypes.pipe(lambda x: x[x == 'object']).index     #Sí va en FE
 
 num_cols = X.dtypes.pipe(lambda x: x[x != 'object']).index
 for x in num_cols:
@@ -46,7 +42,13 @@ for x in nominal_cols:
     imp.fit(np.array(X[x]).reshape(-1, 1))
     X[x] = imp.transform(np.array(X[x]).reshape(-1, 1))
 
-x_mat = pd.get_dummies(X, columns = variables_categoricas, drop_first = True)
+x_mat = pd.get_dummies(X, columns = variables_categoricas, drop_first = True)   #FFE
+
+#Inicio de modelado
+
+indice_ent = X['Fecha'] <= '2019-11-30'        #Va en modelado
+
+variables_a_eliminar = ['Fecha', 'Año', 'Afluencia']    #Va en modelado
 
 x_ent = x_mat[indice_ent].drop(variables_a_eliminar, axis = 1)
 x_pr = x_mat[~indice_ent].drop(variables_a_eliminar, axis = 1)
@@ -144,3 +146,23 @@ conf
 accuracy = np.sum(np.diag(conf))/np.sum(conf).sum()
 accuracy
 
+X['Fecha'] = pd.to_datetime(X['Fecha'])     #IFE
+X['Dia'] = pd.DatetimeIndex(X['Fecha']).day.astype('object')
+X['Mes'] = pd.DatetimeIndex(X['Fecha']).month.astype('object')
+X['Dia_Semana'] = (pd.DatetimeIndex(X['Fecha']).weekday + 1).astype('object') #FFE
+
+variables_categoricas = X.dtypes.pipe(lambda x: x[x == 'object']).index     #Sí va en FE
+
+num_cols = X.dtypes.pipe(lambda x: x[x != 'object']).index
+for x in num_cols:
+    imp = SimpleImputer(missing_values = np.nan, strategy = 'median')
+    imp.fit(np.array(X[x]).reshape(-1, 1))
+    X[x] = imp.transform(np.array(X[x]).reshape(-1, 1))
+
+nominal_cols = X.dtypes.pipe(lambda x: x[x == 'object']).index
+for x in nominal_cols:
+    imp = SimpleImputer(missing_values = np.nan, strategy = 'most_frequent')
+    imp.fit(np.array(X[x]).reshape(-1, 1))
+    X[x] = imp.transform(np.array(X[x]).reshape(-1, 1))
+
+x_mat = pd.get_dummies(X, columns = variables_categoricas, drop_first = True)   #FFE

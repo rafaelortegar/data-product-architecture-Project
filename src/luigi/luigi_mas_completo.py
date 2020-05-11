@@ -9,6 +9,7 @@ import json
 import luigi
 import boto3
 import psycopg2
+import sklearn
 import sys
 import pandas as pd
 import luigi.contrib.s3
@@ -18,13 +19,15 @@ import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable, PostgresQuery
 #from luigi import flatten
 
+import MLModel.feature_builder
+
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
     """
     Function to extract data from the metro dataset from mexico city on the specified date. It uploads
     the raw data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3 bucket.
     """
-    task_name = 'raw_api'
+    task_name = 'extractToJson_task_01'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
 
@@ -36,8 +39,7 @@ class extractToJson(luigi.Task):
     def run(self): 
         creds_aws = pd.read_csv("../../credentials.csv")
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-        s3_resource = ses.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
-                            # aws_secret_access_key=creds_aws.aws_secret_access_key[0]) #Inicialzamos e recursoS3
+        s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
         print("#...")
@@ -47,14 +49,16 @@ class extractToJson(luigi.Task):
         print("#####...")
         print("######...")
         print("Iniciando extracción de datos...")
+
         # Obtiene los datos en formato raw desde la liga de la api
         data_raw = requests.get(
             f"https://datos.cdmx.gob.mx/api/records/1.0/search/?dataset=afluencia-diaria-del-metro-cdmx&rows=10000&sort=-fecha&refine.fecha={self.date}")
         
 
-        # Escribe un JSON con la información descargada de la API
+        # Escribe un JSON con la información descargada de la API, aqui esta el output
         with self.output().open('w') as json_file:
             json.dump(data_raw.json(), json_file)
+
         print("#...")
         print("##...")
         print("###...")
@@ -77,9 +81,9 @@ class metadataExtract(luigi.Task):
     uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
     bucket. Requires extractToJson
     """
-    task_name = 'raw_api'
+    task_name = 'metadataExtract_02_1'
     date = luigi.Parameter()
-    bucket = luigi.Parameter() # default='dpaprojs3')
+    bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
@@ -94,21 +98,20 @@ class metadataExtract(luigi.Task):
         print("#####...")
         print("######...")
         print("Inicia la carga de los metadatos del extract...")
+
         # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
-        file_to_read = 'raw_api' + '/metro_' + self.date + '.json'
-        #creds = pd.read_csv("../../credentials_postgres.csv")
-        #session = boto3.Session(profile_name='default')
+        file_to_read = 'raw_api/metro_'+ self.date +'.json'
+        print("El archivo a buscar es %s",file_to_read)
 
         #Lee las credenciales de los archivos correspondientes
-        #session = boto3.Session(profile_name='rafael-dpa-proj')
         creds = pd.read_csv("../../credentials_postgres.csv")
-        #creds_aws = pd.read_csv("../../credentials.csv")
-
         creds_aws = pd.read_csv("../../credentials.csv")
-        ses = boto3.session.Session(profile_name='default') #, region='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-        s3_resource = ses.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
-                            # aws_secret_access_key=creds_aws.aws_secret_access_key[0]) #Inicialzamos e recursoS3
-        obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
+        print('Credenciales leídas correctamente')
+
+        # Conexión a la S3
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
         s3 = boto3.resource('s3')
 
         print("#...")
@@ -119,9 +122,6 @@ class metadataExtract(luigi.Task):
         print("######...")
         print("Conectando al S3 Bucket...")
         # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
-        #s3 = boto3.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
-                           # aws_secret_access_key=creds_aws.aws_secret_access_key[0])
-        #s3 = boto3.resource('s3')
         
         # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
         clientEC2 = boto3.client('ec2')
@@ -150,7 +150,7 @@ class metadataExtract(luigi.Task):
         
         
         # Columns read indica la cantidad de columnas leidas
-        columns_read = len(json_content['records'])
+        #columns_read = len(json_content['records'])
         fecha_ejecucion = pd.Timestamp.now()
         user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
         fecha_json = self.date
@@ -198,9 +198,12 @@ class metadataExtract(luigi.Task):
         print("#####...")
         print("######...")
         print("Carga de metadatos de Extract completada! :)")
-
+    
+    # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
-        return luigi.LocalTarget('1.ETL_metadataExtract_%s.txt',self.date)
+        output_path = "s3://{}/{}/metro_{}.json". \
+            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        return luigi.contrib.s3.S3Target(path=output_path)
 
 ############################################################ CREATE TABLES #############################################
 class createTables(luigi.Task):
@@ -1050,12 +1053,23 @@ class featureEngineering(luigi.Task):
     bucket. Requires extractToJson
     """
     task_name = 'raw_api'
-    date = luigi.Parameter()
-    bucket = luigi.Parameter() # default='dpaprojs3')
+    #date = luigi.Parameter()
+    #bucket = luigi.Parameter() # default='dpaprojs3')
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
-    def requires(self):
-        return create_semantic_schema(bucket=self.bucket, date=self.date)
+    #def requires(self):
+    #    return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    def run(self):
+        fb = FeatureBuilder(pandas.read_csv())
+        dataframe = fb.featurize()
+
+    
+    # Envía el output al S3 bucket especificado con el nombre de output_path
+    def output(self):
+        output_path = "s3://{}/{}/metro_{}.csv". \
+            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        return luigi.contrib.s3.S3Target(path=output_path)
 
     # Esta sección indica lo que se va a correr:
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
@@ -1288,8 +1302,7 @@ class featureEngineering(luigi.Task):
 ##        if pred.iloc[i-1, :].sum() == 1:
 ##            pred_final[i-1] = pred.iloc[i-1, :].idxmax()
 ##        else:
-##            pred_final[i-1] = prob.iloc[i-1, :].idxmax()
-##    
+##            pred##    
 ##    return(pred_final)
 ##
 ##pred_f = pred_final(pred_bajo, prob_bajo, 
