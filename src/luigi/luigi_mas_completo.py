@@ -19,7 +19,7 @@ import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable, PostgresQuery
 #from luigi import flatten
 
-#import MLModel.feature_builder as fb
+import MLModel.feature_builder as fb
 
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
@@ -112,7 +112,7 @@ class metadataExtract(luigi.Task):
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
-        s3 = boto3.resource('s3')
+
 
         print("#...")
         print("##...")
@@ -130,7 +130,7 @@ class metadataExtract(luigi.Task):
 
         # El content object está especificando el objeto que se va a extraer del bucket S3
         # (la carga que se acaba de hacer desde la API)
-        content_object = s3.Object(self.bucket, file_to_read)
+        content_object = s3_resource.Object(self.bucket, file_to_read)
         print("s3 encontrada exitosamente")
 
         # Esta línea lee el archivo especificado en content_object
@@ -1055,13 +1055,21 @@ class featureEngineering(luigi.Task):
     """
     task_name = 'raw_api'
     #date = luigi.Parameter()
-    #bucket = luigi.Parameter() # default='dpaprojs3')
+    self.bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     #def requires(self):
     #    return create_semantic_schema(bucket=self.bucket, date=self.date)
 
+    # Conexión a la S3
+
+
     def run(self):
+
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+
         creds = pd.read_csv("../../credentials_postgres.csv")
         connection = psycopg2.connect(user=creds.user[0],
                                           password=creds.password[0],
@@ -1080,8 +1088,8 @@ class featureEngineering(luigi.Task):
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
-        output_path = "s3://{}/{}/metro_{}.csv". \
-            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        output_path = "s3://{}/{}/metro_.csv". \
+            format(self.bucket, self.task_name) # , self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
     # Esta sección indica lo que se va a correr:
