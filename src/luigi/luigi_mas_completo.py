@@ -258,9 +258,9 @@ class createTables(luigi.Task):
         obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
         print("conexión a la s3 exitosa :)")
 
-        archivoquenosirve = 'extractToJson_task_01/metro_' + self.date + '.json'
-        print("El archivo a leer es: ",archivoquenosirve)
-        archivoquenosirve_object = s3_resource.Object(self.bucket, archivoquenosirve)
+        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
+        print("El archivo a leer es: ",file_to_read)
+        data_raw = s3_resource.Object(self.bucket, file_to_read)
 
         print("Iniciando la conexión con la base de datos en RDS que contiene los datos extraídos...")
         connection = psycopg2.connect(user=creds.user[0],
@@ -329,16 +329,20 @@ class createTables(luigi.Task):
         print("Schemas y tablas creados correctamente :)")
         
         # para los outputs que no vamos a usar
-        vacio = ' '
-        data_vacia = {'vacio':[vacio]}
-        pandas_a_csv = pd.DataFrame(data=data_vacia)
-        pandas_a_csv(output().path, index=False)
+        #vacio = ' '
+        #data_vacia = {'vacio':[vacio]}
+        #pandas_a_csv = pd.DataFrame(data=data_vacia)
+        #pandas_a_csv(output().path, index=False)
+        
+        # Escribe un JSON con la información descargada de la API, aqui esta el output
+        with self.output().open('w') as json_file:
+            json.dump(data_raw.json(), json_file)
         print("archivo creado correctamente")
 
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
-        output_path = "s3://{}/{}/metro_{}.csv". \
+        output_path = "s3://{}/{}/metro_{}.json". \
             format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
@@ -366,8 +370,8 @@ class copyToPostgres(luigi.Task):
 
         # Los archivos que se usan por el pipeline
         print("Inicia la extracción de los datos cargados en la S3 para cargarlos a postgres...")
-        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
-        archivoquenosirve = 'createTables_task_02_01/metro_' + self.date + '.csv'
+        file_to_read = 'createTables_task_02_01/metro_' + self.date + '.json'
+        #archivoquenosirve = 'createTables_task_02_01/metro_' + self.date + '.csv'
         print("El archivo a leer es: ",file_to_read)
         
         # Leyendo credenciales
@@ -382,7 +386,7 @@ class copyToPostgres(luigi.Task):
         obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
         print("Conexión Exitosa! :)")
 
-        archivoquenosirve_object = s3_resource.Object(self.bucket, archivoquenosirve)
+        #archivoquenosirve_object = s3_resource.Object(self.bucket, archivoquenosirve)
         content_object = s3_resource.Object(self.bucket, file_to_read)
         file_content = content_object.get()['Body'].read().decode('utf-8')
         json_content = json.loads(file_content)
