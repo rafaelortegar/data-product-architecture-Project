@@ -594,8 +594,8 @@ class loadCleaned(luigi.Task):
     # Parameters
     #==============================================================================================================
     task_name='cleaned_data_04_01'
-    #date = luigi.Parameter()
-    #bucket = luigi.Parameter(default='dpaprojs3')
+    date = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
     
     def requires(self):
