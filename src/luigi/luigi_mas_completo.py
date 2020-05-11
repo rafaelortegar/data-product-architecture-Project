@@ -103,7 +103,7 @@ class metadataExtract(luigi.Task):
 
         #Lee las credenciales de los archivos correspondientes
         #session = boto3.Session(profile_name='rafael-dpa-proj')
-        creds = pd.read_csv("../../credentials/credentials_postgres.csv")
+        creds = pd.read_csv("../../credentials_postgres.csv")
         #creds_aws = pd.read_csv("../../credentials/credentials.csv")
 
         creds_aws = pd.read_csv("../../credentials/credentials.csv")
