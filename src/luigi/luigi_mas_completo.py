@@ -599,7 +599,7 @@ class loadCleaned(luigi.Task):
     #==============================================================================================================
     
     def requires(self):
-        return copyToPostgres(self.bucket,self.date)
+        return copyToPostgres(self.bucket, self.date)
     
     
     def run(self):
