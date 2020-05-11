@@ -127,21 +127,26 @@ class metadataExtract(luigi.Task):
         # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
         clientEC2 = boto3.client('ec2')
         clientS3 = boto3.client('s3')
+        print("Inicializados el EC2 y el S3")
 
         # El content object está especificando el objeto que se va a extraer del bucket S3
         # (la carga que se acaba de hacer desde la API)
         content_object = obj.Object(self.bucket, file_to_read)
+        print("s3 encontrada exitosamente")
 
         # Esta línea lee el archivo especificado en content_object
         file_content = content_object.get()['Body'].read().decode('utf-8')
+        print("contenido leído exitosamente")
         # Carga el Json content desde el archivo leído de la S3 Bucket
         json_content = json.loads(file_content)
+        print("contenido cargado exitosamente")
 
         # Inicializa el data frame que se va a meter la información de los metadatos
 #        df = pd.DataFrame(columns=["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"])
         
         #función de EC2 para describir la instancia en la que se está trabajando
         information_metadata_ours = clientEC2.describe_instances()
+        print("ec2 descrita correctamente")
         
         
         
@@ -153,6 +158,7 @@ class metadataExtract(luigi.Task):
         ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
         nombre_bucket = self.bucket
         status = 'Loaded'
+        print("variables a cargar listas")
         
 #        client.get('Reservations')[0].get('Instances')[0].get('KeyName')
 
