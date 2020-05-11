@@ -628,13 +628,13 @@ class runAll(luigi.WrapperTask):
 
 ############################################################# CLEANED ###################################
 ##aqui
-class load_cleaned(luigi.Task):
+class loadCleaned(luigi.Task):
     task_name='raw_api'
-    date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3')
+    #date = luigi.Parameter()
+    #bucket = luigi.Parameter(default='dpaprojs3')
     
     def requires(self):
-        return metadataLoad(self.bucket, date=self.date)
+        return None # metadataLoad(self.bucket, date=self.date)
     
     
     def run(self): 
