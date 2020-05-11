@@ -19,7 +19,7 @@ import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable, PostgresQuery
 #from luigi import flatten
 
-#import MLModel.feature_builder as fb
+import feature_builder as fb
 
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
@@ -1078,13 +1078,14 @@ class featureEngineering(luigi.Task):
                                           database=creds.db[0])
         cursor = connection.cursor()
         df = psql.read_sql('SELECT * FROM cleaned.metro', connection)
-        dummies=pd.get_dummies(df["ano"],prefix='y')
-        df=pd.concat([df,dummies],axis=1)
-        dummies=pd.get_dummies(df["linea"],prefix='l')
-        df=pd.concat([df,dummies],axis=1)
-        print(df.columns)
-        #fb = FeatureBuilder()
-        #dataframe = fb.featurize()
+        #dummies=pd.get_dummies(df["ano"],prefix='y')
+        #df=pd.concat([df,dummies],axis=1)
+        #dummies=pd.get_dummies(df["linea"],prefix='l')
+        #df=pd.concat([df,dummies],axis=1)
+        #print(df.columns)
+        df2 = fb.FeatureBuilder()
+        df2 = df2.featurize(df)
+        print(df2.shape)
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
