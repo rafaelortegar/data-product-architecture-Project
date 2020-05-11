@@ -111,7 +111,7 @@ class metadataExtract(luigi.Task):
         print("Inicia la carga de los metadatos del extract...")
 
         # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
-        file_to_read = 'raw_api/metro_'+ self.date +'.json'
+        file_to_read = 'extractToJson_task_01/metro_'+ self.date +'.json'
         print("El archivo a buscar es: ",file_to_read)
 
         #Lee las credenciales de los archivos correspondientes
@@ -216,6 +216,8 @@ class metadataExtract(luigi.Task):
         data_vacia = {'vacio':[vacio]}
         pandas_a_csv = pd.DataFrame(data=data_vacia)
         pandas_a_csv(output().path, index=False)
+        #with self.output().open('w') as json_file:
+        #    json.dump(data_raw.json(), json_file)
 
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
@@ -358,7 +360,7 @@ class copyToPostgres(luigi.Task):
     #==============================================================================================================
 
     def requires(self):
-        return createTables(self.bucket, self.date), extractToJson(self.bucket, self.date)
+        return createTables(self.bucket, self.date) #, extractToJson(self.bucket, self.date)
 
     def run(self):
 
