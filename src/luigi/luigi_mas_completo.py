@@ -37,7 +37,7 @@ class extractToJson(luigi.Task):
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
         creds_aws = pd.read_csv("../../credentials/credentials.csv")
-        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        ses = boto3.session.Session(profile_name='default') #, region='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
                             # aws_secret_access_key=creds_aws.aws_secret_access_key[0]) #Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
@@ -315,15 +315,10 @@ class copyToPostgres(luigi.Task):
     """
     task_name = 'raw_api'
     date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3')
+    bucket = luigi.Parameter()
 
     def requires(self):
-        return extractToJson(self.bucket,self.date)
-
-
-#    def _requires(self):
-#        return  flatten(self.requires())
-
+        return extractToJson(bucket=self.bucket, date=self.date)
 
     def run(self):
         print("Inicia la extracción de los datos cargados en RAW para cargarlos a postgres...")
@@ -331,10 +326,10 @@ class copyToPostgres(luigi.Task):
         creds = pd.read_csv("../../credentials_postgres.csv")
         session = boto3.Session(profile_name='default')
         dev_s3_client = session.client('s3')
-        creds_aws = pd.read_csv("../../credentials.csv")
+        #creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-        s3 = boto3.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
-                         #   aws_secret_access_key=creds_aws.aws_secret_access_key[0])
+        s3 = boto3.resource('s3')#, aws_access_key_id=creds_aws.aws_access_key_id[0],
+                            #aws_secret_access_key=creds_aws.aws_secret_access_key[0])
         print("Conexión Exitosa! :)")
         content_object = s3.Object(self.bucket, file_to_read)
         file_content = content_object.get()['Body'].read().decode('utf-8')
@@ -368,10 +363,11 @@ class copyToPostgres(luigi.Task):
         cursor.close()
         connection.close()
         print("Carga de datos a la instancia RDS completada :)")
+
+
     
-    
-    def output(self):
-        return luigi.LocalTarget('1.ETL_copyToPosgres.txt')
+#    def output(self):
+#        return luigi.LocalTarget('1.ETL_copyToPosgres.txt')
     
 #    def output(self):
 #        output_path = "s3://{}/{}/metro_{}_copyToPostgres.txt". \
