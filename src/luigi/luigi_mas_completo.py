@@ -28,7 +28,7 @@ class extractToJson(luigi.Task):
     task_name = 'raw_api'
 #    ece2 = boto3.client('ec2')
     date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3') # , region='us-west-2')
+    bucket = luigi.Parameter() # default='dpaprojs3') # , region='us-west-2')
 
     #Dado que es el inicio del pipeline, no requiere ninguna task antes
     def requires(self):
@@ -333,8 +333,8 @@ class copyToPostgres(luigi.Task):
         dev_s3_client = session.client('s3')
         creds_aws = pd.read_csv("../../credentials.csv")
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.aws_access_key_id[0],
-                            aws_secret_access_key=creds_aws.aws_secret_access_key[0])
+        s3 = boto3.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
+                         #   aws_secret_access_key=creds_aws.aws_secret_access_key[0])
         print("Conexión Exitosa! :)")
         content_object = s3.Object(self.bucket, file_to_read)
         file_content = content_object.get()['Body'].read().decode('utf-8')
