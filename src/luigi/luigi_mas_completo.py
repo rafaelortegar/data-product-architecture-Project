@@ -619,7 +619,7 @@ class loadCleaned(luigi.Task):
         print("Conexión Exitosa! :)")
 
         archivoquenosirve_object = s3_resource.Object(self.bucket, archivoquenosirve)
-        lectura_de_archivo = pd.read_csv(archivoquenosirve_object) 
+        #lectura_de_archivo = pd.read_csv(archivoquenosirve_object) 
 
         connection = psycopg2.connect(user=creds.user[0],
                                           password=creds.password[0],
@@ -917,8 +917,8 @@ class featureEngineering(luigi.Task):
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
-        output_path = "s3://{}/{}/metro_.csv". \
-            format(self.bucket, self.task_name) # , self.date) #Formato del nombre para el json que entra al bucket S3
+        output_path = "s3://{}/{}/metro_{}.csv". \
+            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
     # Esta sección indica lo que se va a correr:
