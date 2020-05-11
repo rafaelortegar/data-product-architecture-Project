@@ -285,6 +285,10 @@ class createTables(luigi.Task):
             connection.close()
         
         print("Schemas y tablas creados correctamente :)")
+
+    
+    def output(self):
+        return luigi.LocalTarget('1.ETL_creaTablas.txt')
         
     
 #    def output(self):
@@ -364,6 +368,10 @@ class copyToPostgres(luigi.Task):
         cursor.close()
         connection.close()
         print("Carga de datos a la instancia RDS completada :)")
+    
+    
+    def output(self):
+        return luigi.LocalTarget('1.ETL_copyToPosgres.txt')
     
 #    def output(self):
 #        output_path = "s3://{}/{}/metro_{}_copyToPostgres.txt". \
