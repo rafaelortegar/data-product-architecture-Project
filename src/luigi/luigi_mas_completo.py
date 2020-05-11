@@ -111,6 +111,7 @@ class metadataExtract(luigi.Task):
         s3_resource = ses.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
                             # aws_secret_access_key=creds_aws.aws_secret_access_key[0]) #Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
+        s3 = boto3.resource('s3')
 
         print("#...")
         print("##...")
@@ -131,7 +132,7 @@ class metadataExtract(luigi.Task):
 
         # El content object está especificando el objeto que se va a extraer del bucket S3
         # (la carga que se acaba de hacer desde la API)
-        content_object = obj.Object(self.bucket, file_to_read)
+        content_object = s3.Object(self.bucket, file_to_read)
         print("s3 encontrada exitosamente")
 
         # Esta línea lee el archivo especificado en content_object
