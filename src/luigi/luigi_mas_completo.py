@@ -390,7 +390,7 @@ class copyToPostgres(luigi.Task):
     def output(self):
         output_path = "//{}/{}/metro_{}.json". \
             format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
-        return luigi.contrib.s3.S3Target(path=output_path)
+        return luigi.LocalTarget(path=output_path)
     
 #    def output(self):
 #        output_path = "s3://{}/{}/metro_{}_copyToPostgres.txt". \
