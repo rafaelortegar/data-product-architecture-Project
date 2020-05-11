@@ -19,7 +19,7 @@ import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable, PostgresQuery
 #from luigi import flatten
 
-import MLModel.feature_builder as fb
+#import MLModel.feature_builder as fb
 
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
@@ -1055,7 +1055,7 @@ class featureEngineering(luigi.Task):
     """
     task_name = 'raw_api'
     #date = luigi.Parameter()
-    self.bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
+    bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     #def requires(self):
