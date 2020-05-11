@@ -9,13 +9,11 @@ os.chdir(directorio)
 file = 'afluencia-diaria-del-metro-cdmx.json'
 json_file = open(file, 'rb')
 
-class ExtractLoadTestCase(marbles.core.TestCase):
+class ExtractTestCase(marbles.core.TestCase):
     def setUp(self):
         self.json_file = json_file
     
-    def test_extract_load(self):
-        #self.assertTrue(type(self.df) == pd.core.frame.DataFrame, 
-        #                note = 'Data loaded correctly')
+    def test_extract(self):
         self.assertTrue(self.json_file.read(2) != '[]', 
                         note = 'json file is empty')
         now = datetime.datetime.now()
