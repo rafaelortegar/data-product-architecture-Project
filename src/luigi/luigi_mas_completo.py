@@ -10,7 +10,6 @@ import luigi
 import boto3
 import psycopg2
 import sys
-
 import pandas as pd
 import luigi.contrib.s3
 import os
@@ -628,157 +627,195 @@ class runAll(luigi.WrapperTask):
 
 
 ############################################################# CLEANED ###################################
-#aqui
-class create_clean_schema(luigi.Task):
-    """
-    Function to copy raw data from the extracting process from mexico city metro data set on the database on postgres.
-    It uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
-    bucket.
-    """
-    task_name = 'raw_api'
+##aqui
+class load_cleaned(luigi.Task):
+    task_name='raw_api'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
-
+    
     def requires(self):
-        return copyToPostgres(bucket=self.bucket, date=self.date)
-
-   # Esta sección indica lo que se va a correr:
-    def run(self):
-        # Lee nuevamente el archivo JSON que se subió al S3 bucket
-        file_to_read = self.task_name + '/metro_' + self.date + '.json'
-
-        #Lee las credenciales de los archivos correspondientes
-        creds = pd.read_csv("../../credentials/credentials_postgres.csv")
-        creds_aws = pd.read_csv("../../credentials/credentials.csv")
-
-        # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
-        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
-                            aws_secret_access_key=creds_aws.Secret_access_key[0])
-
-        # Metemos el s3 actuales en un objeto, para poder obtener los datos
-        clientS3 = boto3.client('s3')
-
-        # El content object está especificando el objeto que se va a extraer del bucket S3
-        # (la carga que se acaba de hacer desde la API)
-        content_object = s3.Object(self.bucket, file_to_read)
-
-        # Esta línea lee el archivo especificado en content_object
-        file_content = content_object.get()['Body'].read().decode('utf-8')
-        # Carga el Json content desde el archivo leído de la S3 Bucket
-        json_content = json.loads(file_content)
-
-
-        df = pd.DataFrame(columns=["fecha", "anio", "linea", "estacion", "afluencia"])
-
-        for i in range(len(json_content['records'])):
-            a_row = pd.Series(
-                [json_content['records'][i]["fields"]["fecha"], json_content['records'][i]["fields"]["anio"],
-                 json_content['records'][i]["fields"]["linea"], json_content['records'][i]["fields"]["estacion"],
-                 int(json_content['records'][i]["fields"]["afluencia"])])
-            row_df = pd.DataFrame([a_row])
-            row_df.columns = ["fecha", "anio", "linea", "estacion", "afluencia"]
-            df = pd.concat([df, row_df], ignore_index=True)
-
-        #aqui empiecen el código
-        #df
-
-        df['fecha'] = pd.to_datetime(df['fecha'])
-        
+        return metadataLoad(self.bucket, date=self.date)
+    
+    
+    def run(self): 
+        creds = pd.read_csv("../../credentials_postgres.csv")
+    
         connection = psycopg2.connect(user=creds.user[0],
-                                      password=creds.password[0],
-                                      host=creds.host[0],
-                                      port=creds.port[0],
-                                      database=creds.db[0])
-
-
+                                          password=creds.password[0],
+                                          host=creds.host[0],
+                                          port=creds.port[0],
+                                          database=creds.db[0])
+    
         cursor = connection.cursor()
+        query = """
+            drop table if exists cleaned.metro cascade;
+            create table cleaned.metro as (
+                SELECT 
+                "Fecha"::DATE as fecha, 
+                "Ano"::int as ano, 
+                "Linea"::varchar as linea, 
+                "Estacion"::varchar as estacion,
+                "Afluencia"::int as afluencia
+                from raw.metro
+                );
+                """    
+        cursor.execute(query) #Execute a database operation (query or command).
+        connection.commit() # This method sends a COMMIT statement to the MySQL server, committing the current transaction. 
+        cursor.close()# Close the cursor now (rather than whenever del is executed). The cursor will be unusable from this point forward
+        connection.close()
 
-        #crear schema cleaned
- #       connection=psycopg2.connect(user=creds.user[0],
- #                                     password=creds.password[0],
- #                                     host=creds.host[0],
- #                                     port=creds.port[0],
- #                                     database=creds.db[0])
-        cursor=connection.cursor()
-        sql='DROP SCHEMA IF EXISTS cleaned cascade; CREATE SCHEMA cleaned;'
-        try:
-            cursor.execute(sql)
-            connection.commit()
-        except Exception as error:
-            print ("error", error)
-            cursor.close()
-            connection.close()
-
-        # text = "CREATE TABLE ..... "
-#        connection=psycopg2.connect(user=creds.user[0],
+    def output(self):
+        return luigi.LocalTarget('1.ETL_tocleaned.txt')
+#class create_clean_schema(luigi.Task):
+#    """
+#    Function to copy raw data from the extracting process from mexico city metro data set on the database on postgres.
+#    It uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+#    bucket.
+#    """
+#    task_name = 'raw_api'
+#    date = luigi.Parameter()
+#    bucket = luigi.Parameter(default='dpaprojs3')
+#
+#    def requires(self):
+#        return copyToPostgres(bucket=self.bucket, date=self.date)
+#
+#   # Esta sección indica lo que se va a correr:
+#    def run(self):
+#        # Lee nuevamente el archivo JSON que se subió al S3 bucket
+#        file_to_read = self.task_name + '/metro_' + self.date + '.json'
+#
+#        #Lee las credenciales de los archivos correspondientes
+#        creds = pd.read_csv("../../credentials/credentials_postgres.csv")
+#        creds_aws = pd.read_csv("../../credentials/credentials.csv")
+#
+#        # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
+#        s3 = boto3.resource('s3', aws_access_key_id=creds_aws.Access_key_ID[0],
+#                            aws_secret_access_key=creds_aws.Secret_access_key[0])
+#
+#        # Metemos el s3 actuales en un objeto, para poder obtener los datos
+#        clientS3 = boto3.client('s3')
+#
+#        # El content object está especificando el objeto que se va a extraer del bucket S3
+#        # (la carga que se acaba de hacer desde la API)
+#        content_object = s3.Object(self.bucket, file_to_read)
+#
+#        # Esta línea lee el archivo especificado en content_object
+#        file_content = content_object.get()['Body'].read().decode('utf-8')
+#        # Carga el Json content desde el archivo leído de la S3 Bucket
+#        json_content = json.loads(file_content)
+#
+#
+#        df = pd.DataFrame(columns=["fecha", "anio", "linea", "estacion", "afluencia"])
+#
+#        for i in range(len(json_content['records'])):
+#            a_row = pd.Series(
+#                [json_content['records'][i]["fields"]["fecha"], json_content['records'][i]["fields"]["anio"],
+#                 json_content['records'][i]["fields"]["linea"], json_content['records'][i]["fields"]["estacion"],
+#                 int(json_content['records'][i]["fields"]["afluencia"])])
+#            row_df = pd.DataFrame([a_row])
+#            row_df.columns = ["fecha", "anio", "linea", "estacion", "afluencia"]
+#            df = pd.concat([df, row_df], ignore_index=True)
+#
+#        #aqui empiecen el código
+#        #df
+#
+#        df['fecha'] = pd.to_datetime(df['fecha'])
+#        
+#        connection = psycopg2.connect(user=creds.user[0],
 #                                      password=creds.password[0],
 #                                      host=creds.host[0],
 #                                      port=creds.port[0],
-#                                      database=creds.db[0]))
-        connection = psycopg2.connect(user=creds.user[0],
-                                      password=creds.password[0],
-                                      host=creds.host[0],
-                                      port=creds.port[0],
-                                      database=creds.db[0])
-
-        cursor=connection.cursor()
-        sql1=("""
-            CREATE TABLE cleaned.metro (
-                fecha VARCHAR,
-                anio VARCHAR, 
-                linea VARCHAR,
-                estacion VARCHAR,
-                afluencia INT
-                );
-            """)
-        try:
-            cursor.execute(sql1)
-            connection.commit()
-            cursor.close()
-            connection.close()  
-        except Exception as error:
-            print ("Error could not create the table", error)   
-
-        
-        # text = "CREATE TABLE ..... "
-        # create schema if not exists cleaned;
-
-        # drop table if exists cleaned.etl_execution;
-
-        # create table cleaned.etl_execution (
-        # "name" TEXT,
-        # "extention" TEXT,
-        # "schema" TEXT,
-        # "action" TEXT,
-        # "creator" TEXT,
-        # "machine" TEXT,
-        # "ip" TEXT,
-        # "creation_date" TEXT,
-        # "size" TEXT,
-        # "location" TEXT,
-        # "status" TEXT,
-        # "param_year" TEXT,
-        # "param_month" TEXT,
-        # "param_day" TEXT,
-        # "param_bucket" TEXT
-        # );
-
-        # for i in df.index:
-        #     text = "INSERT INTO cleaned  VALUES ('%s', '%s', '%s', '%s', %d);" % (
-        #     df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i])
-        #     print(text)
-        #     cursor.execute(text)
-        # connection.commit()
-        # cursor.close()
-        # connection.close()
-############################################################# METADATA CLEAN TASK ####################################
-
-
-
-
-
-
-
+#                                      database=creds.db[0])
+#
+#
+#        cursor = connection.cursor()
+#
+#        #crear schema cleaned
+# #       connection=psycopg2.connect(user=creds.user[0],
+# #                                     password=creds.password[0],
+# #                                     host=creds.host[0],
+# #                                     port=creds.port[0],
+# #                                     database=creds.db[0])
+#        cursor=connection.cursor()
+#        sql='DROP SCHEMA IF EXISTS cleaned cascade; CREATE SCHEMA cleaned;'
+#        try:
+#            cursor.execute(sql)
+#            connection.commit()
+#        except Exception as error:
+#            print ("error", error)
+#            cursor.close()
+#            connection.close()
+#
+#        # text = "CREATE TABLE ..... "
+##        connection=psycopg2.connect(user=creds.user[0],
+##                                      password=creds.password[0],
+##                                      host=creds.host[0],
+##                                      port=creds.port[0],
+##                                      database=creds.db[0]))
+#        connection = psycopg2.connect(user=creds.user[0],
+#                                      password=creds.password[0],
+#                                      host=creds.host[0],
+#                                      port=creds.port[0],
+#                                      database=creds.db[0])
+#
+#        cursor=connection.cursor()
+#        sql1=("""
+#            CREATE TABLE cleaned.metro (
+#                fecha DATE,
+#                anio VARCHAR, 
+#                linea VARCHAR,
+#                estacion VARCHAR,
+#                afluencia INT
+#                );
+#            """)
+#        try:
+#            cursor.execute(sql1)
+#            connection.commit()
+#            cursor.close()
+#            connection.close()  
+#        except Exception as error:
+#            print ("Error could not create the table", error)   
+#
+#        
+#        # text = "CREATE TABLE ..... "
+#        # create schema if not exists cleaned;
+#
+#        # drop table if exists cleaned.etl_execution;
+#
+#        # create table cleaned.etl_execution (
+#        # "name" TEXT,
+#        # "extention" TEXT,
+#        # "schema" TEXT,
+#        # "action" TEXT,
+#        # "creator" TEXT,
+#        # "machine" TEXT,
+#        # "ip" TEXT,
+#        # "creation_date" TEXT,
+#        # "size" TEXT,
+#        # "location" TEXT,
+#        # "status" TEXT,
+#        # "param_year" TEXT,
+#        # "param_month" TEXT,
+#        # "param_day" TEXT,
+#        # "param_bucket" TEXT
+#        # );
+#
+#        # for i in df.index:
+#        #     text = "INSERT INTO cleaned  VALUES ('%s', '%s', '%s', '%s', %d);" % (
+#        #     df["fecha"][i], df["anio"][i], df["linea"][i], df["estacion"][i], df["afluencia"][i])
+#        #     print(text)
+#        #     cursor.execute(text)
+#        # connection.commit()
+#        # cursor.close()
+#        # connection.close()
+############################################################## METADATA CLEAN TASK ####################################
+#
+#
+#
+#
+#
+#
+#
 
 
 ############################################################# SEMANTIC ###################################
@@ -962,16 +999,38 @@ class create_clean_schema(luigi.Task):
 #        connection.close()
 #''''
 #
-############################################################## METADATA LOAD TASK ####################################
-#
-#
-#
-#
-#
-#
-#
-#
-#
+############################################################## FEATURE ENGINEERING ####################################
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+    def run(self):
+        return None
+
+
+    def output(self, parameter_list):
+        return None
+
+
+
+
+
+
+
+
+
 ############################################################## EMPEZAR MODELADO ###################################
 #
 #class SeparaBase(luigi.Task):
@@ -1113,7 +1172,7 @@ class create_clean_schema(luigi.Task):
 ##
 ##    y_ent1 = np.where(y_ent == cat, 1, 0)
 ##    y_pr1 = np.where(y_pr == cat, 1, 0)
-##
+##luigi
 ##    modelo = LogisticRegression()
 ##    modelo.fit(x_ent, y_ent1)
 ##
