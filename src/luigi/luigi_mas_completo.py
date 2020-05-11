@@ -19,7 +19,7 @@ import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable, PostgresQuery
 #from luigi import flatten
 
-import MLModel.feature_builder as fb
+#import MLModel.feature_builder as fb
 
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
