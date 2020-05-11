@@ -363,7 +363,11 @@ class copyToPostgres(luigi.Task):
             df = pd.concat([df, row_df], ignore_index=True)
         
         filas_a_cargar =len(df)
+        data_info = {'datos a cargar': [filas_a_cargar]}
         
+        data_to_csv = pd.DataFrame(data=data_info)
+        data_to_csv.to_csv(self.output().path,index=False)
+
         print("Inicia la conexión con la base de datos correspondiente en RDS...")
         connection = psycopg2.connect(user=creds.user[0],
                                       password=creds.password[0],
@@ -388,9 +392,7 @@ class copyToPostgres(luigi.Task):
         return luigi.LocalTarget('1.ETL_copyToPosgres.txt')
 
     def output(self):
-        output_path = "//{}/{}/metro_{}.json". \
-            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
-        return luigi.LocalTarget(path=output_path)
+        return luigi.LocalTarget('columnas_leidas.csv')
     
 #    def output(self):
 #        output_path = "s3://{}/{}/metro_{}_copyToPostgres.txt". \
