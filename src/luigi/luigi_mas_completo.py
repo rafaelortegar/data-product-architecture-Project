@@ -19,7 +19,7 @@ import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable, PostgresQuery
 #from luigi import flatten
 
-import MLModel.feature_builder
+import MLModel.feature_builder as fb
 
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
@@ -101,7 +101,7 @@ class metadataExtract(luigi.Task):
 
         # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
         file_to_read = 'raw_api/metro_'+ self.date +'.json'
-        print("El archivo a buscar es %s",file_to_read)
+        print("El archivo a buscar es: ",file_to_read)
 
         #Lee las credenciales de los archivos correspondientes
         creds = pd.read_csv("../../credentials_postgres.csv")
@@ -135,6 +135,7 @@ class metadataExtract(luigi.Task):
 
         # Esta línea lee el archivo especificado en content_object
         file_content = content_object.get()['Body'].read().decode('utf-8')
+        columns_read = content_object.get()['Body'].read().decode('utf-8')['facet_groups']['facets']['count']
         print("contenido leído exitosamente")
         # Carga el Json content desde el archivo leído de la S3 Bucket
         json_content = json.loads(file_content)
@@ -1061,9 +1062,21 @@ class featureEngineering(luigi.Task):
     #    return create_semantic_schema(bucket=self.bucket, date=self.date)
 
     def run(self):
-        fb = FeatureBuilder(pandas.read_csv())
-        dataframe = fb.featurize()
-
+        creds = pd.read_csv("../../credentials_postgres.csv")
+        connection = psycopg2.connect(user=creds.user[0],
+                                          password=creds.password[0],
+                                          host=creds.host[0],
+                                          port=creds.port[0],
+                                          database=creds.db[0])
+        cursor = connection.cursor()
+        df = psql.read_sql('SELECT * FROM cleaned.metro', connection)
+        dummies=pd.get_dummies(df["ano"],prefix='y')
+        df=pd.concat([df,dummies],axis=1)
+        dummies=pd.get_dummies(df["linea"],prefix='l')
+        df=pd.concat([df,dummies],axis=1)
+        print(df.columns)
+        #fb = FeatureBuilder()
+        #dataframe = fb.featurize()
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
@@ -1073,24 +1086,8 @@ class featureEngineering(luigi.Task):
 
     # Esta sección indica lo que se va a correr:
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
-    def requires(self):
-        return create_semantic_schema(bucket=self.bucket, date=self.date)
-
-    # Esta sección indica lo que se va a correr:
-    def run(self):
-        return None
-
-
-    def output(self, parameter_list):
-        return None
-
-
-
-
-
-
-
-
+    #def requires(self):
+    #    return create_semantic_schema(bucket=self.bucket, date=self.date)
 
 ############################################################## EMPEZAR MODELADO ###################################
 #
