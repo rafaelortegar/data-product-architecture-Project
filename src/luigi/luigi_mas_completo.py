@@ -388,8 +388,8 @@ class copyToPostgres(luigi.Task):
 
 
     
-    def output(self):
-        return luigi.LocalTarget('1.ETL_copyToPosgres.txt')
+#    def output(self):
+#        return luigi.LocalTarget('1.ETL_copyToPosgres.txt')
 
     def output(self):
         return luigi.LocalTarget('columnas_leidas.csv')
