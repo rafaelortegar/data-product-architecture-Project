@@ -406,7 +406,7 @@ class copyToPostgres(luigi.Task):
 #        return True
 
 ############################################################# METADATA LOAD TASK ####################################
-class Metadata_load(luigi.Task):
+class metadataLoad(luigi.Task):
     """
     Function to get metadata from the loading process of mexico city metro data set on the database on postgres.
     It stores the metadata from uploading into the specified S3 bucket on AWS. Note: user MUST have the credentials 
@@ -469,10 +469,10 @@ class Metadata_load(luigi.Task):
         print("s3 encontrada exitosamente")
 
         # Esta línea lee el archivo especificado en content_object
-        file_content = content_object.get()['Body'].read().decode('utf-8')
+        #file_content = content_object.get()['Body'].read().decode('utf-8')
         print("contenido leído exitosamente")
         # Carga el Json content desde el archivo leído de la S3 Bucket
-        json_content = json.loads(file_content)
+        #json_content = json.loads(file_content)
         print("contenido cargado exitosamente")
 
         # Inicializa el data frame que se va a meter la información de los metadatos
