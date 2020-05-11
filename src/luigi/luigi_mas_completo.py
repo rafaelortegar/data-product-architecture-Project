@@ -260,7 +260,16 @@ class createTables(luigi.Task):
 
         file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
         print("El archivo a leer es: ",file_to_read)
-        data_raw = s3_resource.Object(self.bucket, file_to_read)
+
+        # Obtiene los datos en formato raw desde la liga de la api
+        data_raw = requests.get(
+            f"https://datos.cdmx.gob.mx/api/records/1.0/search/?dataset=afluencia-diaria-del-metro-cdmx&rows=10000&sort=-fecha&refine.fecha={self.date}")
+        
+
+        # Escribe un JSON con la información descargada de la API, aqui esta el output
+        with self.output().open('w') as json_file:
+            json.dump(data_raw.json(), json_file)
+        #data_raw = s3_resource.Object(self.bucket, file_to_read)
 
         print("Iniciando la conexión con la base de datos en RDS que contiene los datos extraídos...")
         connection = psycopg2.connect(user=creds.user[0],
@@ -335,8 +344,8 @@ class createTables(luigi.Task):
         #pandas_a_csv(output().path, index=False)
         
         # Escribe un JSON con la información descargada de la API, aqui esta el output
-        with self.output().open('w') as json_file:
-            json.dump(data_raw.json(), json_file)
+        #with self.output().open('w') as json_file:
+        #    json.dump(data_raw.json(), json_file)
         print("archivo creado correctamente")
 
     
