@@ -106,7 +106,7 @@ class metadataExtract(luigi.Task):
         creds = pd.read_csv("../../credentials_postgres.csv")
         #creds_aws = pd.read_csv("../../credentials/credentials.csv")
 
-        creds_aws = pd.read_csv("../../credentials/credentials.csv")
+        creds_aws = pd.read_csv("../../credentials.csv")
         ses = boto3.session.Session(profile_name='default') #, region='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
                             # aws_secret_access_key=creds_aws.aws_secret_access_key[0]) #Inicialzamos e recursoS3
