@@ -318,7 +318,7 @@ class copyToPostgres(luigi.Task):
     bucket = luigi.Parameter(default='dpaprojs3')
 
     def requires(self):
-        return createTables(self.bucket,self.date)
+        return extractToJson(self.bucket,self.date)
 
 
 #    def _requires(self):
