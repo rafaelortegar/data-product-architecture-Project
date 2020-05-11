@@ -1802,6 +1802,1982 @@ class featureEngineering(luigi.Task):
         return create_semantic_schema(bucket=self.bucket, date=self.date)
 
     # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
+
+
+
+
+class featureEngineering(luigi.Task):
+    """
+    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
+    task_name = 'raw_api'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter() # default='dpaprojs3')
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
+    def requires(self):
+        return create_semantic_schema(bucket=self.bucket, date=self.date)
+
+    # Esta sección indica lo que se va a correr:
     def run(self):
         return None
 
