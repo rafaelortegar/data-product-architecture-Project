@@ -370,7 +370,7 @@ class copyToPostgres2(CopyToTable):
     #parametros
     task_name = 'load_task_03_01'
     date = luigi.Parameter()
-    self.bucket = luigi.Parameter(default='dpaprojs3')
+    bucket = luigi.Parameter(default='dpaprojs3')
 
     #credenciales de acceso a la base de datos
     print("Iniciando conexión a la S3 de datos...")
@@ -392,16 +392,18 @@ class copyToPostgres2(CopyToTable):
                 ("estacion","TEXT"),
                 ("afluencia","TEXT")]
                 
-    file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
+    file_to_read = 'extractToJson_task_01/metro_' + date + '.json'
     # Conexión a la S3
     print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
     ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
     s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
     dev_s3_client = ses.client('s3')
-    obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+    obj = s3_resource.Bucket(bucket) # Metemos el bucket S3 en una variable obj
     print("Conexión Exitosa! :)")
         
     f = pd.DataFrame(columns=["fecha", "ano", "linea", "estacion", "afluencia"])
+
+
 #
 #        for i in range(len(json_content['records'])):
 #            a_row = pd.Series(
@@ -440,6 +442,25 @@ class copyToPostgres2(CopyToTable):
 #
 #    def output(self):
 #        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
+class load_raw(luigi.Task):
+    #==============================================================================================================
+    # Parameters
+    #==============================================================================================================
+    task_name = 'load_task_03_01'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
+    #==============================================================================================================
+    def requires(self):
+        return copyToPostgres2(self.date)
+
+    def run(self):
+        z = str(self.x + self.y)
+        print("******* ", z)
+        with self.output().open('w') as output_file:
+            output_file.write(z)
+
+    def output(self):
+        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
 
 
 

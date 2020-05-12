@@ -63,10 +63,34 @@ class copyToPostgres2(CopyToTable):
     
     file_to_read = 'extractToJson_task_01/metro_' + date + '.json'
     print("El archivo a leer es: ",file_to_read)
-
-
-
     #==============================================================================================================
+
+    # leemos el df
+    content_object = s3_resource.Object(bucket, file_to_read)
+    file_content = content_object.get()['Body'].read().decode('utf-8')
+    json_content = json.loads(file_content)
+    print("Archivo cargado correctamente...")
+
+    #metemos el df en un data frame
+    f = pd.DataFrame(columns=["anio", "estacion", "fecha", "linea", "afluencia"])
+    df = pd.read_json(r'json_content',encoding='utf-8', orient='values', lines=True)
+    dfrec=df['records'][0]
+    
+    
+    for x in range(len(list(dfrec))):
+        json_str=json.dumps(dfrec[x])
+        el_json=pd.read_json(json_str,orient='index',encoding='utf-8')
+        a_ver = (el_json.loc['fields'][0])
+        nuevo=pd.DataFrame(a_ver,index=[0])
+        f=f.append(nuevo)
+    
+    #f.to_csv()
+    def rows(self):
+        for line in f:
+            yield line
+    
+
+    #json_object = json.loads(json_file) for element in json_object: for value in json_object['Name_OF_YOUR_KEY/ELEMENT']: print(json_object['Name_OF_YOUR_KEY/ELEMENT']['INDEX_OF_VALUE']['VALUE'])
 
 #    def rows(self):
 #        r = [("test 1",z), ("test 2","45")]
