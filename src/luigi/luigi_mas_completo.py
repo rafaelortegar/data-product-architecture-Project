@@ -669,7 +669,7 @@ class loadCleaned(luigi.Task):
         vacio = ' '
         data_vacia = {'vacio':[vacio]}
         pandas_a_csv = pd.DataFrame(data=data_vacia)
-        pandas_a_csv(output().path, index=False)
+        pandas_a_csv(self.output().path, index=False)
         print("archivo creado correctamente")
 
 
@@ -868,8 +868,8 @@ class featureEngineering(luigi.Task):
     #==============================================================================================================
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
-    def requires(self):
-        return loadCleaned(bucket=self.bucket, date=self.date)
+#    def requires(self):
+#        return loadCleaned(bucket=self.bucket, date=self.date)
 
     # Conexión a la S3
 
