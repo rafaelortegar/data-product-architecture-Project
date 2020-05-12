@@ -40,13 +40,9 @@ class extractToJson(luigi.Task):
     #==============================================================================================================
 
     #Dado que es el inicio del pipeline, no requiere ninguna task antes
-<<<<<<< HEAD
-#    def requires(self):
-#        return None
-=======
-    #def requires(self):
-    #    return None
->>>>>>> 4be1f96407500d13c83032ea8cbbf35d0a555b0e
+
+    def requires(self):
+        return None
 
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
@@ -129,7 +125,7 @@ class metadataExtract(luigi.Task):
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
-        dev_s3_client = session.client('s3')
+        dev_s3_client = ses.client('s3')
 
         print("#...")
         print("##...")
