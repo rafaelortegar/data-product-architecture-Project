@@ -1287,7 +1287,7 @@ class modelingMetro(luigi.task):
         #df.to_sql(name="semantic.metro", con=engine, schema=scheme,if_exists='replace')
         #print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
         
-        cursor.execute(text) #Execute a database operation (query or command).
+        #cursor.execute(text) #Execute a database operation (query or command).
         
         
         connection.commit() # This method sends a COMMIT statement to the MySQL server, committing the current transaction. 
