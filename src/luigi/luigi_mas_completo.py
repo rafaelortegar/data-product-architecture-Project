@@ -1020,7 +1020,7 @@ class featureEngineering(luigi.Task):
         print("Conexión Exitosa! :)")
 
         content_object = s3_resource.Object(self.bucket, archivoquenosirve)
-        file_content = pd.read_csv(content_object) 
+        #file_content = pd.read_csv(content_object) 
         print("s3 encontrada exitosamente")
 
         connection = psycopg2.connect(user=creds.user[0],
