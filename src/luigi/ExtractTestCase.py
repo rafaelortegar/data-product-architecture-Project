@@ -13,9 +13,10 @@ import pandas as pd
 #    def featurize(self, X):
  
 class ExtractTestCase(marbles.core.TestCase):
-        def setUp(self):
-                self.json_file =... #json_file
-        #def __init__(self):
+#        def setUp(self):
+#                self.json_file =... #json_file
+        def __init__(self):
+                self.json_file
         
         def tearDown(self):
                 delattr(self, 'json_file')
@@ -28,6 +29,6 @@ class ExtractTestCase(marbles.core.TestCase):
                 print (now.strftime("%Y-%m-%d %H:%M:%S"))
                 df1 = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
                 return df1
-                
+
 if __name__ == '__main__':
     marbles.core.main()
