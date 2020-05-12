@@ -27,11 +27,11 @@
 - -[ ] Modelado
 - -[ ] Metadata Prueba Unitaria de Feature Engineering  --> prueba unitaria, booleano de si pasó o no, cuando se corrió
 - -[ ] Prueba Unitaria Feature Engineering 
-- -[ ] Metadata Feature Engineering
-- -[ ] Feature Engineering
+- -[x] Metadata Feature Engineering
+- -[x] Feature Engineering
 - -[ ] Metadata Prueba Unitaria Clean Task   --> prueba unitaria, booleano de si pasó o no, cuando se corrió
 - -[ ] Prueba Unitaria Clean Task
-- -[ ] Metadata Clean Task
+- -[x] Metadata Clean Task
 - -[x] Clean Task
 - -[ ] Metadata de la Prueba Unitaria Load  --> prueba unitaria, booleano de si pasó o no, cuando se corrió
 - -[ ] Prueba unitaria Load

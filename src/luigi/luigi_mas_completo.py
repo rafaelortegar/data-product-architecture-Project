@@ -15,11 +15,13 @@ import pandas as pd
 import luigi.contrib.s3
 import os
 import datetime
+import pickle
 import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable, PostgresQuery
 import sqlalchemy
 from sqlalchemy import create_engine
 import csv
+from pred_f import modelado
 
 # from luigi import flatten
 
@@ -460,27 +462,27 @@ class createTables(luigi.Task):
 #
 #    def output(self):
 #        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
-
-class load_raw(luigi.Task):
-    #==============================================================================================================
-    # Parameters
-    #==============================================================================================================
-    task_name = 'load_task_03_01'
-    date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3')
-    #==============================================================================================================
-    def requires(self):
-        return copyToPostgres2(self.bucket,self.date)
-
-    def run(self):
-        z = str(self.x + self.y)
-        print("******* ", z)
-        with self.output().open('w') as output_file:
-            output_file.write(z)
-
-    def output(self):
-        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
-################################################UNITTEST##########################################################
+#
+#class load_raw(luigi.Task):
+#    #==============================================================================================================
+#    # Parameters
+#    #==============================================================================================================
+#    task_name = 'load_task_03_01'
+#    date = luigi.Parameter()
+#    bucket = luigi.Parameter(default='dpaprojs3')
+#    #==============================================================================================================
+#    def requires(self):
+#        return copyToPostgres2(self.bucket,self.date)
+#
+#    def run(self):
+#        z = str(self.x + self.y)
+#        print("******* ", z)
+#        with self.output().open('w') as output_file:
+#            output_file.write(z)
+#
+#    def output(self):
+#        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
+#################################################UNITTEST##########################################################
 class testExtract(luigi.Task):
     #==============================================================================================================
     # Parameters
@@ -517,8 +519,11 @@ class testExtract(luigi.Task):
         content_object = s3_resource.Object(self.bucket, file_to_read)
         file_content = content_object.get()['Body'].read().decode('utf-8')
         json_content = json.loads(file_content)
-
+        
+        ExtractTestCase.json_file=json_content
         ExtractTestCase.setup()
+        ExtractTestCase.test_
+
         print("Archivo cargado correctamente...")
         f=self.output().open('w')
         print >>f, "pruebaextract"
@@ -1327,14 +1332,8 @@ class modelingMetro(luigi.task):
 
         #============== Modelado:
         
-        indice_ent = X['Fecha'] <= '2019-11-30'               
-       
-        variables_a_eliminar = ['Fecha', 'Año', 'Afluencia']
-
-        x_ent = x_mat[indice_ent].drop(variables_a_eliminar, axis = 1)
-        x_pr = x_mat[~indice_ent].drop(variables_a_eliminar, axis = 1)
-        y_ent = categorias(x_mat['Afluencia'][indice_ent], x_mat['Afluencia'][indice_ent])
-        y_pr = categorias(x_mat['Afluencia'][~indice_ent], x_mat['Afluencia'][indice_ent])
+        modelos = modelado.ModelBuilder()
+        modelos = modelos.build_model(df)
        
         #sqlalchemy engine to psycopg2
         #dialect+driver://username:password@host:port/database
