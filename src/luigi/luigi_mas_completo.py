@@ -523,10 +523,10 @@ class testExtract(luigi.Task):
         json_content = json.loads(file_content)
         
             
-        #with open('contenido.json', 'r') as outfile:
-        #    json.dump(file_content, outfile)
+        with open('contenido.json', 'w') as outfile:
+            json.dump(file_content, outfile)
 
-        file = file_content
+        file = 'contenido.json'
         json_file = open(file, 'r')
 
         prueba = ExtractTestCase()
