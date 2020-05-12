@@ -522,8 +522,8 @@ class testExtract(luigi.Task):
         file_content = content_object.get()['Body'].read().decode('utf-8')
         json_content = json.loads(file_content)
         
-        with open('contenido.json', 'r') as outfile:
-            json.dump(file_content, outfile)
+        #with open('contenido.json', 'r') as outfile:
+        #    json.dump(file_content, outfile)
 
         file = file_content
         json_file = open(file, 'r')
