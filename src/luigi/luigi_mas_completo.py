@@ -1185,8 +1185,8 @@ class metadataFeatureEngineering(luigi.Task):
         
 
         # Inserta los metadatos en la tabla metadata_extract
-        text = "INSERT INTO cleaned.metadata  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
-        user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket,columnas_totales) # , columns_loaded)
+        text = "INSERT INTO cleaned.metadata  VALUES ('%s', '%s', '%s', '%s', '%s');" % (
+        user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) # columnas_totales) # , columns_loaded)
         print(text)
         
         cursor.execute(text) #Execute a database operation (query or command).
