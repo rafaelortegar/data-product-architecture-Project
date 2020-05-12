@@ -331,8 +331,7 @@ class createTables(luigi.Task):
                 fecha_ejecucion DATE,
                 fecha_json DATE,
                 ip_ec2 VARCHAR,
-                nombre_bucket VARCHAR,
-                columns_loaded INT
+                nombre_bucket VARCHAR
     
             );
             CREATE SCHEMA IF NOT EXISTS semantic;
@@ -348,8 +347,7 @@ class createTables(luigi.Task):
                 fecha_ejecucion DATE,
                 fecha_json DATE,
                 ip_ec2 VARCHAR,
-                nombre_bucket VARCHAR,
-                columns_loaded INT
+                nombre_bucket VARCHAR
     
             );
             """)
@@ -889,7 +887,7 @@ class metadataCleaned(luigi.Task):
         
         
         # Columns read indica la cantidad de columnas leidas
-        columns_loaded = 196 # columnas_leidas['datos a cargar'][0]
+        #columns_loaded = 196 # columnas_leidas['datos a cargar'][0]
         print("se cargaron:", columns_loaded, " columnas.")
         print(columns_loaded)
         fecha_ejecucion = pd.Timestamp.now()
