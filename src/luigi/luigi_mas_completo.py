@@ -1053,7 +1053,7 @@ class featureEngineering(luigi.Task):
         vacio = ' '
         data_vacia = {'vacio':[vacio]}
         pandas_a_csv = pd.DataFrame(data=data_vacia)
-        pandas_a_csv(output().path, index=False)
+        pandas_a_csv.to_csv(self.output().path, index=False)
         print("archivo creado correctamente")    
 
 #=======
