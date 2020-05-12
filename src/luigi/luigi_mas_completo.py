@@ -561,6 +561,7 @@ class copyToPostgres(luigi.Task):
         #total_final
         data_to_csv = pd.DataFrame(data=data_info)
         data_to_csv.to_csv(self.output().path,index=False)
+        data_to_csv.to_csv('../../columnas_leidas.csv')
 
 
     # Envía el output al S3 bucket especificado con el nombre de output_path
@@ -628,11 +629,11 @@ class metadataLoad(luigi.Task):
 
         # El content object está especificando el objeto que se va a extraer del bucket S3
         # (la carga que se acaba de hacer desde la API)
-        content_object = obj.Object(self.bucket, file_to_read)
+        content_object = s3_resource.Object(self.bucket, file_to_read)
         print("s3 encontrada exitosamente")
 
         # Esta línea lee el archivo especificado en content_object
-        file_content = pd.read_csv(content_object.get())    # content_object.get()['Body'].read().decode('utf-8') # Esto está de más
+        #file_content = pd.read_csv(content_object.get())    # content_object.get()['Body'].read().decode('utf-8') # Esto está de más
         print("contenido leído exitosamente")
         # Carga el Json content desde el archivo leído de la S3 Bucket
         #json_content = json.loads(file_content) # Esto está de más
@@ -642,7 +643,7 @@ class metadataLoad(luigi.Task):
         information_metadata_ours = clientEC2.describe_instances()
         print("ec2 descrita correctamente")
         
-        #columnas_leidas = file_content # pd.read_csv('../../columnas_leidas.csv')
+        columnas_leidas = pd.read_csv('../../columnas_leidas.csv')  #file_content # pd.read_csv('../../columnas_leidas.csv')
         print("csv leido correctamente")
         
         
