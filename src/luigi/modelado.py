@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
+import feature_builder as fb
 
 def rmse(y, pred):
     return(np.sqrt(np.mean((y-pred)**2)))
-
+    
 def categorias(x, y):
     n = len(x)
     z = np.array(x, dtype = str)
@@ -41,27 +42,6 @@ def modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc):
          'accuracy':accuracy, 'precision':precision, 'recall':recall}
     return(a)
 
-def pred_final(pred_bajo, prob_bajo, 
-               pred_normal, prob_normal, 
-               pred_alto, prob_alto):
-
-    n = len(pred_normal)
-    pred_final = np.array(pred_normal, dtype = str)
-    pred = pd.DataFrame({'Bajo':pred_bajo, 
-                         'Normal':pred_normal, 
-                         'Alto':pred_alto})
-    prob = pd.DataFrame({'Bajo':prob_bajo, 
-                         'Normal':prob_normal, 
-                         'Alto':prob_alto})
-    
-    for i in np.arange(1, n+1):
-        if pred.iloc[i-1, :].sum() == 1:
-            pred_final[i-1] = pred.iloc[i-1, :].idxmax()
-        else:
-            pred_final[i-1] = prob.iloc[i-1, :].idxmax()
-    
-    return(pred_final)
-
 class ModelBuilder():
     def __init__(self):
         pass
@@ -79,27 +59,17 @@ class ModelBuilder():
         
         cat = 'Bajo'
         sc = 0.56
-        modelo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)
-
-        pred_bajo = modelo['pred']
-        prob_bajo = modelo['prob']
-
+        modelo_bajo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['modelo']
+        
         cat = 'Normal'
         sc = 0.50
-        modelo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)
-
-        pred_normal = modelo['pred']
-        prob_normal = modelo['prob']
+        modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['modelo']
 
         cat = 'Alto'
         sc = 0.50
-        modelo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)
-
-        pred_alto = modelo['pred']
-        prob_alto = modelo['prob']
-
-        pred_f = pred_final(pred_bajo, prob_bajo, 
-               pred_normal, prob_normal, 
-               pred_alto, prob_alto)
-        return(pred_f)
+        modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['modelo']
+        
+        modelos = [modelo_bajo, modelo_normal, modelo_alto]
+        
+        return(modelos)
 
