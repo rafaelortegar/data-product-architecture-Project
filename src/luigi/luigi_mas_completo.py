@@ -47,7 +47,7 @@ class extractToJson(luigi.Task):
         creds_aws = pd.read_csv("../../credentials.csv")
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3')
-        obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
+        #obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
         print("#...")
         print("##...")
@@ -390,7 +390,7 @@ class copyToPostgres(luigi.Task):
 
         # Conexión a la S3
         print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-        ses = boto3.session.Session(profile_name='default') # profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
         print("Conexión Exitosa! :)")
