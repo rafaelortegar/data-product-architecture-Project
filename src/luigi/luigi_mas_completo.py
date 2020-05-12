@@ -664,12 +664,14 @@ class loadCleaned(luigi.Task):
         cursor.close()# Close the cursor now (rather than whenever del is executed). The cursor will be unusable from this point forward
         connection.close()
 
+        print("cerró conexión")
+
 
         # para los outputs que no vamos a usar
         vacio = ' '
         data_vacia = {'vacio':[vacio]}
         pandas_a_csv = pd.DataFrame(data=data_vacia)
-        pandas_a_csv(self.output().path, index=False)
+        pandas_a_csv.to_csv(self.output().path, index=False)
         print("archivo creado correctamente")
 
 
