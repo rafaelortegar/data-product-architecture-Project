@@ -868,8 +868,8 @@ class featureEngineering(luigi.Task):
     #==============================================================================================================
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
-#    def requires(self):
-#        return loadCleaned(bucket=self.bucket, date=self.date)
+    def requires(self):
+        return loadCleaned(bucket=self.bucket, date=self.date)
 
     # Conexión a la S3
 
