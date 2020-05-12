@@ -648,7 +648,7 @@ class metadataLoad(luigi.Task):
         
         
         # Columns read indica la cantidad de columnas leidas
-        columns_loaded = columnas_leidas['datos a cargar'][0]
+        columns_loaded = columnas_leidas['datos_a_cargar'][0]
         print("se cargaron:", columns_loaded, " columnas.")
         print(columns_loaded)
         fecha_ejecucion = pd.Timestamp.now()
