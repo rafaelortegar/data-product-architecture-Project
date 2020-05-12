@@ -40,8 +40,8 @@ class extractToJson(luigi.Task):
     #==============================================================================================================
 
     #Dado que es el inicio del pipeline, no requiere ninguna task antes
-    def requires(self):
-        return None
+    #def requires(self):
+    #    return None
 
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
@@ -451,7 +451,7 @@ class load_raw(luigi.Task):
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
     def requires(self):
-        return copyToPostgres2(self.date)
+        return copyToPostgres2(self.bucket,self.date)
 
     def run(self):
         z = str(self.x + self.y)
@@ -481,7 +481,7 @@ class copyToPostgres(luigi.Task):
     
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date) #, createTables(self.bucket, self.date)
+        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(self.bucket, self.date)
 
     def run(self):
 
@@ -723,7 +723,7 @@ class loadCleaned(luigi.Task):
     #==============================================================================================================
     
     def requires(self):
-        return copyToPostgres(bucket = self.bucket, date=  self.date)
+        return copyToPostgres(bucket = self.bucket, date=  self.date), metadataLoad(bucket = self.bucket, date=  self.date)
     
     
     def run(self):
@@ -978,9 +978,7 @@ class featureEngineering(luigi.Task):
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
-        return loadCleaned(bucket=self.bucket, date=self.date)
-
-    # Conexión a la S3
+        return loadCleaned(bucket=self.bucket, date=self.date), metadataCleaned(bucket = self.bucket, date=  self.date)
 
 
     def run(self):
@@ -1023,7 +1021,7 @@ class featureEngineering(luigi.Task):
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         #user,password,host,port,db
         #postgres,12345678,database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com,5432,dpa
-#<<<<<<< HEAD
+
         table_name='metro'
         scheme='semantic'
         df2.to_sql("metro", engine, schema='semantic',if_exists='replace')
@@ -1037,9 +1035,9 @@ class featureEngineering(luigi.Task):
         print("archivo creado correctamente")    
 
 #=======
-        df2.to_sql("metro", engine, schema='semantic',if_exists='replace')
+#        df2.to_sql("metro", engine, schema='semantic',if_exists='replace')
         
-#>>>>>>> bae51192ec45656266b7a6173c2c77d82ba18c96
+
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
@@ -1444,7 +1442,7 @@ class runAll(luigi.WrapperTask):
     #==============================================================================================================
 
     def requires(self):
-        yield metadataModel(bucket=self.bucket, date=self.date)
+        yield featureEngineering(bucket=self.bucket, date=self.date)
 
 
 

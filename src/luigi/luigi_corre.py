@@ -606,6 +606,3 @@ class metadataLoad(luigi.Task):
 #        print("***** Failed getting df: {} *****".format(error))
 #
 #    return dataframe
-
-asasd
-asd
