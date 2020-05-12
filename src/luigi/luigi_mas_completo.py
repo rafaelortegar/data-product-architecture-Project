@@ -851,10 +851,12 @@ class metadataCleaned(luigi.Task):
         # El content object está especificando el objeto que se va a extraer del bucket S3
         # (la carga que se acaba de hacer desde la API)
         content_object = s3_resource.Object(self.bucket, file_to_read)
+        content_object
         print("s3 encontrada exitosamente")
 
         # Esta línea lee el archivo especificado en content_object
-        file_content = pd.read_csv(content_object)    # content_object.get()['Body'].read().decode('utf-8') # Esto está de más
+        #file_content = pd.read_csv(content_object)    # content_object.get()['Body'].read().decode('utf-8') # Esto está de más
+        #file_content
         print("contenido leído exitosamente")
         # Carga el Json content desde el archivo leído de la S3 Bucket
         #json_content = json.loads(file_content) # Esto está de más
@@ -864,7 +866,7 @@ class metadataCleaned(luigi.Task):
         information_metadata_ours = clientEC2.describe_instances()
         print("ec2 descrita correctamente")
         
-        columnas_leidas = file_content # pd.read_csv('../../columnas_leidas.csv')
+        columnas_leidas = pd.read_csv('../../columnas_leidas.csv')   #  file_content # pd.read_csv('../../columnas_leidas.csv')
         print("csv leido correctamente")
         
         
@@ -924,7 +926,7 @@ class metadataCleaned(luigi.Task):
         vacio = ' '
         data_vacia = {'vacio':[vacio]}
         pandas_a_csv = pd.DataFrame(data=data_vacia)
-        pandas_a_csv(output().path, index=False)
+        pandas_a_csv.to_csv(self.output().path, index=False)
         print("archivo creado correctamente")
 
 
