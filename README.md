@@ -270,7 +270,7 @@ si el modelo tiene un sesgo en estaciones en las cuales la mayoria de los usuari
 La métrica que nos interesa usar es la siguiente False Positive Parity, la razon es que las decisiones realizadas con base en la predicción SI son punitivas y NO estamos interviniendo en un porcentaje bajo de la población. 
 Nos equivocamos en la misma proporción en la clasificación del nivel de afluencia en las estaciones con usuarios de un nivel socio economico alto y bajo por ejemplo.
 
- ![BiasandFairnessTree](http://www.datasciencepublicpolicy.org//wp'content/uploads/2018/05/metrictree-1200x750.png)
+ ![BiasandFairnessTree](http://www.datasciencepublicpolicy.org//wp-content/uploads/2018/05/metrictree-1200x750.png)
 tomado de la pagina de Aequitas
 
 **Otros proyectos similares:**
