@@ -263,6 +263,16 @@ Describe el origen, movimientos, características y calidad de los datos. Dónde
 
 La variable estación podría estar sujeta a sesgo. Para poder estimarlo podría agregarse al conjunto de datos la geolocalización de las estaciones, información con la cual se podría identificar la distribución de nivel socioeconómico que más frecuenta cada estación.
 
+Seleccionamos una variable protegida:  Afluencianivel que es la variable que que clasifica las estaciones de metro con base en la prediccion del nivel de afluencia, esta variable es protegida porque no queremos que discrimine las estaciones donde hay mas usuarios de grupos etnicos marginales, o de algun nivel socio economico en especifico. 
+Un ejemplo, es que con base en la predicción de la Afluencia de la estación se van a distribuir los recursos del metro, que son finitos,
+si el modelo tiene un sesgo en estaciones en las cuales la mayoria de los usuarios son de clase media o alta podría tener un efecto punitivo en estaciones con ususarios de un nivel socio economico bajo.
+
+La métrica que nos interesa usar es la siguiente False Positive Parity, la razon es que las decisiones realizadas con base en la predicción SI son punitivas y NO estamos interviniendo en un porcentaje bajo de la población. 
+Nos equivocamos en la misma proporción en la clasificación del nivel de afluencia en las estaciones con usuarios de un nivel socio economico alto y bajo por ejemplo.
+
+ ![BiasandFairnessTree](http://www.datasciencepublicpolicy.org//wp'content/uploads/2018/05/metrictree-1200x750.png)
+tomado de la pagina de Aequitas
+
 **Otros proyectos similares:**
 
 https://www.kaggle.com/dashaa/a-geospatial-analysis-of-the-nyc-subway-in-r  
