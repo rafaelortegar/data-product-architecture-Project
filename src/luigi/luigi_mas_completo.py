@@ -598,7 +598,7 @@ class metadataLoad(luigi.Task):
         print("####...")
         print("#####...")
         print("######...")
-        print("Inicia la carga de los metadatos del extract...")
+        print("Inicia la carga de los metadatos del Load...")
         # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
         file_to_read = 'load_task_03_01/metro_' + self.date + '.csv'
 
@@ -632,7 +632,7 @@ class metadataLoad(luigi.Task):
         print("s3 encontrada exitosamente")
 
         # Esta línea lee el archivo especificado en content_object
-        file_content = pd.read_csv(content_object)    # content_object.get()['Body'].read().decode('utf-8') # Esto está de más
+        file_content = pd.read_csv(content_object.get())    # content_object.get()['Body'].read().decode('utf-8') # Esto está de más
         print("contenido leído exitosamente")
         # Carga el Json content desde el archivo leído de la S3 Bucket
         #json_content = json.loads(file_content) # Esto está de más
