@@ -650,7 +650,359 @@ class loadCleaned(luigi.Task):
         query = """
             drop table if exists cleaned.metro cascade;
             create table cleaned.metro as (
-                SELECT 
+         l=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return l=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+
+
+
+
+
+        passfail=self.json_file.read(2) != '[]'
+        nombre
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+
+
+
+
+
+        passfail=self.json_file.read(2) != '[]'
+        nombre
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+
+
+
+
+
+        passfail=self.json_file.read(2) != '[]'
+        nombre
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+
+
+
+
+        passfail=self.json_file.read(2) != '[]'
+        nombre
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+asdasdasf
+        return 
+
+
+
+
+
+
+        passfail=self.json_file.read(2) != '[]'
+        nombre
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+
+
+
+
+
+        passfail=self.json_file.read(2) != '[]'
+        nombre
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+
+
+
+
+
+        passfail=self.json_file.read(2) != '[]'
+        nombre
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+
+
+
+
+        passfail=self.json_file.read(2) != '[]'
+        nombre
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        
+        passfail=self.json_file.read(2) != '[]'
+        pas
+        
+        print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        df = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+        return 
+
+, 
+
+
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+
+        return 
+asdasdasf
+        return        SELECT 
                 "Fecha"::DATE as fecha, 
                 "Ano"::int as ano, 
                 "Linea"::varchar as linea, 
