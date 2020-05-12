@@ -888,8 +888,8 @@ class metadataCleaned(luigi.Task):
         
         # Columns read indica la cantidad de columnas leidas
         #columns_loaded = 196 # columnas_leidas['datos a cargar'][0]
-        print("se cargaron:", columns_loaded, " columnas.")
-        print(columns_loaded)
+        #print("se cargaron:", columns_loaded, " columnas.")
+        #print(columns_loaded)
         fecha_ejecucion = pd.Timestamp.now()
         user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
         fecha_json = self.date
