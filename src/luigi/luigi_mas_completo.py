@@ -21,7 +21,9 @@ from luigi.contrib.postgres import CopyToTable, PostgresQuery
 import sqlalchemy
 from sqlalchemy import create_engine
 import csv
-from pred_f import modelado
+import feature_builder as fb
+import modelado
+#import pred_f
 
 # from luigi import flatten
 
@@ -493,7 +495,7 @@ class testExtract(luigi.Task):
     #==============================================================================================================
     
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date)
 
     def run(self):
         # Los archivos que se usan por el pipeline
@@ -522,7 +524,7 @@ class testExtract(luigi.Task):
         
         ExtractTestCase.json_file=json_content
         ExtractTestCase.setup()
-        ExtractTestCase.test_
+        ExtractTestCase.test_extract()
 
         print("Archivo cargado correctamente...")
         f=self.output().open('w')
@@ -552,7 +554,7 @@ class copyToPostgres(luigi.Task):
     
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date), testExtract (bucket=self.bucket, date=self.date)
 
 
     def run(self):
