@@ -523,7 +523,7 @@ class testExtract(luigi.Task):
         json_content = json.loads(file_content)
         
         prueba = ExtractTestCase()
-        prueba.json_file=json_content
+        prueba.json_file=file_content
         #prueba.setUp()
         prueba.test_extract()
 
