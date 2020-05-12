@@ -36,7 +36,7 @@ class extractToJson(luigi.Task):
     #==============================================================================================================
     task_name = 'extractToJson_task_01'
     date = luigi.Parameter()
-    bucket = luigi.Parameter() # default='dpaprojs3')
+    bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
 
     #Dado que es el inicio del pipeline, no requiere ninguna task antes
