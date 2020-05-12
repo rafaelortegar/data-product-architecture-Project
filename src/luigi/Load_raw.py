@@ -61,7 +61,7 @@ class copyToPostgres2(CopyToTable):
     obj = s3_resource.Bucket(bucket) # Metemos el bucket S3 en una variable obj
     print("Conexión Exitosa! :)")
     
-    file_to_read = 'extractToJson_task_01/metro_' + date + '.json'
+    file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
     print("El archivo a leer es: ",file_to_read)
     #==============================================================================================================
 

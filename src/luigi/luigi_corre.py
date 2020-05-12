@@ -37,7 +37,7 @@ class extractToJson(luigi.Task):
 
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
-        creds_aws = pd.read_csv("../../credentials/credentials.csv")
+        creds_aws = pd.read_csv("../../credentials.csv")
         ses = boto3.session.Session(profile_name='default') #, region='us-west-2') #profile_name='rafael-dpa-proj', region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') # , aws_access_key_id=creds_aws.aws_access_key_id[0],
                             # aws_secret_access_key=creds_aws.aws_secret_access_key[0]) #Inicialzamos e recursoS3
@@ -606,6 +606,3 @@ class metadataLoad(luigi.Task):
 #        print("***** Failed getting df: {} *****".format(error))
 #
 #    return dataframe
-
-asasd
-asd

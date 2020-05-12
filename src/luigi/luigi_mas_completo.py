@@ -40,8 +40,8 @@ class extractToJson(luigi.Task):
     #==============================================================================================================
 
     #Dado que es el inicio del pipeline, no requiere ninguna task antes
-    def requires(self):
-        return None
+#    def requires(self):
+#        return None
 
     # este código se va a ejecutar cuando se mande llamar a este task
     def run(self): 
@@ -366,42 +366,42 @@ class createTables(luigi.Task):
 
 
 ############################################################# COPY TO POSTGRESS TASK ###################################
-class copyToPostgres2(CopyToTable):
-    #parametros
-    task_name = 'load_task_03_01'
-    date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3')
+#class copyToPostgres2(CopyToTable):
+#    #parametros
+#    task_name = 'load_task_03_01'
+#    date = luigi.Parameter()
+#    bucket = luigi.Parameter(default='dpaprojs3')
 
     #credenciales de acceso a la base de datos
-    print("Iniciando conexión a la S3 de datos...")
-    creds = pd.read_csv("../../credentials_postgres.csv")
-    creds_aws = pd.read_csv("../../credentials.csv")
-    print("credenciales leídas correctamente")
+#    print("Iniciando conexión a la S3 de datos...")
+#    creds = pd.read_csv("../../credentials_postgres.csv")
+#    creds_aws = pd.read_csv("../../credentials.csv")
+#    print("credenciales leídas correctamente")
     
     # Se inicializan los parámetros para la conexión a la bd
-    user = creds.user[0]
-    password = creds.password[0]
-    database = creds.db[0]
-    host = creds.host[0]
+#    user = creds.user[0]
+#    password = creds.password[0]
+#    database = creds.db[0]
+#    host = creds.host[0]
     #nombre de la tabla donde vamos a insertar
-    table = 'raw.metro'
+#    table = 'raw.metro'
     #estructura de las columnas de la tabla
-    columns=   [("fecha","TEXT"),
-                ("ano","TEXT"),
-                ("linea","TEXT"),
-                ("estacion","TEXT"),
-                ("afluencia","TEXT")]
+#    columns=   [("fecha","TEXT"),
+#                ("ano","TEXT"),
+#                ("linea","TEXT"),
+#                ("estacion","TEXT"),
+#                ("afluencia","TEXT")]
                 
-    file_to_read = 'extractToJson_task_01/metro_' + date + '.json'
+#    file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
     # Conexión a la S3
-    print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-    ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-    s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
-    dev_s3_client = ses.client('s3')
-    obj = s3_resource.Bucket(bucket) # Metemos el bucket S3 en una variable obj
-    print("Conexión Exitosa! :)")
+#    print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
+#    ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+#    s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+#    dev_s3_client = ses.client('s3')
+#    obj = s3_resource.Bucket(bucket) # Metemos el bucket S3 en una variable obj
+#    print("Conexión Exitosa! :)")
         
-    f = pd.DataFrame(columns=["fecha", "ano", "linea", "estacion", "afluencia"])
+#    f = pd.DataFrame(columns=["fecha", "ano", "linea", "estacion", "afluencia"])
 
 
 #
@@ -442,6 +442,7 @@ class copyToPostgres2(CopyToTable):
 #
 #    def output(self):
 #        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
+
 class load_raw(luigi.Task):
     #==============================================================================================================
     # Parameters
@@ -481,7 +482,7 @@ class copyToPostgres(luigi.Task):
     
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date) #, createTables(self.bucket, self.date)
+        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(self.bucket, self.date)
 
     def run(self):
 
