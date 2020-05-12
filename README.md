@@ -259,7 +259,9 @@ El linaje de datos es sumamente importante debido a que los datos durante el pro
 
 Describe el origen, movimientos, características y calidad de los datos. Dónde comienza cada dato y cómo se transforma hasta llegar a resultados en distintos proyectos empresariales.
 
+### Bias and Fairness
 
+La variable estación podría estar sujeta a sesgo. Para poder estimarlo podría agregarse al conjunto de datos la geolocalización de las estaciones, información con la cual se podría identificar la distribución de nivel socioeconómico que más frecuenta cada estación.
 
 **Otros proyectos similares:**
 
