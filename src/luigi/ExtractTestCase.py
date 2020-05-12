@@ -13,10 +13,11 @@ import pandas as pd
 #    def featurize(self, X):
  
 class ExtractTestCase(marbles.core.TestCase):
-#        def setUp(self):
-#                self.json_file =... #json_file
-        def __init__(self):
-                self.json_file
+        def setUp(self):
+                self.json_file = json_file   # ... #json_file
+
+        #def __init__(self):
+        #        self.json_file
         
         def tearDown(self):
                 delattr(self, 'json_file')
