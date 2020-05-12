@@ -920,7 +920,7 @@ class metadataCleaned(luigi.Task):
         
 
         # Inserta los metadatos en la tabla metadata_extract
-        text = "INSERT INTO cleaned.metadata  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
+        text = "INSERT INTO cleaned.metadata  VALUES ('%s', '%s', '%s', '%s', '%s');" % (
         user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) # , columns_loaded)
         print(text)
         
