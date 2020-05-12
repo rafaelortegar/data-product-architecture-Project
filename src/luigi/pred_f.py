@@ -24,7 +24,7 @@ modelos = modelos.build_model(x_mat)  #Esta variable se guarda en un pickle
 
 #Prediction
 
-#Se cargan model_matrix y modelo
+#Se cargan model_matrix y modelos
 
 pred_f = prediction.Predict()
 pred_f = pred_f.predict(X_nuevas, modelos, model_matrix)
