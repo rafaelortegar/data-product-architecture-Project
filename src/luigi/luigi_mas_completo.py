@@ -22,7 +22,8 @@ from sqlalchemy import create_engine
 import csv
 # from luigi import flatten
 
-import feature_builder as fb
+#import feature_builder as fb
+from feature_builder import FeatureBuilder
 
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
@@ -263,13 +264,13 @@ class createTables(luigi.Task):
         print("El archivo a leer es: ",file_to_read)
 
         # Obtiene los datos en formato raw desde la liga de la api
-        data_raw = requests.get(
-            f"https://datos.cdmx.gob.mx/api/records/1.0/search/?dataset=afluencia-diaria-del-metro-cdmx&rows=10000&sort=-fecha&refine.fecha={self.date}")
+        #data_raw = requests.get(
+        #    f"https://datos.cdmx.gob.mx/api/records/1.0/search/?dataset=afluencia-diaria-del-metro-cdmx&rows=10000&sort=-fecha&refine.fecha={self.date}")
         
 
         # Escribe un JSON con la información descargada de la API, aqui esta el output
-        with self.output().open('w') as json_file:
-            json.dump(data_raw.json(), json_file)
+        #with self.output().open('w') as json_file:
+        #    json.dump(data_raw.json(), json_file)
         #data_raw = s3_resource.Object(self.bucket, file_to_read)
 
         print("Iniciando la conexión con la base de datos en RDS que contiene los datos extraídos...")
@@ -280,21 +281,14 @@ class createTables(luigi.Task):
                                       database=creds.db[0])
         
         print("Creando los schemas...")
-        cursor = connection.cursor()                     password=creds.password[0],
-                                      host=creds.host[0],
-                                      port=creds.port[0],
-                                                 password=creds.password[0],
-                                      host=creds.host[0],
-                                      port=creds.port[0],
-                                      database=creds.db[0])
+        cursor = connection.cursor()  
+
+        # Allows Python code to execute PostgreSQL command in a database session.
+
 
 
         # Allows Python code to execute PostgreSQL command in a database session.
-        cursor = c          database=creds.db[0])
 
-
-        # Allows Python code to execute PostgreSQL command in a database session.
-        cursor = c
         try:
             cursor.execute("""
             CREATE SCHEMA IF NOT EXISTS raw;
@@ -419,33 +413,33 @@ class copyToPostgres2(CopyToTable):
 #            df = pd.concat([df, row_df], ignore_index=True)
         
     
-    def rows(self):
-        r = [("test 1", z), ("test 2","45")]
-        for element in r:
-            yield element
-
-        z = str(self.x + self.x)
-        print("########### ", z)
-        r = [("test 1", z), ("test 2","45")]
-        for element in r:
-            yield element
-
-from task_2 import Task2
-class Task1(luigi.Task):
-    x = luigi.IntParameter()
-    y = luigi.IntParameter(default=45)
-
-    def requires(self):
-        return Task2(self.x)
-
-    def run(self):
-        z = str(self.x + self.y)
-        print("******* ", z)
-        with self.output().open('w') as output_file:
-            output_file.write(z)
-
-    def output(self):
-        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
+#    def rows(self):
+#        r = [("test 1",z), ("test 2","45")]
+#        for element in r:
+#            yield element
+#
+#        z = str(self.x + self.x)
+#        print("########### ", z)
+#        r = [("test 1", z), ("test 2","45")]
+#        for element in r:
+#            yield element
+#
+#from task_2 import Task2
+#class Task1(luigi.Task):
+#    x = luigi.IntParameter()
+#    y = luigi.IntParameter(default=45)
+#
+#    def requires(self):
+#        return Task2(self.x)
+#
+#    def run(self):
+#        z = str(self.x + self.y)
+#        print("******* ", z)
+#        with self.output().open('w') as output_file:
+#            output_file.write(z)
+#
+#    def output(self):
+#        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
 
 
 
@@ -1000,7 +994,7 @@ class featureEngineering(luigi.Task):
         #dummies=pd.get_dummies(df["linea"],prefix='l')
         #df=pd.concat([df,dummies],axis=1)
         #print(df.columns)
-        df2 = fb.FeatureBuilder()
+        df2 = FeatureBuilder()
         df2 = df2.featurize(df)
         print(df2.shape)
         #sqlalchemy engine to psycopg2

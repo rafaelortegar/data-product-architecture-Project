@@ -1,10 +1,11 @@
 import json
 import luigi
+import boto3
 import datetime
+import pandas as pd
 from luigi.contrib.postgres import CopyToTable
 
-import pandas as pd
-
+from luigi.luigi_mas_completo import extractToJson
 
 class copyToPostgres2(CopyToTable):
     """
@@ -50,8 +51,59 @@ class copyToPostgres2(CopyToTable):
     #==============================================================================================================
 
 
+    #==============================================================================================================
+    # llamamos la información del bucket
+    #==============================================================================================================
+    print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
+    ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+    s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+    dev_s3_client = ses.client('s3')
+    obj = s3_resource.Bucket(bucket) # Metemos el bucket S3 en una variable obj
+    print("Conexión Exitosa! :)")
     
-                
+    file_to_read = 'extractToJson_task_01/metro_' + date + '.json'
+    print("El archivo a leer es: ",file_to_read)
+
+
+
+    #==============================================================================================================
+
+#    def rows(self):
+#        r = [("test 1",z), ("test 2","45")]
+#        for element in r:
+#            yield element
+#
+#        z = str(self.x + self.x)
+#        print("########### ", z)
+#        r = [("test 1", z), ("test 2","45")]
+#        for element in r:
+#            yield element
+    #==Codigo
+    def rows(self):
+        #Leemos el d
+        with self.input()["infile2"].open('r') as infile:
+            for line in infile:
+                yield line.strip("\n").split("\t")
+
+#    def rows(self):
+#        r = [("test 1",z), ("test 2","45")]
+#        for element in r:
+#            yield element
+#
+#        z = str(self.x + self.x)
+#        print("########### ", z)
+#        r = [("test 1", z), ("test 2","45")]
+#        for element in r:
+#            yield element
+
+
+
+    def requires(self):
+        return  extractToJson(bucket = self.bucket, date = self.date)
+            
+
+
+
     file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
     # Conexión a la S3
     print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
@@ -61,7 +113,7 @@ class copyToPostgres2(CopyToTable):
     obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
     print("Conexión Exitosa! :)")
         
-    f = pd.DataFrame(columns=["fecha", "ano", "linea", "estacion", "afluencia"])
+    f = pd.DataFrame(columns=["anio", "estacion", "fecha", "linea", "afluencia"])
 #
 #        for i in range(len(json_content['records'])):
 #            a_row = pd.Series(
