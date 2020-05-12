@@ -370,7 +370,7 @@ class copyToPostgres(luigi.Task):
     #==============================================================================================================
     task_name = 'load_task_03_01'
     date = luigi.Parameter()
-    bucket = luigi.Parameter() # default='dpaprojs3')
+    bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
 
     def requires(self):
@@ -616,7 +616,7 @@ class loadCleaned(luigi.Task):
     #==============================================================================================================
     
     def requires(self):
-        return copyToPostgres(self.bucket, self.date)
+        return copyToPostgres(bucket = self.bucket, date=  self.date)
     
     
     def run(self):
