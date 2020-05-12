@@ -326,6 +326,15 @@ class createTables(luigi.Task):
                 estacion VARCHAR,
                 afluencia INT
             );
+            CREATE TABLE IF NOT EXISTS cleaned.metadata(
+                usuario VARCHAR,
+                fecha_ejecucion DATE,
+                fecha_json DATE,
+                ip_ec2 VARCHAR,
+                nombre_bucket VARCHAR,
+                columns_loaded INT
+    
+            );
             CREATE SCHEMA IF NOT EXISTS semantic;
             CREATE TABLE IF NOT EXISTS semantic.metro(
                 fecha DATE, 
@@ -333,6 +342,15 @@ class createTables(luigi.Task):
                 linea VARCHAR, 
                 estacion VARCHAR,
                 afluencia INT            
+            );
+            CREATE TABLE IF NOT EXISTS semantic.metadata(
+                usuario VARCHAR,
+                fecha_ejecucion DATE,
+                fecha_json DATE,
+                ip_ec2 VARCHAR,
+                nombre_bucket VARCHAR,
+                columns_loaded INT
+    
             );
             """)
             print("si se crearon los schemas")
