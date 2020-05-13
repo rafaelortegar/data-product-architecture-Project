@@ -628,6 +628,7 @@ class metadataLoad(luigi.Task):
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
         obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+        dev_s3_client = ses.client('s3')
         print("Conexión Exitosa! :)")
 
         print("#...")
