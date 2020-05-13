@@ -29,8 +29,8 @@ class ExtractTestCase(marbles.core.TestCase):
         def test_extract(self):
                 #df = pd.read_json(r'contenido.json',encoding='utf-8', orient='values', lines=True)
                 #cuenta=df['nhits'][0]
-                #self.assertTrue(self.json_file.shape[0] != 0, note = 'json file is empty')
-                self.assertTrue(self.json_file.shape <= 0, note = 'json file is empty')
+                self.assertTrue(self.json_file.shape[0] != 0, note = 'json file is empty')
+                #self.assertTrue(self.json_file.shape <= 0, note = 'json file is empty')
                 now = datetime.datetime.now()
                 passfail=self.json_file.read(2) != ''
                 #passfail=self.json_file.shape[0] != 0
