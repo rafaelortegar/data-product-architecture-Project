@@ -495,12 +495,12 @@ class testExtract(luigi.Task):
     #==============================================================================================================
     
     def requires(self):
-        return extractToJson(bucket = self.bucket, date = self.date)
+        return metadataExtract(bucket = self.bucket, date = self.date)
 
     def run(self):
         # Los archivos que se usan por el pipeline
         print("Inicia la extracción de los datos cargados en la S3 para cargarlos a postgres...")
-        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
+        file_to_read = 'metadataExtract_task_02_02/metro_' + self.date + '.json'
         #archivoquenosirve = 'createTables_task_02_01/metro_' + self.date + '.csv'
         print("El archivo a leer es: ",file_to_read)
         
@@ -553,7 +553,7 @@ class testExtract(luigi.Task):
         return luigi.contrib.s3.S3Target(path=output_path)
 
 #################################################UNITTEST EXTRACT metadata##########################################################
-class metadatatestExtract(luigi.Task):
+class metadataTestExtract(luigi.Task):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
@@ -568,7 +568,7 @@ class metadatatestExtract(luigi.Task):
     def run(self):
         # Los archivos que se usan por el pipeline
         print("Inicia la extracción de los datos cargados en la S3 para cargarlos a postgres...")
-        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
+        file_to_read = 'test_extract_task_01_03/metro_' + self.date + '.json'
         #archivoquenosirve = 'createTables_task_02_01/metro_' + self.date + '.csv'
         print("El archivo a leer es: ",file_to_read)
         
