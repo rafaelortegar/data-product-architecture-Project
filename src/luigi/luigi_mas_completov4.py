@@ -94,7 +94,7 @@ class metadataExtract(luigi.Task):
     #==============================================================================================================
     task_name = 'metadataExtract_task_02_02'
     date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
+    bucket = luigi.Parameter() #default='dpaprojs3') # default='dpaprojs3')
     #==============================================================================================================
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
