@@ -458,26 +458,26 @@ class createTables(luigi.Task):
 #    def output(self):
 #        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
 
-class load_raw(luigi.Task):
-    #==============================================================================================================
-    # Parameters
-    #==============================================================================================================
-    task_name = 'load_task_03_01'
-    date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3')
-    #==============================================================================================================
-    def requires(self):
-        return copyToPostgres2(self.bucket,self.date)
-
-    def run(self):
-        z = str(self.x + self.y)
-        print("******* ", z)
-        with self.output().open('w') as output_file:
-            output_file.write(z)
-
-    def output(self):
-        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
-
+#class load_raw(luigi.Task):
+#    #==============================================================================================================
+#    # Parameters
+#    #==============================================================================================================
+#    task_name = 'load_task_03_01'
+#    date = luigi.Parameter()
+#    bucket = luigi.Parameter(default='dpaprojs3')
+#    #==============================================================================================================
+#    def requires(self):
+#        return copyToPostgres2(self.bucket,self.date)
+#
+#    def run(self):
+#        z = str(self.x + self.y)
+#        print("******* ", z)
+#        with self.output().open('w') as output_file:
+#            output_file.write(z)
+#
+#    def output(self):
+#        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
+#
 
 
 class copyToPostgres(luigi.Task):
@@ -504,7 +504,7 @@ class copyToPostgres(luigi.Task):
 
         # Los archivos que se usan por el pipeline
         print("Inicia la extracción de los datos cargados en la S3 para cargarlos a postgres...")
-        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
+        file_to_read = 'metadataExtract_task_02_02/metro_' + self.date + '.json'
         #archivoquenosirve = 'createTables_task_02_01/metro_' + self.date + '.csv'
         print("El archivo a leer es: ",file_to_read)
         
