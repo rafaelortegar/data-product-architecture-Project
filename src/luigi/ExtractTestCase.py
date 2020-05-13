@@ -28,9 +28,19 @@ class ExtractTestCase(marbles.core.TestCase):
                 passfail=self.json_file.read(2) != '[]'
                 nombreprueba='test load datos raw'
                 print (now.strftime("%Y-%m-%d %H:%M:%S"))
-                #return print(passfail)
-                df1 = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
-                return df1.head()
+
+                if passfail:
+                        print("#############")
+                        print("prueba exitosa")
+                        print("#############")
+                else:
+                        print("#############")
+                        print("prueba fallida")
+                        print("#############")
+
+                return print(passfail)
+                #df1 = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+                #return df1.head()
 
 if __name__ == '__main__':
     marbles.core.main()
