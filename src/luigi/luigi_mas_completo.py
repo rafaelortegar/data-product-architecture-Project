@@ -529,8 +529,12 @@ class testExtract(luigi.Task):
         file = 'contenido.json'
         json_file = open(file, 'r')
 
+        pd_json = pd.read_json(file)
+        #pd_json.shape[0] == 0
+        
         prueba = ExtractTestCase()
-        prueba.json_file= json_file  # file_content
+        #prueba.json_file= json_file  # file_content
+        prueba.json_file= pd_json
         #prueba.setUp()
         prueba.test_extract()
 
