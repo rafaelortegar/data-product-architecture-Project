@@ -1149,6 +1149,7 @@ class metadataFeatureEngineering(luigi.Task):
         print("csv leido correctamente")
         
         
+        
         # Columns read indica la cantidad de columnas leidas
         #columns_loaded = 196 # columnas_leidas['datos a cargar'][0]
         #print("se cargaron:", columns_loaded, " columnas.")
