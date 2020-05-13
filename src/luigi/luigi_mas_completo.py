@@ -495,7 +495,7 @@ class testExtract(luigi.Task):
     #==============================================================================================================
     
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date)
+        return extractToJson(bucket = self.bucket, date = self.date)
 
     def run(self):
         # Los archivos que se usan por el pipeline
@@ -563,7 +563,7 @@ class metadatatestExtract(luigi.Task):
     #==============================================================================================================
     
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date)
+        return testExtract(bucket = self.bucket, date = self.date)
 
     def run(self):
         # Los archivos que se usan por el pipeline
