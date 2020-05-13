@@ -540,9 +540,12 @@ class testExtract(luigi.Task):
         prueba.test_extract()
 
         print("Archivo cargado correctamente...")
-        f=self.output().open('w')
-        #print >>f, "pruebaextract"
-        f.close()
+        # para los outputs que no vamos a usar
+        vacio = ' '
+        data_vacia = {'vacio':[vacio]}
+        pandas_a_csv = pd.DataFrame(data=data_vacia)
+        pandas_a_csv.to_csv(self.output().path, index=False)
+        print("archivo creado correctamente")
 
     def output(self):
         output_path = "s3://{}/{}/metro_{}.csv". \
@@ -605,9 +608,12 @@ class metadatatestExtract(luigi.Task):
         prueba.test_extract()
 
         print("Archivo cargado correctamente...")
-        f=self.output().open('w')
-        #print >>f, "pruebaextract"
-        f.close()
+        # para los outputs que no vamos a usar
+        vacio = ' '
+        data_vacia = {'vacio':[vacio]}
+        pandas_a_csv = pd.DataFrame(data=data_vacia)
+        pandas_a_csv.to_csv(self.output().path, index=False)
+        print("archivo creado correctamente")
 
     def output(self):
         output_path = "s3://{}/{}/metro_{}.csv". \
