@@ -227,157 +227,157 @@ class metadataExtract(luigi.Task):
         return luigi.contrib.s3.S3Target(path=output_path)
 
 ############################################################ CREATE TABLES #############################################
-class createTables(luigi.Task):
-    """
-    Function to create tables on RDS. Note: user MUST have the credentials to use the aws s3
-    bucket and the RDS instance.
-    """    
-
-    #==============================================================================================================
-    # Parameters
-    #==============================================================================================================
-    task_name = 'extractToJson_task_01'
-    date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3')
-    #==============================================================================================================
-
-    def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date), metadataExtract(bucket = self.bucket, date = self.date)
-
-
-    def run(self):
-
-        print("Iniciando conexión a la S3 de datos...")
-        creds = pd.read_csv("../../credentials_postgres.csv")
-        creds_aws = pd.read_csv("../../credentials.csv")
-        print("credenciales leídas correctamente")
-
-        # Conexión a la S3
-        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
-        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
-        dev_s3_client = ses.client('s3')
-        print("conexión a la s3 exitosa :)")
-
-        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
-        print("El archivo a leer es: ",file_to_read)
-
-        # Obtiene los datos en formato raw desde la liga de la api
-        #data_raw = requests.get(
-        #    f"https://datos.cdmx.gob.mx/api/records/1.0/search/?dataset=afluencia-diaria-del-metro-cdmx&rows=10000&sort=-fecha&refine.fecha={self.date}")
-        
-
-        # Escribe un JSON con la información descargada de la API, aqui esta el output
-        #with self.output().open('w') as json_file:
-        #    json.dump(data_raw.json(), json_file)
-        #data_raw = s3_resource.Object(self.bucket, file_to_read)
-
-        print("Iniciando la conexión con la base de datos en RDS que contiene los datos extraídos...")
-        connection = psycopg2.connect(user=creds.user[0],
-                                      password=creds.password[0],
-                                      host=creds.host[0],
-                                      port=creds.port[0],
-                                      database=creds.db[0])
-        
-        print("Creando los schemas...")
-        cursor = connection.cursor()  
-
-        # Allows Python code to execute PostgreSQL command in a database session.
-
-
-
-        # Allows Python code to execute PostgreSQL command in a database session.
-
-        try:
-            cursor.execute("""
-            CREATE SCHEMA IF NOT EXISTS raw;
-            CREATE TABLE IF NOT EXISTS raw.metro(
-                Fecha VARCHAR, 
-                Ano VARCHAR, 
-                Linea VARCHAR, 
-                Estacion VARCHAR,
-                Afluencia INT            
-            );
-            CREATE TABLE IF NOT EXISTS raw.metadataextract(
-                usuario VARCHAR,
-                fecha_ejecucion DATE,
-                fecha_json DATE,
-                ip_ec2 VARCHAR,
-                nombre_bucket VARCHAR,
-                columns_read INT
-                
-            );
-            CREATE TABLE IF NOT EXISTS raw.metadataload(
-                usuario VARCHAR,
-                fecha_ejecucion DATE,
-                fecha_json DATE,
-                ip_ec2 VARCHAR,
-                nombre_bucket VARCHAR,
-                columns_loaded INT
-    
-            );
-            CREATE SCHEMA IF NOT EXISTS cleaned;
-            CREATE TABLE IF NOT EXISTS cleaned.metro (
-                fecha DATE, 
-                anio VARCHAR, 
-                linea VARCHAR, 
-                estacion VARCHAR,
-                afluencia INT
-            );
-            CREATE TABLE IF NOT EXISTS cleaned.metadata(
-                usuario VARCHAR,
-                fecha_ejecucion DATE,
-                fecha_json DATE,
-                ip_ec2 VARCHAR,
-                nombre_bucket VARCHAR
-    
-            );
-            CREATE SCHEMA IF NOT EXISTS semantic;
-            CREATE TABLE IF NOT EXISTS semantic.metro(
-                fecha DATE, 
-                anio VARCHAR, 
-                linea VARCHAR, 
-                estacion VARCHAR,
-                afluencia INT            
-            );
-            CREATE TABLE IF NOT EXISTS semantic.metadata(
-                usuario VARCHAR,
-                fecha_ejecucion DATE,
-                fecha_json DATE,
-                ip_ec2 VARCHAR,
-                nombre_bucket VARCHAR
-    
-            );
-            """)
-            print("si se crearon los schemas")
-            connection.commit()
-            cursor.close()
-            connection.close()  
-        except Exception as error:
-            print ("Error, no pudo crear las tablas", error)  
-
-            cursor.close()
-            connection.close()
-        
-        print("Schemas y tablas creados correctamente :)")
-        
-        # para los outputs que no vamos a usar
-        #vacio = ' '
-        #data_vacia = {'vacio':[vacio]}
+#class createTables(luigi.Task):
+#    """
+#    Function to create tables on RDS. Note: user MUST have the credentials to use the aws s3
+#    bucket and the RDS instance.
+#    """    
+#
+#    #==============================================================================================================
+#    # Parameters
+#    #==============================================================================================================
+#    task_name = 'extractToJson_task_01'
+#    date = luigi.Parameter()
+#    bucket = luigi.Parameter(default='dpaprojs3')
+#    #==============================================================================================================
+#
+#    def requires(self):
+#        return extractToJson(bucket=self.bucket, date=self.date), metadataExtract(bucket = self.bucket, date = self.date)
+#
+#
+#    def run(self):
+#
+#        print("Iniciando conexión a la S3 de datos...")
+#        creds = pd.read_csv("../../credentials_postgres.csv")
+#        creds_aws = pd.read_csv("../../credentials.csv")
+#        print("credenciales leídas correctamente")
+#
+#        # Conexión a la S3
+#        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+#        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+#        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+#        dev_s3_client = ses.client('s3')
+#        print("conexión a la s3 exitosa :)")
+#
+#        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
+#        print("El archivo a leer es: ",file_to_read)
+#
+#        # Obtiene los datos en formato raw desde la liga de la api
+#        #data_raw = requests.get(
+#        #    f"https://datos.cdmx.gob.mx/api/records/1.0/search/?dataset=afluencia-diaria-del-metro-cdmx&rows=10000&sort=-fecha&refine.fecha={self.date}")
+#        
+#
+#        # Escribe un JSON con la información descargada de la API, aqui esta el output
+#        #with self.output().open('w') as json_file:
+#        #    json.dump(data_raw.json(), json_file)
+#        #data_raw = s3_resource.Object(self.bucket, file_to_read)
+#
+#        print("Iniciando la conexión con la base de datos en RDS que contiene los datos extraídos...")
+#        connection = psycopg2.connect(user=creds.user[0],
+#                                      password=creds.password[0],
+#                                      host=creds.host[0],
+#                                      port=creds.port[0],
+#                                      database=creds.db[0])
+#        
+#        print("Creando los schemas...")
+#        cursor = connection.cursor()  
+#
+#        # Allows Python code to execute PostgreSQL command in a database session.
+#
+#
+#
+#        # Allows Python code to execute PostgreSQL command in a database session.
+#
+#        try:
+#            cursor.execute("""
+#            CREATE SCHEMA IF NOT EXISTS raw;
+#            CREATE TABLE IF NOT EXISTS raw.metro(
+#                Fecha VARCHAR, 
+#                Ano VARCHAR, 
+#                Linea VARCHAR, 
+#                Estacion VARCHAR,
+#                Afluencia INT            
+#            );
+#            CREATE TABLE IF NOT EXISTS raw.metadataextract(
+#                usuario VARCHAR,
+#                fecha_ejecucion DATE,
+#                fecha_json DATE,
+#                ip_ec2 VARCHAR,
+#                nombre_bucket VARCHAR,
+#                columns_read INT
+#                
+#            );
+#            CREATE TABLE IF NOT EXISTS raw.metadataload(
+#                usuario VARCHAR,
+#                fecha_ejecucion DATE,
+#                fecha_json DATE,
+#                ip_ec2 VARCHAR,
+#                nombre_bucket VARCHAR,
+#                columns_loaded INT
+#    
+#            );
+#            CREATE SCHEMA IF NOT EXISTS cleaned;
+#            CREATE TABLE IF NOT EXISTS cleaned.metro (
+#                fecha DATE, 
+#                anio VARCHAR, 
+#                linea VARCHAR, 
+#                estacion VARCHAR,
+#                afluencia INT
+#            );
+#            CREATE TABLE IF NOT EXISTS cleaned.metadata(
+#                usuario VARCHAR,
+#                fecha_ejecucion DATE,
+#                fecha_json DATE,
+#                ip_ec2 VARCHAR,
+#                nombre_bucket VARCHAR
+#    
+#            );
+#            CREATE SCHEMA IF NOT EXISTS semantic;
+#            CREATE TABLE IF NOT EXISTS semantic.metro(
+#                fecha DATE, 
+#                anio VARCHAR, 
+#                linea VARCHAR, 
+#                estacion VARCHAR,
+#                afluencia INT            
+#            );
+#            CREATE TABLE IF NOT EXISTS semantic.metadata(
+#                usuario VARCHAR,
+#                fecha_ejecucion DATE,
+#                fecha_json DATE,
+#                ip_ec2 VARCHAR,
+#                nombre_bucket VARCHAR
+#    
+#            );
+#            """)
+#            print("si se crearon los schemas")
+#            connection.commit()
+#            cursor.close()
+#            connection.close()  
+#        except Exception as error:
+#            print ("Error, no pudo crear las tablas", error)  
+#
+#            cursor.close()
+#            connection.close()
+#        
+#        print("Schemas y tablas creados correctamente :)")
+#        
+#        # para los outputs que no vamos a usar
+#        #vacio = ' '
+#        #data_vacia = {'vacio':[vacio]}
         #pandas_a_csv = pd.DataFrame(data=data_vacia)
         #pandas_a_csv(output().path, index=False)
         
         # Escribe un JSON con la información descargada de la API, aqui esta el output
         #with self.output().open('w') as json_file:
         #    json.dump(data_raw.json(), json_file)
-        print("archivo creado correctamente")
-
-    
-    # Envía el output al S3 bucket especificado con el nombre de output_path
-    def output(self):
-        output_path = "s3://{}/{}/metro_{}.json". \
-            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
-        return luigi.contrib.s3.S3Target(path=output_path)
+#        print("archivo creado correctamente")
+#
+#    
+#    # Envía el output al S3 bucket especificado con el nombre de output_path
+#    def output(self):
+#        output_path = "s3://{}/{}/metro_{}.json". \
+#            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+#        return luigi.contrib.s3.S3Target(path=output_path)
 
 
 ############################################################# COPY TO POSTGRESS TASK ###################################
@@ -504,7 +504,7 @@ class copyToPostgres(luigi.Task):
 
         # Los archivos que se usan por el pipeline
         print("Inicia la extracción de los datos cargados en la S3 para cargarlos a postgres...")
-        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
+        file_to_read = 'metadataExtract_task_02_02/metro_' + self.date + '.json'
         #file_to_read = 'metadataExtract_task_02_02/metro_' + self.date + '.json'
         #archivoquenosirve = 'createTables_task_02_01/metro_' + self.date + '.csv'
         print("El archivo a leer es: ",file_to_read)
