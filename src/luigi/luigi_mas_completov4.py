@@ -213,7 +213,7 @@ class metadataExtract(luigi.Task):
         print("Carga de metadatos de Extract completada! :)")
         
         # para los outputs que no vamos a usar
-        vacio = ' '
+        vacio = ' as'
         data_vacia = {'vacio':[vacio]}
         pandas_a_csv = pd.DataFrame(data=data_vacia)
         pandas_a_csv.to_csv(self.output().path, index=False)
