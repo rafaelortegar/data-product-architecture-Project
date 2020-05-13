@@ -223,8 +223,7 @@ class metadataExtract(luigi.Task):
         data_vacia = {'vacio':[vacio]}
         pandas_a_csv = pd.DataFrame(data=data_vacia)
         pandas_a_csv.to_csv(self.output().path, index=False)
-        #with self.output().open('w') as json_file:
-        #    json.dump(data_raw.json(), json_file)
+        print("archivo creado correctamente")
 
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
