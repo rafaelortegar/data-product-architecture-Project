@@ -4,7 +4,6 @@
 # PYTHONPATH='.' AWS_PROFILE=mge luigi --module ex3_luigi S3Task --local-scheduler ...
 #imports
 import requests
-import pandas
 import json
 import luigi
 import boto3
@@ -23,7 +22,7 @@ import csv
 # from luigi import flatten
 
 import feature_builder as fb
-from feature_builder import FeatureBuilder
+#from feature_builder import FeatureBuilder
 
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
@@ -218,8 +217,7 @@ class metadataExtract(luigi.Task):
         data_vacia = {'vacio':[vacio]}
         pandas_a_csv = pd.DataFrame(data=data_vacia)
         pandas_a_csv.to_csv(self.output().path, index=False)
-        #with self.output().open('w') as json_file:
-        #    json.dump(data_raw.json(), json_file)
+
 
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
@@ -1035,7 +1033,7 @@ class featureEngineering(luigi.Task):
         #dummies=pd.get_dummies(df["linea"],prefix='l')
         #df=pd.concat([df,dummies],axis=1)
         #print(df.columns)
-        df2 = FeatureBuilder()
+        df2 = fb()
         df2 = df2.featurize(df)
         print(df2.shape)
         #sqlalchemy engine to psycopg2
@@ -1046,7 +1044,7 @@ class featureEngineering(luigi.Task):
 
         table_name='semantic.metro'
         scheme='semantic'
-        df2.to_sql("metro", con=engine, schema='semantic',if_exists='replace')
+        df2.to_sql("semantic.metro", con=engine, schema=scheme,if_exists='replace')
         print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
         
         # para los outputs que no vamos a usar
