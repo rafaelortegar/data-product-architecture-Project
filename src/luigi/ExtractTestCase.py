@@ -11,8 +11,8 @@ import pandas as pd
 #    def __init__(self):
 #        pass
 #    def featurize(self, X):
-df = pd.read_json(r'metro_2019-01-01.json',encoding='utf-8', orient='values', lines=True)
-df[nhits]
+#df = pd.read_json(r'metro_2019-01-01.json',encoding='utf-8', orient='values', lines=True)
+#df[nhits]
 
 
 class ExtractTestCase(marbles.core.TestCase):
