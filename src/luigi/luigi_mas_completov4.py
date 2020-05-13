@@ -222,8 +222,8 @@ class metadataExtract(luigi.Task):
     
     # Envía el output al S3 bucket especificado con el nombre de output_path
     def output(self):
-        output_path = "s3://{}/{}/metro_{}.csv". \
-            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        output_path = "s3://{}/metadataExtract_task_02_02/metro_{}.csv". \
+            format(self.bucket, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
 ############################################################ CREATE TABLES #############################################
