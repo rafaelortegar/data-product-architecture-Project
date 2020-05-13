@@ -15,21 +15,17 @@ import pandas as pd
 import luigi.contrib.s3
 import os
 import datetime
-import pickle
 import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable, PostgresQuery
 import sqlalchemy
 from sqlalchemy import create_engine
 import csv
-import feature_builder as fb
-import modelado
-#import pred_f
 
 # from luigi import flatten
 
 #import feature_builder as fb
 from feature_builder import FeatureBuilder
-from ExtractTestCase1 import ExtractTestCase
+from ExtractTestCase import ExtractTestCase
 ################################## Extract to Json Task ###############################################################
 class extractToJson(luigi.Task):
     """
@@ -223,7 +219,6 @@ class metadataExtract(luigi.Task):
         data_vacia = {'vacio':[vacio]}
         pandas_a_csv = pd.DataFrame(data=data_vacia)
         pandas_a_csv.to_csv(self.output().path, index=False)
-        
         #with self.output().open('w') as json_file:
         #    json.dump(data_raw.json(), json_file)
 
@@ -465,79 +460,42 @@ class createTables(luigi.Task):
 #
 #    def output(self):
 #        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
-#
-#class load_raw(luigi.Task):
-#    #==============================================================================================================
-#    # Parameters
-#    #==============================================================================================================
-#    task_name = 'load_task_03_01'
-#    date = luigi.Parameter()
-#    bucket = luigi.Parameter(default='dpaprojs3')
-#    #==============================================================================================================
-#    def requires(self):
-#        return copyToPostgres2(self.bucket,self.date)
-#
-#    def run(self):
-#        z = str(self.x + self.y)
-#        print("******* ", z)
-#        with self.output().open('w') as output_file:
-#            output_file.write(z)
-#
-#    def output(self):
-#        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
-#################################################UNITTEST##########################################################
+
+class load_raw(luigi.Task):
+    #==============================================================================================================
+    # Parameters
+    #==============================================================================================================
+    task_name = 'load_task_03_01'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
+    #==============================================================================================================
+    def requires(self):
+        return copyToPostgres2(self.bucket,self.date)
+
+    def run(self):
+        z = str(self.x + self.y)
+        print("******* ", z)
+        with self.output().open('w') as output_file:
+            output_file.write(z)
+
+    def output(self):
+        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
+################################################UNITTEST##########################################################
 class testExtract(luigi.Task):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name = 'test_extract_task_01_03'
+    task_name = 'test_task_03_01'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
     
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date)
 
     def run(self):
-        # Los archivos que se usan por el pipeline
-        print("Inicia la extracción de los datos cargados en la S3 para cargarlos a postgres...")
-        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
-        #archivoquenosirve = 'createTables_task_02_01/metro_' + self.date + '.csv'
-        print("El archivo a leer es: ",file_to_read)
-        
-        # Leyendo credenciales
-        creds = pd.read_csv("../../credentials_postgres.csv")
-        creds_aws = pd.read_csv("../../credentials.csv")
-        print("credenciales leídas correctamente")
-
-        # Conexión a la S3
-        print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
-        dev_s3_client = ses.client('s3')
-        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
-        print("Conexión Exitosa! :)")
-
-        #archivoquenosirve_object = s3_resource.Object(self.bucket, archivoquenosirve)
-        content_object = s3_resource.Object(self.bucket, file_to_read)
-        file_content = content_object.get()['Body'].read().decode('utf-8')
-        json_content = json.loads(file_content)
-        
-            
-        with open('contenido.json', 'w') as outfile:
-            json.dump(file_content, outfile)
-
-        file = 'contenido.json'
-        json_file = open(file, 'r')
-
-        prueba = ExtractTestCase()
-        prueba.json_file= json_file  # file_content
-        #prueba.setUp()
-        prueba.test_extract()
-
-        print("Archivo cargado correctamente...")
         f=self.output().open('w')
-        #print >>f, "pruebaextract"
+        print >>f, "pruebaextract"
         f.close()
 
     def output(self):
@@ -563,7 +521,7 @@ class copyToPostgres(luigi.Task):
     
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date), testExtract (bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date)
 
 
     def run(self):
@@ -1281,98 +1239,104 @@ class metadataFeatureEngineering(luigi.Task):
 
 
 ############################################################### EMPEZAR MODELADO ###################################
-#class modelingMetro(luigi.task):
-#    """
-#    Function to train model from the mexico city metro data set on the database on postgres.
-#    It stores the metadata from uploading into the specified S3 bucket on AWS. Note: user MUST have the credentials 
-#    to use the aws s3 bucket.
-#    """
-#
-#    #==============================================================================================================
-#    # Parameters
-#    #==============================================================================================================
-#    task_name = 'modelingMetro_task_06_01'
-#    date = luigi.Parameter()
-#    bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
-#    #==============================================================================================================
-#
-#    # Indica que para iniciar el proceso de carga de metadatos requiere que emetadataloadl task de extractToJson esté terminado
-#    def requires(self):
-#        return featureEngineering(bucket=self.bucket, date=self.date), metadataFeatureEngineering(bucket=self.bucket, date=self.date)
-#
-#    
-#    def run(self):
-#
-#        # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
-#        archivoquenosirve = 'feature_engineering_05_01/metro_' + self.date + '.csv'
-#
-#        creds = pd.read_csv("../../credentials_postgres.csv")
-#        creds_aws = pd.read_csv("../../credentials.csv")
-#        print("credenciales leídas correctamente")
-#
-#        # Conexión a la S3
-#        print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
-#        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-#        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
-#        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
-#        print("Conexión Exitosa! :)")
-#
-#        content_object = s3_resource.Object(self.bucket, archivoquenosirve)
-#
-#        #file_content = pd.read_csv(content_object) 
-#        print("s3 encontrada exitosamente")
-#
-#
-#        connection = psycopg2.connect(user=creds.user[0],
-#                                          password=creds.password[0],
-#                                          host=creds.host[0],
-#                                          port=creds.port[0],
-#                                          database=creds.db[0])
-#
-#
-#        df = psql.read_sql('SELECT * FROM semantic.metro;', connection)
-#
-#
-#        #dummies=pd.get_dummies(df["ano"],prefix='y')
-#        #df=pd.concat([df,dummies],axis=1)
-#        #dummies=pd.get_dummies(df["linea"],prefix='l')
-#        #df=pd.concat([df,dummies],axis=1)
-#        #print(df.columns)
-#
-#        print(df.shape)
-#
-#        #============== Modelado:
-#        
-#        modelos = modelado.ModelBuilder()
-#        modelos = modelos.build_model(df)
-#       
-#        #sqlalchemy engine to psycopg2
-#        #dialect+driver://username:password@host:port/database
-#        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
-#        #user,password,host,port,db
-#        #postgres,12345678,database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com,5432,dpa
-#
-#        table_name='semantic.metro'
-#        scheme='semantic'
-#        #df.to_sql(name="semantic.metro", con=engine, schema=scheme,if_exists='replace')
-#        #print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
-#        
-#        #cursor.execute(text) #Execute a database operation (query or command).
-#        
-#        cursor = connection.cursor()
-#        connection.commit() # This method sends a COMMIT statement to the MySQL server, committing the current transaction. 
-#        cursor.close()# Close the cursor now (rather than whenever del is executed). The cursor will be unusable from this point forward
-#        connection.close() # For a connection obtained from a connection pool, close() does not actually close it but returns it to the pool and makes it available for subsequent connection requests.
-#
-#
-#
-#        # para los outputs que no vamos a usar
-#        vacio = ' '
-#        data_vacia = {'vacio':[vacio]}
-#        pandas_a_csv = pd.DataFrame(data=data_vacia)
-#        pandas_a_csv.to_csv(self.output().path, index=False)
-#        print("archivo creado correctamente")    
-#
+class modelingMetro(luigi.task):
+    """
+    Function to train model from the mexico city metro data set on the database on postgres.
+    It stores the metadata from uploading into the specified S3 bucket on AWS. Note: user MUST have the credentials 
+    to use the aws s3 bucket.
+    """
+
+    #==============================================================================================================
+    # Parameters
+    #==============================================================================================================
+    task_name = 'modelingMetro_task_06_01'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
+    #==============================================================================================================
+
+    # Indica que para iniciar el proceso de carga de metadatos requiere que emetadataloadl task de extractToJson esté terminado
+    def requires(self):
+        return featureEngineering(bucket=self.bucket, date=self.date), metadataFeatureEngineering(bucket=self.bucket, date=self.date)
+
+    
+    def run(self):
+
+        # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
+        archivoquenosirve = 'feature_engineering_05_01/metro_' + self.date + '.csv'
+
+        creds = pd.read_csv("../../credentials_postgres.csv")
+        creds_aws = pd.read_csv("../../credentials.csv")
+        print("credenciales leídas correctamente")
+
+        # Conexión a la S3
+        print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+        print("Conexión Exitosa! :)")
+
+        content_object = s3_resource.Object(self.bucket, archivoquenosirve)
+
+        #file_content = pd.read_csv(content_object) 
+        print("s3 encontrada exitosamente")
+
+
+        connection = psycopg2.connect(user=creds.user[0],
+                                          password=creds.password[0],
+                                          host=creds.host[0],
+                                          port=creds.port[0],
+                                          database=creds.db[0])
+
+
+        df = psql.read_sql('SELECT * FROM semantic.metro;', connection)
+
+
+        #dummies=pd.get_dummies(df["ano"],prefix='y')
+        #df=pd.concat([df,dummies],axis=1)
+        #dummies=pd.get_dummies(df["linea"],prefix='l')
+        #df=pd.concat([df,dummies],axis=1)
+        #print(df.columns)
+
+        print(df.shape)
+
+        #============== Modelado:
+        
+        indice_ent = X['Fecha'] <= '2019-11-30'               
+       
+        variables_a_eliminar = ['Fecha', 'Año', 'Afluencia']
+
+        x_ent = x_mat[indice_ent].drop(variables_a_eliminar, axis = 1)
+        x_pr = x_mat[~indice_ent].drop(variables_a_eliminar, axis = 1)
+        y_ent = categorias(x_mat['Afluencia'][indice_ent], x_mat['Afluencia'][indice_ent])
+        y_pr = categorias(x_mat['Afluencia'][~indice_ent], x_mat['Afluencia'][indice_ent])
+       
+        #sqlalchemy engine to psycopg2
+        #dialect+driver://username:password@host:port/database
+        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        #user,password,host,port,db
+        #postgres,12345678,database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com,5432,dpa
+
+        table_name='semantic.metro'
+        scheme='semantic'
+        #df.to_sql(name="semantic.metro", con=engine, schema=scheme,if_exists='replace')
+        #print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
+        
+        #cursor.execute(text) #Execute a database operation (query or command).
+        
+        cursor = connection.cursor()
+        connection.commit() # This method sends a COMMIT statement to the MySQL server, committing the current transaction. 
+        cursor.close()# Close the cursor now (rather than whenever del is executed). The cursor will be unusable from this point forward
+        connection.close() # For a connection obtained from a connection pool, close() does not actually close it but returns it to the pool and makes it available for subsequent connection requests.
+
+
+
+        # para los outputs que no vamos a usar
+        vacio = ' '
+        data_vacia = {'vacio':[vacio]}
+        pandas_a_csv = pd.DataFrame(data=data_vacia)
+        pandas_a_csv.to_csv(self.output().path, index=False)
+        print("archivo creado correctamente")    
+
 #=======
 #        df2.to_sql("metro", engine, schema='semantic',if_exists='replace')
         
