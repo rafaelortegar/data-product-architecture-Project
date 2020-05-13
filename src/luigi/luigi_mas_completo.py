@@ -535,7 +535,7 @@ class testExtract(luigi.Task):
         prueba = ExtractTestCase()
         #prueba.json_file= json_file  # file_content
         #prueba.pd_json= pd_json
-        prueba.json_file= json_file
+        prueba.json_file = json_file
         #prueba.setUp()
         prueba.test_extract()
 
@@ -548,7 +548,75 @@ class testExtract(luigi.Task):
         output_path = "s3://{}/{}/metro_{}.csv". \
             format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
+
+#################################################UNITTEST EXTRACT metadata##########################################################
+class metadatatestExtract(luigi.Task):
+    #==============================================================================================================
+    # Parameters
+    #==============================================================================================================
+    task_name = 'test_extract_metadata_01_04'
+    date = luigi.Parameter()
+    bucket = luigi.Parameter(default='dpaprojs3')
+    #==============================================================================================================
     
+    def requires(self):
+        return extractToJson(bucket=self.bucket, date=self.date)
+
+    def run(self):
+        # Los archivos que se usan por el pipeline
+        print("Inicia la extracción de los datos cargados en la S3 para cargarlos a postgres...")
+        file_to_read = 'extractToJson_task_01/metro_' + self.date + '.json'
+        #archivoquenosirve = 'createTables_task_02_01/metro_' + self.date + '.csv'
+        print("El archivo a leer es: ",file_to_read)
+        
+        # Leyendo credenciales
+        creds = pd.read_csv("../../credentials_postgres.csv")
+        creds_aws = pd.read_csv("../../credentials.csv")
+        print("credenciales leídas correctamente")
+
+        # Conexión a la S3
+        print("Iniciando la conexión con el recurso S3 que contiene los datos extraídos...")
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+        dev_s3_client = ses.client('s3')
+        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+        print("Conexión Exitosa! :)")
+
+        #archivoquenosirve_object = s3_resource.Object(self.bucket, archivoquenosirve)
+        content_object = s3_resource.Object(self.bucket, file_to_read)
+        file_content = content_object.get()['Body'].read().decode('utf-8')
+        json_content = json.loads(file_content)
+        
+            
+        with open('contenido.json', 'w') as outfile:
+            json.dump(file_content, outfile)
+
+        file = 'contenido.json'
+        json_file = open(file, 'r')
+
+        #pd_json = pd.read_json(file)
+        #pd_json.shape[0] == 0
+        
+        prueba = ExtractTestCase()
+        #prueba.json_file= json_file  # file_content
+        #prueba.pd_json= pd_json
+        prueba.json_file = json_file
+        #prueba.setUp()
+        prueba.test_extract()
+
+        print("Archivo cargado correctamente...")
+        f=self.output().open('w')
+        #print >>f, "pruebaextract"
+        f.close()
+
+    def output(self):
+        output_path = "s3://{}/{}/metro_{}.csv". \
+            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        return luigi.contrib.s3.S3Target(path=output_path)
+
+
+
+
 ###############################################LOAD#################################################################
 class copyToPostgres(luigi.Task):
     """
@@ -567,7 +635,7 @@ class copyToPostgres(luigi.Task):
     
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date), testExtract (bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date), testExtract(bucket=self.bucket, date=self.date), metadatatestExtract(bucket=self.bucket, date=self.date)
 
 
     def run(self):
