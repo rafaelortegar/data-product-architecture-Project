@@ -99,7 +99,7 @@ class metadataExtract(luigi.Task):
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
-        return extractToJson(self.bucket, self.date)                       # (bucket = self.bucket, date = self.date)
+        return extractToJson(bucket = self.bucket, date = self.date)                       # (bucket = self.bucket, date = self.date)
 
     # Esta sección indica lo que se va a correr:
     def run(self):
@@ -242,7 +242,7 @@ class createTables(luigi.Task):
     #==============================================================================================================
 
     def requires(self):
-        return extractToJson(self.bucket, self.date), metadataExtract(self.bucket, self.date)
+        return extractToJson(bucket=self.bucket, date=self.date), metadataExtract(bucket = self.bucket, date = self.date)
 
 
     def run(self):
