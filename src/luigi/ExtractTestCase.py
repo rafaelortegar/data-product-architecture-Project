@@ -23,13 +23,13 @@ class ExtractTestCase(marbles.core.TestCase):
                 delattr(self, 'json_file')
         
         def test_extract(self):
-                self.assertTrue(self.json_file.read(2) != '[]', note = 'json file is empty')
+                self.assertTrue(self.json_file.read(2) != '', note = 'json file is empty')
                 now = datetime.datetime.now()
-                passfail=self.json_file.read(2) != '[]'
+                passfail=self.json_file.read(2) != ''
                 nombreprueba='test load datos raw'
                 print (now.strftime("%Y-%m-%d %H:%M:%S"))
 
-                if passfail:
+                if passfail==True:
                         print("#############")
                         print("prueba exitosa")
                         print("#############")

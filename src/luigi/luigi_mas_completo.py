@@ -484,7 +484,7 @@ class createTables(luigi.Task):
 #
 #    def output(self):
 #        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
-#################################################UNITTEST##########################################################
+#################################################UNITTEST EXTRACT##########################################################
 class testExtract(luigi.Task):
     #==============================================================================================================
     # Parameters
