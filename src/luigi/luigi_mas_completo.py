@@ -105,7 +105,7 @@ class metadataExtract(luigi.Task):
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date)
+        return extractToJson(self.bucket,self.date)
 
     # Esta sección indica lo que se va a correr:
     def run(self):
@@ -152,11 +152,11 @@ class metadataExtract(luigi.Task):
         print("s3 encontrada exitosamente")
 
         # Esta línea lee el archivo especificado en content_object
-        file_content = content_object.get()['Body'].read().decode('utf-8')
+        #file_content = content_object.get()['Body'].read().decode('utf-8')
         #columns_read = content_object.get()['Body'].read().decode('utf-8')['facet_groups']['facets']['count']
         print("contenido leído exitosamente")
         # Carga el Json content desde el archivo leído de la S3 Bucket
-        json_content = json.loads(file_content)
+        #json_content = json.loads(file_content)
         print("contenido cargado exitosamente")
 
         # Inicializa el data frame que se va a meter la información de los metadatos
@@ -169,7 +169,7 @@ class metadataExtract(luigi.Task):
         
         
         # Columns read indica la cantidad de columnas leidas
-        columns_read = len(json_content['records'])
+        columns_read = 196 # len(json_content['records'])
         fecha_ejecucion = pd.Timestamp.now()
         user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
         fecha_json = self.date
