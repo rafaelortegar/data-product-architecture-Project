@@ -497,7 +497,8 @@ class copyToPostgres(luigi.Task):
     
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date) # , metadataExtract(bucket=self.bucket, date=self.date)
+        return metadataExtract(bucket=self.bucket, date=self.date)
+        #extractToJson(bucket=self.bucket, date=self.date), metadataExtract(bucket=self.bucket, date=self.date)
 
 
     def run(self):
