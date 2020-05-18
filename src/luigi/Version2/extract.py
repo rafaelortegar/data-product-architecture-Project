@@ -63,4 +63,4 @@ class extractToJson(luigi.Task):
         return luigi.contrib.s3.S3Target(path=output_path)
 
 if __name__ == '__main__':
-    luigi.runAll()
+    luigi.extractToJson()
