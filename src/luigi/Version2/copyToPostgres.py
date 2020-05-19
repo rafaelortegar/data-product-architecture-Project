@@ -10,7 +10,7 @@ import psycopg2
 from luigi.contrib.postgres import CopyToTable
 
 from extract import extractToJson
-class copyToPostgres(copyToTable):
+class copyToPostgres(CopyToTable):
     """
     Function to copy raw data from the extracting process from mexico city metro data set on the database on postgres.
     It uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
