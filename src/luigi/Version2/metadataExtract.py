@@ -19,19 +19,19 @@ class metadataExtract(CopyToTable):
     #==============================================================================================================
     task_name = 'metadataExtract_task_02_02'
     date = luigi.Parameter()
-    bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
+    bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
     # Parameters for database connection
     #==============================================================================================================
-    creds = pd.read_csv("../../credentials_postgres.csv")
-    creds_aws = pd.read_csv("../../credentials.csv")
+    creds = pd.read_csv("../../../credentials_postgres.csv")
+    creds_aws = pd.read_csv("../../../credentials.csv")
     print('Credenciales leídas correctamente')
     host = creds.host[0]
     database = creds.db[0]
     user = creds.user[0]
     password = creds.password[0]
     table = 'raw.metadataextract'
-    columns = ["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"]
+    columns = ["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"] # ,"recordid","fecha_de_registro"]
     port = creds.port[0]
     #=============================================================================================================
     
@@ -39,53 +39,72 @@ class metadataExtract(CopyToTable):
     def requires(self):
         return extractToJson(self.bucket,self.date)
     
-    
-    
-    
-    
     def rows(self):
-        """
-        Return/yield tuples or lists corresponding to each row to be inserted.
-        """        
-        with self.input().open('w') as json_file:
-            json.dump(data_raw.json(), json_file)
+        clientEC2 = boto3.client('ec2')
+        information_metadata_ours = clientEC2.describe_instances()
+        fecha_ejecucion = pd.Timestamp.now()
+        fecha_json = self.date
+        usuario = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
+        ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
+        nombre_bucket = self.bucket
         
-#        with self.input().open('r') as json_file:
-#            for line in json_file:
-#                yield line.strip('\n').split('\t')
-#                
-        print("#...")
-        print("##...")
-        print("###...")
-        print("####...")
-        print("#####...")
-        print("######...")
-        print("Carga de metadatos de Extract completada! :)")
-        
-        
-        #Se conecta a la postgres en el RDS con las credenciales correspondientes
-#        connection = psycopg2.connect(user=creds.user[0],
-#                                      password=creds.password[0],
-#                                      host=creds.host[0],
-#                                      port=creds.port[0],
-#                                      database=creds.db[0])
+        with self.input().open('r') as json_file:
+            data = json.load(json_file)
+            columns_read = data['nhits']
+            status = 'Loaded'
+            datasetid = data['records'][0].get('datasetid')
+            for line in data['records']:
+                recordid = line.get('recordid')
+                fecha_de_registro = line.get('record_timestamp')
+                yield (fecha_ejecucion,fecha_json,usuario,ip_ec2,nombre_bucket, status, columns_read) # ,recordid,fecha_de_registro)
+
+
 #
+#        # Esta línea lee el archivo especificado en content_object
+#        #file_content = content_object.get()['Body'].read().decode('utf-8')
+#        #columns_read = content_object.get()['Body'].read().decode('utf-8')['facet_groups']['facets']['count']
+#        print("contenido leído exitosamente")
+#        # Carga el Json content desde el archivo leído de la S3 Bucket
+#        #json_content = json.loads(file_content)
+#        print("contenido cargado exitosamente")
 #
-#        # Allows Python code to execute PostgreSQL command in a database session.
-#        cursor = connection.cursor()
+#        # Inicializa el data frame que se va a meter la información de los metadatos
+##        df = pd.DataFrame(columns=["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"])
 #        
-#
-#        # Inserta los metadatos en la tabla metadata_extract
-#        text = "INSERT INTO raw.metadataextract  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
-#        user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket, columns_read)
-#        print(text)
+#        #función de EC2 para describir la instancia en la que se está trabajando
+#        information_metadata_ours = clientEC2.describe_instances()
+#        print("ec2 descrita correctamente")
 #        
-#        cursor.execute(text) #Execute a database operation (query or command).
-#
 #        
-#        connection.commit() # This method sends a COMMIT statement to the MySQL server, committing the current transaction. 
-#        cursor.close()# Close the cursor now (rather than whenever del is executed). The cursor will be unusable from this point forward
-#        connection.close() # For a connection obtained from a connection pool, close() does not actually close it but returns it to the pool and makes it available for subsequent connection requests.
+#        
+#        # Columns read indica la cantidad de columnas leidas
+#        columns_read = 196 # len(json_content['records'])
+#        fecha_ejecucion = pd.Timestamp.now()
+#        user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
+#        fecha_json = self.date
+#        ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
+#        nombre_bucket = self.bucket
+#        status = 'Loaded'
+#        print("variables a cargar listas")
+
+
+
+if __name__ == '__main__':
+    luigi.metadataExtract()    
+    
+    
+    
+#    def rows(self):
+#        """
+#        Return/yield tuples or lists corresponding to each row to be inserted.
+#        """        
+#        with self.input().open('w') as json_file:
+#            json.dump(data_raw.json(), json_file)
+#        
+##        with self.input().open('r') as json_file:
+##            for line in json_file:
+##                yield line.strip('\n').split('\t')
+##                
 #        print("#...")
 #        print("##...")
 #        print("###...")
@@ -93,25 +112,57 @@ class metadataExtract(CopyToTable):
 #        print("#####...")
 #        print("######...")
 #        print("Carga de metadatos de Extract completada! :)")
-        
-        # para los outputs que no vamos a usar
-#        vacio = ' '
-#        data_vacia = {'vacio':[vacio]}
-#        pandas_a_csv = pd.DataFrame(data=data_vacia)
-#        pandas_a_csv.to_csv(self.output().path, index=False)
-#        #with self.output().open('w') as json_file:
-#        #    json.dump(data_raw.json(), json_file)
+#        
+#        
+#        #Se conecta a la postgres en el RDS con las credenciales correspondientes
+##        connection = psycopg2.connect(user=creds.user[0],
+##                                      password=creds.password[0],
+##                                      host=creds.host[0],
+##                                      port=creds.port[0],
+##                                      database=creds.db[0])
+##
+##
+##        # Allows Python code to execute PostgreSQL command in a database session.
+##        cursor = connection.cursor()
+##        
+##
+##        # Inserta los metadatos en la tabla metadata_extract
+##        text = "INSERT INTO raw.metadataextract  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
+##        user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket, columns_read)
+##        print(text)
+##        
+##        cursor.execute(text) #Execute a database operation (query or command).
+##
+##        
+##        connection.commit() # This method sends a COMMIT statement to the MySQL server, committing the current transaction. 
+##        cursor.close()# Close the cursor now (rather than whenever del is executed). The cursor will be unusable from this point forward
+##        connection.close() # For a connection obtained from a connection pool, close() does not actually close it but returns it to the pool and makes it available for subsequent connection requests.
+##        print("#...")
+##        print("##...")
+##        print("###...")
+##        print("####...")
+##        print("#####...")
+##        print("######...")
+##        print("Carga de metadatos de Extract completada! :)")
+#        
+#        # para los outputs que no vamos a usar
+##        vacio = ' '
+##        data_vacia = {'vacio':[vacio]}
+##        pandas_a_csv = pd.DataFrame(data=data_vacia)
+##        pandas_a_csv.to_csv(self.output().path, index=False)
+##        #with self.output().open('w') as json_file:
+##        #    json.dump(data_raw.json(), json_file)
+##
+##    
+##    # Envía el output al S3 bucket especificado con el nombre de output_path
+##    def output(self):
+##        output_path = "s3://{}/{}/metro_{}.csv". \
+##            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+##        return luigi.contrib.s3.S3Target(path=output_path)
 #
 #    
-#    # Envía el output al S3 bucket especificado con el nombre de output_path
-#    def output(self):
-#        output_path = "s3://{}/{}/metro_{}.csv". \
-#            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
-#        return luigi.contrib.s3.S3Target(path=output_path)
-
-    
-   
-   
+#   
+#   
 
 #class CopyToTable(rdbms.CopyToTable):
 #    """

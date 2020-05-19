@@ -10,6 +10,7 @@ import psycopg2
 from luigi.contrib.postgres import CopyToTable
 
 from extract import extractToJson
+from metadataExtract import metadataExtract
 class copyToPostgres(CopyToTable):
     """
     Function to copy raw data from the extracting process from mexico city metro data set on the database on postgres.
@@ -39,7 +40,7 @@ class copyToPostgres(CopyToTable):
     #=============================================================================================================
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date) #, metadataExtract(bucket=self.bucket, date=self.date), testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date), metadataExtract(bucket=self.bucket, date=self.date) # , testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
 
     def rows(self):
         with self.input().open('r') as json_file:
