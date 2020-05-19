@@ -58,18 +58,18 @@ class loadCleaned(PostgresQuery):
         cursor.execute(sql)
 
         #sección añadida despues de que corría
-        creds2 = pd.read_csv("../../../credentials_postgres.csv")
-        connection2 = psycopg2.connect(user=creds2.user[0],
-                                  password=creds2.password[0],
-                                  host=creds2.host[0],
-                                  port=creds2.port[0],
-                                  database=creds2.db[0])
-        df = psql.read_sql('SELECT * FROM cleaned.metro;', connection2)
-        total_final = len(df)
-        csv_leido = pd.read_csv('../../../columnas_leidas.csv')
-        csv_leido['total_final'][0] = total_final
-        csv_leido.to_csv('../../../columnas_leidas.csv')
-        connection2.close()       
+#        creds2 = pd.read_csv("../../../credentials_postgres.csv")
+#        connection2 = psycopg2.connect(user=creds2.user[0],
+#                                  password=creds2.password[0],
+#                                  host=creds2.host[0],
+#                                  port=creds2.port[0],
+#                                  database=creds2.db[0])
+#        df = psql.read_sql('SELECT * FROM cleaned.metro;', connection2)
+#        total_final = len(df)
+#        csv_leido = pd.read_csv('../../../columnas_leidas.csv')
+#        csv_leido['total_final'][0] = total_final
+#        csv_leido.to_csv('../../../columnas_leidas.csv')
+#        connection2.close()       
         #fin de sección        
         
         # Update marker table
