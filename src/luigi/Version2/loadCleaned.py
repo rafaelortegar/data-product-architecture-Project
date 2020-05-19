@@ -14,7 +14,7 @@ class loadCleaned(PostgresQuery):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name='cleaned_data_04_01'
+    task_name='cleaned_data_03_01'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
@@ -56,6 +56,19 @@ class loadCleaned(PostgresQuery):
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
         cursor.execute(sql)
 
+        #sección añadida despues de que corría
+        connection2 = psycopg2.connect(user=creds.user[0],
+                                  password=creds.password[0],
+                                  host=creds.host[0],
+                                  port=creds.port[0],
+                                  database=creds.db[0])
+        df = psql.read_sql('SELECT COUNT(*) FROM cleaned.metro;', connection2)
+        total_final = len(df)
+        csv_leido = pd.read_csv('../../../columnas_leidas.csv')
+        csv_leido['total_final'][0] = total_final
+        csv_leido.to_csv('../../../columnas_leidas.csv')       
+        #fin de sección        
+        
         # Update marker table
         self.output().touch(connection)
 

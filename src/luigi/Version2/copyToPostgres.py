@@ -7,7 +7,9 @@ import json
 #from luigi.Version2.metadataExtract import metadataExtract
 #from luigi import extract
 import psycopg2
+import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable
+from luigi.contrib.postgres import PostgresTarget
 
 from extract import extractToJson
 from metadataExtract import metadataExtract
@@ -21,7 +23,7 @@ class copyToPostgres(CopyToTable):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name = 'load_task_03_01'
+    task_name = 'load_task_02_01'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
@@ -50,6 +52,22 @@ class copyToPostgres(CopyToTable):
     def rows(self):
         with self.input().open('r') as json_file:
             data = json.load(json_file)
+            filas_a_cargar = len(data['records'])
+            print(filas_a_cargar)
+            #seccion añadida despues de que ya corria
+            connection2 = psycopg2.connect(user=creds.user[0],
+                                      password=creds.password[0],
+                                      host=creds.host[0],
+                                      port=creds.port[0],
+                                      database=creds.db[0])
+            df = psql.read_sql('SELECT COUNT(*) FROM cleaned.metro;', connection2)
+            filas_actuales=len(df)
+            total_final = filas_a_cargar+filas_actuales
+            data_info = {'datos_a_cargar': [filas_a_cargar], 'total_anterior':[filas_actuales], 'total_final':[total_final]}
+            data_to_csv = pd.DataFrame(data=data_info)
+            data_to_csv.to_csv(self.output().path,index=False)
+            data_to_csv.to_csv('../../../columnas_leidas.csv')
+            #fin de sección
             for line in data['records']:
 
                 fecha_ingreso = line.get('fields').get('fecha')
@@ -58,6 +76,24 @@ class copyToPostgres(CopyToTable):
                 estacion_ingreso = line.get('fields').get('estacion')
                 afluencia_ingreso = line.get('fields').get('afluencia')
                 yield (fecha_ingreso,anio_ingreso,linea_ingreso,estacion_ingreso,afluencia_ingreso)
+    
+    
+    def output(self):
+        """
+        Returns a PostgresTarget representing the inserted dataset.
+
+        Normally you don't override this.
+        """
+        
+        return PostgresTarget(
+            host=self.host,
+            database=self.database,
+            user=self.user,
+            password=self.password,
+            table=self.table,
+            update_id=self.update_id,
+            port=self.port
+        )
 
 
 if __name__ == '__main__':

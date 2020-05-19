@@ -23,12 +23,28 @@ class ExtractTestCase(marbles.core.TestCase):
                 delattr(self, 'json_file')
         
         def test_extract(self):
-                self.assertTrue(self.json_file.read(2) != '[]', note = 'json file is empty')
+                
+                with self.input().open('r') as json_file:
+                    data = json.load(json_file)
+                    columns_read = data['nhits']
+                
+                self.assertTrue(columns_read == 0 , note = 'json file is empty')
                 now = datetime.datetime.now()
-                passfail=self.json_file.read(2) != '[]'
+                passfail=columns_read == 0
                 nombreprueba='test load datos raw'
                 print (now.strftime("%Y-%m-%d %H:%M:%S"))
                 return nombreprueba
+                
+                
+                #como estaba antes de cambiarlo
+                #self.assertTrue(self.json_file.read2 != '[]', note = 'json file is empty')
+                #now = datetime.datetime.now()
+                #passfail=self.json_file.read(2) != '[]'
+                #nombreprueba='test load datos raw'
+                #print (now.strftime("%Y-%m-%d %H:%M:%S"))
+                #return nombreprueba
+                
+            
                 #df1 = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
                 #return df1
 

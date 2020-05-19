@@ -1,10 +1,12 @@
 import luigi
 import logging
 import psycopg2
+import sqlalchemy
+
 import pandas as pd
+import pandas.io.sql as psql
 
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
-
 
 from copyToPostgres import copyToPostgres
 
@@ -48,7 +50,6 @@ class metadataLoad(PostgresQuery):
             from raw.metro
             );  
             """ 
-    
     #=============================================================================================================
 
     def requires(self):
