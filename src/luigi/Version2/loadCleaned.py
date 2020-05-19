@@ -9,7 +9,7 @@ from copyToPostgres import copyToPostgres
 
 logger = logging.getLogger('luigi-interface')
 
-class loadCleaned(luigi.Task):
+class loadCleaned(PostgresQuery):
 
     #==============================================================================================================
     # Parameters
