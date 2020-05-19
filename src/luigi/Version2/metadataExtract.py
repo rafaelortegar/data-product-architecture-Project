@@ -53,8 +53,9 @@ class metadataExtract(CopyToTable):
             data = json.load(json_file)
             columns_read = data['nhits']
             status = 'Loaded'
-            datasetid = data['records'][0].get('datasetid')
+            #datasetid = data['records'][0].get('datasetid')
             for line in data['records']:
+                datasetid = line.get('datasetid')
                 recordid = line.get('recordid')
                 fecha_de_registro = line.get('record_timestamp')
                 yield (fecha_ejecucion,fecha_json,usuario,ip_ec2,nombre_bucket, columns_read) # status,recordid,fecha_de_registro)
