@@ -44,7 +44,7 @@ class copyToPostgres(CopyToTable):
     def rows(self):
         with self.input().open('r') as json_file:
             data = json.load(json_file)
-            for line in data['records']:
+            for line in len(data['records']):
 #                ingresar = {'fecha':[data['records'][line].get('fields').get('fecha')],'anio':[data['records'][line].get('fields').get('anio')],
 #                            'linea':[data['records'][line].get('fields').get('linea')],'estacion':[data['records'][line].get('fields').get('estacion')],
 #                            'afluencia':[data['records'][line].get('fields').get('afluencia')]}
