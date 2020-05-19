@@ -39,6 +39,7 @@ class metadataLoad(PostgresQuery):
     password = creds.password[0]
     table = 'raw.metadataload'
     port = creds.port[0]
+    query = """SELECT * FROM raw.metadataload"""
     #=============================================================================================================
 
     def requires(self):
