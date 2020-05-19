@@ -2,10 +2,12 @@ import luigi
 import boto3
 import psycopg2
 import pandas as pd
+from luigi.contrib.postgres import CopyToTable
 from extract import extractToJson
 
 
-class metadataExtract(luigi.Task):
+
+class metadataExtract(CopyToTable):
     """
     Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
     uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
@@ -18,8 +20,141 @@ class metadataExtract(luigi.Task):
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
     #==============================================================================================================
+    # Parameters for database connection
+    #==============================================================================================================
+    creds = pd.read_csv("../../credentials_postgres.csv")
+    creds_aws = pd.read_csv("../../credentials.csv")
+    print('Credenciales leídas correctamente')
+    host = creds.host[0]
+    database = creds.db[0]
+    user = creds.user[0]
+    password = creds.password[0]
+    table = 'raw.metadataextract'
+    columns = ["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"]
+    port = creds.port[0]
+    #=============================================================================================================
     
+    
+    def requires(self):
+        return extractToJson(self.bucket,self.date)
+    
+    
+    def rows(self):
+        """
+        Return/yield tuples or lists corresponding to each row to be inserted.
+        """
+        # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
+        file_to_read = 'extractToJson_task_01/metro_'+ self.date +'.json'
+        print("El archivo a buscar es: ",file_to_read)
+        
+        # Conexión a la S3
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+        dev_s3_client = ses.client('s3')
 
+        # El content object está especificando el objeto que se va a extraer del bucket S3
+        # (la carga que se acaba de hacer desde la API)
+        content_object = s3_resource.Object(self.bucket, file_to_read)
+        print("s3 encontrada exitosamente")
+
+
+        # Esta línea lee el archivo especificado en content_object
+        #file_content = content_object.get()['Body'].read().decode('utf-8')
+        #columns_read = content_object.get()['Body'].read().decode('utf-8')['facet_groups']['facets']['count']
+        print("contenido leído exitosamente")
+        # Carga el Json content desde el archivo leído de la S3 Bucket
+        #json_content = json.loads(file_content)
+        print("contenido cargado exitosamente")
+
+        # Inicializa el data frame que se va a meter la información de los metadatos
+#        df = pd.DataFrame(columns=["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"])
+        
+        #función de EC2 para describir la instancia en la que se está trabajando
+        information_metadata_ours = clientEC2.describe_instances()
+        print("ec2 descrita correctamente")
+
+
+        # Columns read indica la cantidad de columnas leidas
+        columns_read = 196 # len(json_content['records'])
+        fecha_ejecucion = pd.Timestamp.now()
+        user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
+        fecha_json = self.date
+        ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
+        nombre_bucket = self.bucket
+        status = 'Loaded'
+        print("variables a cargar listas")
+
+        connection = psycopg2.connect(user=creds.user[0],
+                                      password=creds.password[0],
+                                      host=creds.host[0],
+                                      port=creds.port[0],
+                                      database=creds.db[0])        
+   
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################################################################################################################################################
 
 #class metadataExtract(luigi.Task):
 #    """

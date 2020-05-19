@@ -19,7 +19,19 @@ class copyToPostgres(luigi.Task):
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
-    
+    # Parameters for database connection
+    #==============================================================================================================
+    creds = pd.read_csv("../../credentials_postgres.csv")
+    creds_aws = pd.read_csv("../../credentials.csv")
+    print('Credenciales leídas correctamente')
+    host = creds.host[0]
+    database = creds.db[0]
+    user = creds.user[0]
+    password = creds.password[0]
+    table = 'raw.metadataextract'
+    columns = ["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"]
+    port = creds.port[0]
+    #=============================================================================================================
 
     def requires(self):
         return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date), testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
