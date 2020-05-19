@@ -39,6 +39,7 @@ class testExtract(CopyToTable):
         with self.input().open('r') as json_file:
             data = json.load(json_file)
             columns_read = data['nhits']
+            print(columns_read)
             status = 'Loaded'
             #datasetid = data['records'][0].get('datasetid')
 
@@ -46,9 +47,11 @@ class testExtract(CopyToTable):
             #prueba.json_file= json_file  # file_content
             #prueba.pd_json= pd_json
             prueba.json_file = data
+            print(prueba)
             #prueba.setUp()
             data_f = prueba.test_extract()
             df1= pd.DataFrame(data_f)
+            print(df1)
             result = df1['estatus'][0]
             time = df1['hora_ejecucion'][0]
             nombreprueba = df1['prueba'][0]
