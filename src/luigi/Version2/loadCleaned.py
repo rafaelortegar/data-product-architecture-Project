@@ -51,7 +51,7 @@ class loadCleaned(PostgresQuery):
             """ 
         
         
-        logger.info('Executing query from task: {name}'.format(name=self.__class__))
+        logger.info('Executing query from task: {name}'.format(name=self.task_name))
         cursor.execute(sql)
 
         # Update marker table
