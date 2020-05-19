@@ -34,7 +34,7 @@ class copyToPostgres(CopyToTable):
     user = creds.user[0]
     password = creds.password[0]
     table = 'raw.metro'
-    columns = [("fecha","TEXT"),("anio","TEXT"),("linea", "TEXT"),("estacion", "TEXT"),("afluencia""TEXT")]
+    columns = [("fecha","TEXT"),("anio","TEXT"),("linea", "TEXT"),("estacion", "TEXT"),("afluencia","TEXT")]
     port = creds.port[0]
     #=============================================================================================================
 
