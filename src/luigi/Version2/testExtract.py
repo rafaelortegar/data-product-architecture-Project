@@ -48,9 +48,9 @@ class testExtract(CopyToTable):
             prueba.json_file = data
             #prueba.setUp()
             df1= pd.DataFrame(prueba.test_extract())
-            result = df1.result[0]
-            time = df1.result[0]
-            nombreprueba = df1.nombreprueba[0]
+            result = df1['result'][0]
+            time = df1.['time'][0]
+            nombreprueba = df1['nombreprueba'][0]
             yield (result,time,nombreprueba)
 
 if __name__ == '__main__':
