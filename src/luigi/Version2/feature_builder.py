@@ -23,6 +23,7 @@ class FeatureBuilder():
         X1['dia'] = pd.DatetimeIndex(X1['fecha']).day.astype('object')
         X1['mes'] = pd.DatetimeIndex(X1['fecha']).month.astype('object')
         X1['dia_semana'] = (pd.DatetimeIndex(X1['fecha']).weekday + 1).astype('object')
+        X1['fecha'] = pd.to_datetime(X1['fecha']).astype('object')
 
         variables_categoricas = X1.dtypes.pipe(lambda x: x[x == 'object']).index
         x_mat = pd.get_dummies(X1, columns = variables_categoricas, drop_first = True)
