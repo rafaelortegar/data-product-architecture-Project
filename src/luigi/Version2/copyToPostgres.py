@@ -44,13 +44,19 @@ class copyToPostgres(CopyToTable):
     def rows(self):
         with self.input().open('r') as json_file:
             data = json.load(json_file)
-            for line in len(data['records']):
+            for line in data['records']:
 #                ingresar = {'fecha':[data['records'][line].get('fields').get('fecha')],'anio':[data['records'][line].get('fields').get('anio')],
 #                            'linea':[data['records'][line].get('fields').get('linea')],'estacion':[data['records'][line].get('fields').get('estacion')],
 #                            'afluencia':[data['records'][line].get('fields').get('afluencia')]}
-                tupla_ingresar = (data['records'][line].get('fields').get('fecha'),data['records'][line].get('fields').get('anio'),
-                                  data['records'][line].get('fields').get('linea'),data['records'][line].get('fields').get('estacion'),
-                                  data['records'][line].get('fields').get('afluencia'))
+#                tupla_ingresar = (data['records'][line].get('fields').get('fecha'),data['records'][line].get('fields').get('anio'),
+#                                  data['records'][line].get('fields').get('linea'),data['records'][line].get('fields').get('estacion'),
+#                                  data['records'][line].get('fields').get('afluencia'))
+                fecha_ingreso = data['records'][line].get('fields').get('fecha')
+                anio_ingreso = data['records'][line].get('fields').get('anio')
+                linea_ingreso = data['records'][line].get('fields').get('linea')
+                estacion_ingreso = data['records'][line].get('fields').get('estacion')
+                afluencia_ingreso = data['records'][line].get('fields').get('afluencia')
+                yield (fecha_ingreso,anio_ingreso,linea_ingreso,estacion_ingreso,afluencia_ingreso)
                 yield line.strip('\n').split('\t')
         
 #        with open('metro_2019-01-01.json') as json_file: 
