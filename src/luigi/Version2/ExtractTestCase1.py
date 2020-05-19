@@ -27,7 +27,8 @@ class ExtractTestCase(marbles.core.TestCase):
         def test_extract(self):
                 
 #                with self.json_file.open('r') as json_file:
-                data = json.load(self.json_file)
+                #data = json.load(self.json_file)
+                data = self.json_file
                 columns_read = data['nhits']
                 
                 self.assertTrue(columns_read == 0 , note = 'json file is empty')
