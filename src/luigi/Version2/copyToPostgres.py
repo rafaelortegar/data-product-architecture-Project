@@ -1,5 +1,5 @@
 import luigi
-
+import pandas as pd
 from luigi import extractToJson
 from luigi.Version2.metadataExtract import metadataExtract
 from luigi import extract
@@ -34,7 +34,7 @@ class copyToPostgres(luigi.Task):
     #=============================================================================================================
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date) , metadataExtract(bucket=self.bucket, date=self.date), testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date) #, metadataExtract(bucket=self.bucket, date=self.date), testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
 
 
     def run(self):

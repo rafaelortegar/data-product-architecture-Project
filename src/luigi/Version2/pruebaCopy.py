@@ -33,11 +33,8 @@ class pruebaCopy(luigi.Task):
     columns = [("fecha", "TEXT"),("anio", "TEXT"), ("linea", "TEXT"), ("estacion", "TEXT"), ("afluencia", "TEXT")]
     
     def run(self):
-        with self.output().open('w') as output_file:
-            output_file.write()
-
-    def output(self):
-        return luigi.local_target.LocalTarget('/home/silil/Documents/itam/metodos_gran_escala/data-product-architecture/luigi/pass_parameter_task1.txt')
+        with self.input().open('r') as json_file:
+            json_product = json.load(json_file)
 
     #=============================================================================================================
 

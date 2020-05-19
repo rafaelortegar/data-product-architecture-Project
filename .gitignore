@@ -144,3 +144,5 @@ dmypy.json
 *credentials_postgres.csv
 *credentials
 *metadatos.py.save
+!/venv/
+
