@@ -3,6 +3,8 @@ import datetime
 import json
 import marbles.core
 import pandas as pd
+
+
 #directorio = '/home/alfie-gonzalez/Documentos/Maestría/Segundo Semestre/Métodos de Gran Escala'
 #os.chdir(directorio)
 #file = 'afluencia-diaria-del-metro-cdmx.json'
@@ -33,7 +35,7 @@ class ExtractTestCase(marbles.core.TestCase):
                 passfail=columns_read == 0
                 nombreprueba='test load datos raw'
                 print (now.strftime("%Y-%m-%d %H:%M:%S"))
-                return nombreprueba
+                #return nombreprueba
                 
                 
                 #como estaba antes de cambiarlo
@@ -45,8 +47,9 @@ class ExtractTestCase(marbles.core.TestCase):
                 #return nombreprueba
                 
             
-                #df1 = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
-                #return df1
+                df1 = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+                #print(df1)
+                return df1
 
 if __name__ == '__main__':
     marbles.core.main()

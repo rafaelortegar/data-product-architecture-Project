@@ -1,15 +1,13 @@
 import luigi
 
 from extract_load import extractLoadSection
-from loadWrapper import loadWrapper
-from cleanWrapper import cleanWrapper
-from featureEngineeringWrapper import featureEngineeringWrapper
-from modelingWrapper import modelingWrapper
+from copyToPostgres import copyToPostgres
+
 
 
 ############################################################# RUN ALL TASK ####################################
 
-class runAll(luigi.WrapperTask):
+class loadWrapper(luigi.WrapperTask):
     """
     Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
     uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
@@ -31,9 +29,12 @@ class runAll(luigi.WrapperTask):
         yield featureEngineeringWrapper(bucket=self.bucket, date=self.date)
         yield modelingWrapper(bucket=self.bucket, date=self.date)
 
-
-
-
-
 if __name__ == '__main__':
-    luigi.runAll()
+    luigi.loadWrapper()
+
+
+
+
+
+
+

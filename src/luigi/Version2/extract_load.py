@@ -3,6 +3,8 @@ import luigi
 from luigi import WrapperTask
 from copyToPostgres import copyToPostgres
 from metadataExtract import metadataExtract
+from testExtract import testExtract
+from metadataLoad import metadataLoad
 
 
 class extractLoadSection(luigi.WrapperTask):
@@ -19,3 +21,10 @@ class extractLoadSection(luigi.WrapperTask):
     def requires(self):
         yield copyToPostgres(date =self.date, bucket = self.bucket)
         yield metadataExtract(date =self.date, bucket = self.bucket)
+        yield metadataLoad(date =self.date, bucket = self.bucket)
+        yield testExtract(date =self.date, bucket = self.bucket)
+
+if __name__ == '__main__':
+    luigi.extractLoadSection()
+
+

@@ -1,4 +1,16 @@
-class metadataFeatureEngineering(luigi.Task):
+import luigi
+import boto3
+import logging
+import pandas as pd
+
+
+from luigi.contrib.postgres import PostgresQuery, PostgresTarget
+
+from featureEngineering import featureEngineering
+
+logger = logging.getLogger('luigi-interface')
+
+class metadataFeatureEngineering(PostgresQuery):
     """
     Function to get metadata from the loading process of mexico city metro data set on the database on postgres.
     It stores the metadata from uploading into the specified S3 bucket on AWS. Note: user MUST have the credentials 
@@ -8,10 +20,165 @@ class metadataFeatureEngineering(luigi.Task):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name = 'metadata_feature_engineering_05_02'
+    task_name = 'metadata_feature_engineering_04_02'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
     #==============================================================================================================
+    # Parameters for database connection
+    #==============================================================================================================
+    creds = pd.read_csv("../../../credentials_postgres.csv")
+    creds_aws = pd.read_csv("../../../credentials.csv")
+    print('Credenciales leídas correctamente')
+    host = creds.host[0]
+    database = creds.db[0]
+    user = creds.user[0]
+    password = creds.password[0]
+    table = 'semantic.metadata'
+    port = creds.port[0]
+    #=============================================================================================================
+    def requires(self):
+        return featureEngineering(bucket=self.bucket, date=self.date)
+    
+    def run(self):
+        connection = self.output().connect()
+        connection.autocommit = self.autocommit
+        cursor = connection.cursor()
+
+        # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
+        clientEC2 = boto3.client('ec2')
+        print("Inicializados el EC2")
+        
+        #función de EC2 para describir la instancia en la que se está trabajando
+        information_metadata_ours = clientEC2.describe_instances()
+        print("ec2 descrita correctamente")
+        
+        #columnas_leidas = pd.read_csv('../../columnas_leidas.csv')  #file_content # pd.read_csv('../../columnas_leidas.csv')
+        print("csv leido correctamente")
+        
+        
+        # Columns read indica la cantidad de columnas leidas
+        #columns_loaded = columnas_leidas['datos_a_cargar'][0]
+        #print("se cargaron:", columns_loaded, " columnas.")
+        #print(columns_loaded)
+        fecha_ejecucion = pd.Timestamp.now()
+        user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
+        fecha_json = self.date
+        ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
+        nombre_bucket = self.bucket
+        status = 'Loaded'        
+        
+        self.query = "INSERT INTO raw.metadataload  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
+        user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) # , columns_loaded)
+        
+        sql = self.query
+        
+        logger.info('Executing query from task: {name}'.format(name=self.task_name))
+        cursor.execute(sql)
+
+        # Update marker table
+        self.output().touch(connection)
+
+        # commit and close connection
+        connection.commit()
+        connection.close()
+        
+
+
+if __name__ == '__main__':
+    luigi.metadataFeatureEngineering()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # Indica que para iniciar el proceso de carga de metadatos requiere que emetadataloadl task de extractToJson esté terminado
     def requires(self):
@@ -142,4 +309,4 @@ class metadataFeatureEngineering(luigi.Task):
         return luigi.contrib.s3.S3Target(path=output_path)
 
 if __name__ == '__main__':
-    luigi.runAll()
+    luigi.metadataFeatureEngineering()

@@ -88,6 +88,8 @@ class metadataCleaned(PostgresQuery):
         
         self.query = "INSERT INTO raw.metadataload  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
         user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) #, columns_loaded)
+        sql = self.query
+        
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
         cursor.execute(sql)
