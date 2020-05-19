@@ -31,7 +31,7 @@ class metadataExtract(CopyToTable):
     user = creds.user[0]
     password = creds.password[0]
     table = 'raw.metadataextract'
-    columns = ["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "nombre_bucket", "status", "columns_read"] # ,"recordid","fecha_de_registro"]
+    columns = ["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "nombre_bucket", "columns_read"] # "status","recordid","fecha_de_registro"]
     port = creds.port[0]
     #=============================================================================================================
     
@@ -56,7 +56,7 @@ class metadataExtract(CopyToTable):
             for line in data['records']:
                 recordid = line.get('recordid')
                 fecha_de_registro = line.get('record_timestamp')
-                yield (fecha_ejecucion,fecha_json,usuario,ip_ec2,nombre_bucket, status, columns_read) # ,recordid,fecha_de_registro)
+                yield (fecha_ejecucion,fecha_json,usuario,ip_ec2,nombre_bucket, columns_read) # status,recordid,fecha_de_registro)
 
 
 #
