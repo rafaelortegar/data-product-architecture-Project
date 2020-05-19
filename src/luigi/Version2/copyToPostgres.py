@@ -58,7 +58,7 @@ class copyToPostgres(CopyToTable):
 #                estacion_ingreso = data['records'][line].get('fields').get('estacion')
 #                afluencia_ingreso = data['records'][line].get('fields').get('afluencia')
                 yield (fecha_ingreso) #,anio_ingreso,linea_ingreso,estacion_ingreso,afluencia_ingreso)
-                yield line.strip('\n').split('\t')
+#                yield line.strip('\n').split('\t')
         
 #        with open('metro_2019-01-01.json') as json_file: 
 #            data = json.load(json_file)
