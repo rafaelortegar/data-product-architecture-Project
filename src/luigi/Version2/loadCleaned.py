@@ -29,15 +29,7 @@ class loadCleaned(PostgresQuery):
     password = creds.password[0]
     table = 'raw.metro'
     port = creds.port[0]
-    #=============================================================================================================
-    def requires(self):
-        return copyToPostgres(bucket=self.bucket, date=self.date)
-    
-    def run(self):
-        connection = self.output().connect()
-        connection.autocommit = self.autocommit
-        cursor = connection.cursor()
-        sql = """
+    query = """
         drop table if exists cleaned.metro cascade;
         create table cleaned.metro as (
             SELECT 
@@ -49,6 +41,16 @@ class loadCleaned(PostgresQuery):
             from raw.metro
             );  
             """ 
+    
+    #=============================================================================================================
+    def requires(self):
+        return copyToPostgres(bucket=self.bucket, date=self.date)
+    
+    def run(self):
+        connection = self.output().connect()
+        connection.autocommit = self.autocommit
+        cursor = connection.cursor()
+        sql = self.query
         
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
