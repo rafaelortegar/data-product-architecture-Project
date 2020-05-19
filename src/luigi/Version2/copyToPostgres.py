@@ -53,11 +53,15 @@ class copyToPostgres(CopyToTable):
 #                                  data['records'][line].get('fields').get('afluencia'))
                 #fecha_ingreso = data['records'][line].get('fields').get('fecha')
                 fecha_ingreso = line.get('fields').get('Fecha')
+                anio_ingreso = line.get('fields').get('anio')
+                linea_ingreso = line.get('fields').get('linea')
+                estacion_ingreso = line.get('fields').get('estacion')
+                afluencia_ingreso = line.get('fields').get('afluencia')
 #                anio_ingreso = data['records'][line].get('fields').get('anio')
 #                linea_ingreso = data['records'][line].get('fields').get('linea')
 #                estacion_ingreso = data['records'][line].get('fields').get('estacion')
 #                afluencia_ingreso = data['records'][line].get('fields').get('afluencia')
-                yield (fecha_ingreso,'\t') #,anio_ingreso,linea_ingreso,estacion_ingreso,afluencia_ingreso)
+                yield (fecha_ingreso,anio_ingreso,linea_ingreso,estacion_ingreso,afluencia_ingreso)
 #                yield line.strip('\n').split('\t')
         
 #        with open('metro_2019-01-01.json') as json_file: 
@@ -67,8 +71,8 @@ class copyToPostgres(CopyToTable):
 
 #data['records'][line].get('fields').get('fecha')
 #>>> data['records'][0]
-{'datasetid': 'afluencia-diaria-del-metro-cdmx', 'recordid': 'ec33a8dcf83dba40ce9b09e1f51f67acefe1a0ef', 'fields': {'anio': '2019',
-  'estacion': 'Pantitlán', 'fecha': '2019-01-01', 'linea': 'Linea 1', 'afluencia': '14452'}, 'record_timestamp': '2020-03-25T17:13:11.354000+00:00'}
+#{'datasetid': 'afluencia-diaria-del-metro-cdmx', 'recordid': 'ec33a8dcf83dba40ce9b09e1f51f67acefe1a0ef', 'fields': {'anio': '2019',
+#  'estacion': 'Pantitlán', 'fecha': '2019-01-01', 'linea': 'Linea 1', 'afluencia': '14452'}, 'record_timestamp': '2020-03-25T17:13:11.354000+00:00'}
 
 
 #    def run(self):
