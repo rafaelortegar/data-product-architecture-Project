@@ -47,8 +47,8 @@ class ExtractTestCase(marbles.core.TestCase):
                 #print (now.strftime("%Y-%m-%d %H:%M:%S"))
                 #return nombreprueba
                 
-            
-                df1 = pd.DataFrame({'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now})
+                data_a_cargar = {'prueba':nombreprueba, 'estatus':passfail, 'hora_ejecucion':now}
+                df1 = pd.DataFrame(data = data_a_cargar)
                 #print(df1)
                 return df1
 
