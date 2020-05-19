@@ -1,3 +1,14 @@
+import luigi
+import logging
+import psycopg2
+import pandas as pd
+from luigi.contrib.postgres import PostgresQuery, PostgresTarget
+
+
+from copyToPostgres import copyToPostgres
+
+logger = logging.getLogger('luigi-interface')
+
 class loadCleaned(luigi.Task):
 
     #==============================================================================================================
@@ -7,7 +18,104 @@ class loadCleaned(luigi.Task):
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
+    # Parameters for database connection
+    #==============================================================================================================
+    creds = pd.read_csv("../../../credentials_postgres.csv")
+    creds_aws = pd.read_csv("../../../credentials.csv")
+    print('Credenciales leídas correctamente')
+    host = creds.host[0]
+    database = creds.db[0]
+    user = creds.user[0]
+    password = creds.password[0]
+    table = 'raw.metro'
+    port = creds.port[0]
+    #=============================================================================================================
+    def requires(self):
+        return copyToPostgres(bucket=self.bucket, date=self.date)
     
+    def run(self):
+        connection = self.output().connect()
+        connection.autocommit = self.autocommit
+        cursor = connection.cursor()
+        sql = """
+        drop table if exists cleaned.metro cascade;
+        create table cleaned.metro as (
+            SELECT 
+            fecha::DATE as fecha, 
+            anio::int as ano, 
+            linea::varchar as linea, 
+            estacion::varchar as estacion,
+            afluencia::int as afluencia
+            from raw.metro
+            );  
+            """ 
+        
+        
+        logger.info('Executing query from task: {name}'.format(name=self.__class__))
+        cursor.execute(sql)
+
+        # Update marker table
+        self.output().touch(connection)
+
+        # commit and close connection
+        connection.commit()
+        connection.close()
+        
+        
+    def output(self):
+        """
+        Returns a PostgresTarget representing the executed query.
+
+        Normally you don't override this.
+        """
+        return PostgresTarget(
+            host=self.host,
+            database=self.database,
+            user=self.user,
+            password=self.password,
+            table=self.table,
+            update_id=self.update_id,
+            port=self.port
+        )
+
+if __name__ == '__main__':
+    luigi.loadCleaned()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     def requires(self):
         return copyToPostgres(bucket = self.bucket, date=  self.date), metadataLoad(bucket = self.bucket, date=  self.date)
     
@@ -75,4 +183,57 @@ class loadCleaned(luigi.Task):
         return luigi.contrib.s3.S3Target(path=output_path)
 
 if __name__ == '__main__':
-    luigi.runAll()
+    luigi.loadCleaned()
+    
+    
+#
+#class PostgresQuery(rdbms.Query):
+#    """
+#    Template task for querying a Postgres compatible database
+#
+#    Usage:
+#    Subclass and override the required `host`, `database`, `user`, `password`, `table`, and `query` attributes.
+#    Optionally one can override the `autocommit` attribute to put the connection for the query in autocommit mode.
+#
+#    Override the `run` method if your use case requires some action with the query result.
+#
+#    Task instances require a dynamic `update_id`, e.g. via parameter(s), otherwise the query will only execute once
+#
+#    To customize the query signature as recorded in the database marker table, override the `update_id` property.
+#    """
+#    def run(self):
+#        connection = self.output().connect()
+#        connection.autocommit = self.autocommit
+#        cursor = connection.cursor()
+#        sql = self.query
+#
+#        logger.info('Executing query from task: {name}'.format(name=self.__class__))
+#        cursor.execute(sql)
+#
+#        # Update marker table
+#        self.output().touch(connection)
+#
+#        # commit and close connection
+#        connection.commit()
+#        connection.close()
+#
+#
+#    def output(self):
+#        """
+#        Returns a PostgresTarget representing the executed query.
+#
+#        Normally you don't override this.
+#        """
+#        return PostgresTarget(
+#            host=self.host,
+#            database=self.database,
+#            user=self.user,
+#            password=self.password,
+#            table=self.table,
+#            update_id=self.update_id,
+#            port=self.port
+#        )
+#        
+#as
+#asfaf
+#

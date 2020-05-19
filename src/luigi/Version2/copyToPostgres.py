@@ -51,7 +51,6 @@ class copyToPostgres(CopyToTable):
                 linea_ingreso = line.get('fields').get('linea')
                 estacion_ingreso = line.get('fields').get('estacion')
                 afluencia_ingreso = line.get('fields').get('afluencia')
-
                 yield (fecha_ingreso,anio_ingreso,linea_ingreso,estacion_ingreso,afluencia_ingreso)
 
 
