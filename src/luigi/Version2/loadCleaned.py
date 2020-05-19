@@ -64,7 +64,7 @@ class loadCleaned(PostgresQuery):
                                   host=creds2.host[0],
                                   port=creds2.port[0],
                                   database=creds2.db[0])
-        df = psql.read_sql('SELECT COUNT(*) FROM cleaned.metro;', connection2)
+        df = psql.read_sql('SELECT * FROM cleaned.metro;', connection2)
         total_final = len(df)
         csv_leido = pd.read_csv('../../../columnas_leidas.csv')
         csv_leido['total_final'][0] = total_final
