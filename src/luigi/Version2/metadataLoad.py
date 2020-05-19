@@ -58,7 +58,7 @@ class metadataLoad(PostgresQuery):
         information_metadata_ours = clientEC2.describe_instances()
         print("ec2 descrita correctamente")
         
-        columnas_leidas = pd.read_csv('../../columnas_leidas.csv')  #file_content # pd.read_csv('../../columnas_leidas.csv')
+        columnas_leidas = pd.read_csv('../../../columnas_leidas.csv')  #file_content # pd.read_csv('../../columnas_leidas.csv')
         print("csv leido correctamente")
         
         
