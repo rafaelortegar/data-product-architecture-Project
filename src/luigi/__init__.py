@@ -1,7 +1,7 @@
 
 import os
 import yaml
-from pathlib import Path
+from pathlib import path
 
 
 usr_dir = os.path.join(str(Path.home()), ".rita")
