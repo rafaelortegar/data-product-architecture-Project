@@ -58,11 +58,12 @@ class loadCleaned(PostgresQuery):
         cursor.execute(sql)
 
         #sección añadida despues de que corría
-        connection2 = psycopg2.connect(user=creds.user[0],
-                                  password=creds.password[0],
-                                  host=creds.host[0],
-                                  port=creds.port[0],
-                                  database=creds.db[0])
+        creds2 = pd.read_csv("../../../credentials_postgres.csv")
+        connection2 = psycopg2.connect(user=creds2.user[0],
+                                  password=creds2.password[0],
+                                  host=creds2.host[0],
+                                  port=creds2.port[0],
+                                  database=creds2.db[0])
         df = psql.read_sql('SELECT COUNT(*) FROM cleaned.metro;', connection2)
         total_final = len(df)
         csv_leido = pd.read_csv('../../../columnas_leidas.csv')
