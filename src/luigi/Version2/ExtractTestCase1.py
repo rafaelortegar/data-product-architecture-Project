@@ -26,7 +26,7 @@ class ExtractTestCase(marbles.core.TestCase):
         
         def test_extract(self):
                 
-                with self.input().open('r') as json_file:
+                with self.json_file.open('r') as json_file:
                     data = json.load(json_file)
                     columns_read = data['nhits']
                 
