@@ -72,7 +72,7 @@ class loadCleaned(PostgresQuery):
         #fin de sección        
         
         # Update marker table
-        #####################self.output().touch(connection)
+        self.output().touch(connection)
 
         # commit and close connection
         connection.commit()
