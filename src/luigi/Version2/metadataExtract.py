@@ -39,6 +39,7 @@ class metadataExtract(CopyToTable):
     def requires(self):
         return extractToJson(bucket=self.bucket,date=self.date)
     
+    
     def rows(self):
         clientEC2 = boto3.client('ec2')
         information_metadata_ours = clientEC2.describe_instances()
