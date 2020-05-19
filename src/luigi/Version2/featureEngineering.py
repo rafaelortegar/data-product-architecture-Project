@@ -1,3 +1,18 @@
+import luigi
+import logging
+import psycopg2
+import sqlalchemy
+
+import pandas.io.sql as psql
+import pandas as pd
+
+from sqlalchemy import create_engine
+from luigi.contrib.postgres import PostgresQuery, PostgresTarget
+
+import feature_builder as fb
+from loadCleaned import loadCleaned
+
+logger = logging.getLogger('luigi-interface')
 ##############################################################      SEMANTIC       ####################################
 
 ############################################################## FEATURE ENGINEERING ####################################
@@ -26,7 +41,7 @@
 #x_mat = pd.get_dummies(X, columns = variables_categoricas, drop_first = True)   #FFE
 
 
-class featureEngineering(luigi.Task):
+class featureEngineering(PostgresQuery):
     """
     Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
     uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
@@ -40,12 +55,115 @@ class featureEngineering(luigi.Task):
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
     #==============================================================================================================
-
+    # Parameters for database connection
+    #==============================================================================================================
+    creds = pd.read_csv("../../../credentials_postgres.csv")
+    creds_aws = pd.read_csv("../../../credentials.csv")
+    print('Credenciales leídas correctamente')
+    host = creds.host[0]
+    database = creds.db[0]
+    user = creds.user[0]
+    password = creds.password[0]
+    table = 'semantic.metro'
+    port = creds.port[0]
+    query = 'SELECT * FROM cleaned.metro'
+    #=============================================================================================================
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
-        return loadCleaned(bucket=self.bucket, date=self.date), metadataCleaned(bucket = self.bucket, date=  self.date)
+        return loadCleaned(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
 
 
+    def run(self):
+        connection = self.output().connect()
+        connection.autocommit = self.autocommit
+        cursor = connection.cursor()
+        sql = self.query
+        
+        
+        logger.info('Executing query from task: {name}'.format(name=self.task_name))
+        bd = cursor.execute(sql)
+        print(type(bd))
+        print(bd)
+        
+        #df = pd.DataFrame(data=bd)
+        
+        df = psql.read_sql(self.query, connection)
+        df2 = fb()
+        df2 = df2.featurize(df)
+        print(df2.shape)
+        #engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        #df2 es el output
+        
+        # Update marker table
+#        with self.output().open('w') as output_file:
+#            output_file.write('algo')
+        
+
+        df2.to_sql(self.output,connection)
+        self.output().touch(connection)
+
+        # commit and close connection
+        connection.commit()
+        connection.close()
+        
+        
+    def output(self):
+        """
+        Returns a PostgresTarget representing the executed query.
+
+        Normally you don't override this.
+        """
+        return PostgresTarget(
+            host=self.host,
+            database=self.database,
+            user=self.user,
+            password=self.password,
+            table=self.table,
+            update_id=self.update_id,
+            port=self.port
+        )
+
+if __name__ == '__main__':
+    luigi.featureEngineering()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     def run(self):
 
         # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
