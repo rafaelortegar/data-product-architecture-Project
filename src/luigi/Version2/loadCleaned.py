@@ -15,7 +15,7 @@ class loadCleaned(PostgresQuery):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name='cleaned_data_03_01'
+    task_name='cleaned_data_04_01'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
@@ -31,7 +31,7 @@ class loadCleaned(PostgresQuery):
     table = 'cleaned.metro'
     port = creds.port[0]
     query = """
-        drop table if exists cleaned.metro cascade;
+        create table if not exists cleaned.metro cascade;
         create table cleaned.metro as (
             SELECT 
             fecha::DATE as fecha, 
@@ -52,7 +52,6 @@ class loadCleaned(PostgresQuery):
         connection.autocommit = self.autocommit
         cursor = connection.cursor()
         sql = self.query
-        
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
         cursor.execute(sql)
@@ -80,21 +79,21 @@ class loadCleaned(PostgresQuery):
         connection.close()
         
         
-    def output(self):
-        """
-        Returns a PostgresTarget representing the executed query.
-
-        Normally you don't override this.
-        """
-        return PostgresTarget(
-            host=self.host,
-            database=self.database,
-            user=self.user,
-            password=self.password,
-            table=self.table,
-            update_id=self.update_id,
-            port=self.port
-        )
+#    def output(self):
+#        """
+#        Returns a PostgresTarget representing the executed query.
+#
+#        Normally you don't override this.
+#        """
+#        return PostgresTarget(
+#            host=self.host,
+#            database=self.database,
+#            user=self.user,
+#            password=self.password,
+#            table=self.table,
+#            update_id=self.update_id,
+#            port=self.port
+#        )
 
 if __name__ == '__main__':
     luigi.loadCleaned()
