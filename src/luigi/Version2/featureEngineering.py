@@ -66,7 +66,7 @@ class featureEngineering(PostgresQuery):
     password = creds.password[0]
     table = 'semantic.metro'
     port = creds.port[0]
-    query = 'SELECT * FROM cleaned.metro'
+    query = ''
     #=============================================================================================================
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
@@ -77,21 +77,32 @@ class featureEngineering(PostgresQuery):
         connection = self.output().connect()
         connection.autocommit = self.autocommit
         cursor = connection.cursor()
-        sql = self.query
         
-        
-        logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        bd = cursor.execute(sql)
-        print(type(bd))
-        print(bd)
-        
-        #df = pd.DataFrame(data=bd)
-        
-        df = psql.read_sql(self.query, connection)
+        df = psql.read_sql('SELECT * FROM cleaned.metro;', connection)
         df2 = fb()
         df2 = df2.featurize(df)
         print(df2.shape)
-        #engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        
+        logger.info('Executing query from task: {name}'.format(name=self.task_name))
+        
+        for row in df2:
+            tupla = [tuple(x) for x in df2.values]
+            query = """INSERT INTO {} VALUES {};""".format(self.table,tupla)
+            sql = self.query
+            cursor.execute(sql)
+        
+        #logger.info('Executing query from task: {name}'.format(name=self.task_name))
+        #cursor.execute(sql)
+        #print(type(bd))
+        #print(bd)
+        
+        #df = pd.DataFrame(data=bd)
+        
+#        df = psql.read_sql(self.query, connection)
+#        df2 = fb()
+#        df2 = df2.featurize(df)
+#        print(df2.shape)
+#        #engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         #df2 es el output
         
         # Update marker table
@@ -99,7 +110,7 @@ class featureEngineering(PostgresQuery):
 #            output_file.write('algo')
         
 
-        df2.to_sql(self.output,connection)
+        #df2.to_sql(self.output,connection)
         self.output().touch(connection)
 
         # commit and close connection
