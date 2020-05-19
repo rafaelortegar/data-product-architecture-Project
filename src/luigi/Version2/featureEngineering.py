@@ -66,7 +66,7 @@ class featureEngineering(PostgresQuery):
     password = creds.password[0]
     table = 'semantic.metro'
     port = creds.port[0]
-    query = ''
+    query = """SELECT * FROM semantic.metro"""
     #=============================================================================================================
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
@@ -83,15 +83,23 @@ class featureEngineering(PostgresQuery):
         df2 = df2.featurize(df)
         print(df2.shape)
         
+        #engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        #user,password,host,port,db
+        #postgres,12345678,database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com,5432,dpa
+        table_name= self.table
+        scheme='semantic'
+        df2.to_sql("semantic.metro", con=connection, schema='semantic',if_exists='replace')
+        print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
+        
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        
-        for row in df2:
-            tupla = [tuple(x) for x in df2.values]
-            print(tupla)
-            query = """INSERT INTO {} VALUES {};""".format(self.table,tupla[row].astype(int))
-            sql = query
-            cursor.execute(sql)
-        
+#        
+#        for row in df2:
+#            tupla = [tuple(x) for x in df2.values]
+#            print(tupla)
+#            query = """INSERT INTO {} VALUES {};""".format(self.table,tupla)
+#            sql = query
+#            cursor.execute(sql)
+#        
         #logger.info('Executing query from task: {name}'.format(name=self.task_name))
         #cursor.execute(sql)
         #print(type(bd))
