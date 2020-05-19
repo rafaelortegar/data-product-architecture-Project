@@ -83,12 +83,12 @@ class featureEngineering(PostgresQuery):
         df2 = df2.featurize(df)
         print(df2.shape)
         
-        #engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         #user,password,host,port,db
         #postgres,12345678,database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com,5432,dpa
         table_name= self.table
         scheme='semantic'
-        df2.to_sql("semantic.metro", con=connection, schema='semantic',if_exists='replace')
+        df2.to_sql("semantic.metro", con=engine, schema='semantic',if_exists='replace')
         print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
