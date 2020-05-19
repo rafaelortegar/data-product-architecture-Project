@@ -55,11 +55,12 @@ class copyToPostgres(CopyToTable):
             filas_a_cargar = len(data['records'])
             print(filas_a_cargar)
             #seccion añadida despues de que ya corria
-            connection2 = psycopg2.connect(user=creds.user[0],
-                                      password=creds.password[0],
-                                      host=creds.host[0],
-                                      port=creds.port[0],
-                                      database=creds.db[0])
+            creds2 = pd.read_csv("../../../credentials_postgres.csv")
+            connection2 = psycopg2.connect(user=creds2.user[0],
+                                      password=creds2.password[0],
+                                      host=creds2.host[0],
+                                      port=creds2.port[0],
+                                      database=creds2.db[0])
             df = psql.read_sql('SELECT * FROM raw.metro;', connection2)
             filas_actuales=len(df)
             total_final = filas_a_cargar+filas_actuales
