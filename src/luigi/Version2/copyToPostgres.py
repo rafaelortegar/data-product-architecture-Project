@@ -40,7 +40,7 @@ class copyToPostgres(CopyToTable):
     #=============================================================================================================
 
     def requires(self):
-        return extractToJson(bucket=self.bucket, date=self.date), metadataExtract(bucket=self.bucket, date=self.date) # , testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date) # , metadataExtract(bucket=self.bucket, date=self.date) # , testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
 
     def rows(self):
         with self.input().open('r') as json_file:
