@@ -34,7 +34,7 @@ class ExtractTestCase(marbles.core.TestCase):
                 print(columns_read)
                 self.assertTrue(columns_read != 0 , note = 'json file is empty')
                 now = datetime.datetime.now()
-                passfail=columns_read == 0
+                passfail=columns_read != 0
                 nombreprueba='test load datos raw'
                 print (now.strftime("%Y-%m-%d %H:%M:%S"))
                 #return nombreprueba
