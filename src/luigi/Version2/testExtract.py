@@ -56,8 +56,7 @@ class testExtract(CopyToTable):
 if __name__ == '__main__':
     luigi.testExtract()
 
-    if __name__ == '__main__':
-    luigi.extractLoadSection()
+
 
 #      def run(self):
 #       
