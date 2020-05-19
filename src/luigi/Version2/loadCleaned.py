@@ -31,7 +31,7 @@ class loadCleaned(PostgresQuery):
     table = 'cleaned.metro'
     port = creds.port[0]
     query = """
-        create table if not exists cleaned.metro cascade;
+        drop table if exists cleaned.metro cascade;
         create table cleaned.metro as (
             SELECT 
             fecha::DATE as fecha, 
@@ -72,7 +72,7 @@ class loadCleaned(PostgresQuery):
         #fin de sección        
         
         # Update marker table
-        self.output().touch(connection)
+        #####################self.output().touch(connection)
 
         # commit and close connection
         connection.commit()
