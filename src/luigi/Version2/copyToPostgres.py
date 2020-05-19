@@ -26,8 +26,8 @@ class copyToPostgres(CopyToTable):
     #==============================================================================================================
     # Parameters for database connection
     #==============================================================================================================
-    creds = pd.read_csv("../../credentials_postgres.csv")
-    creds_aws = pd.read_csv("../../credentials.csv")
+    creds = pd.read_csv("../../../credentials_postgres.csv")
+    creds_aws = pd.read_csv("../../../credentials.csv")
     print('Credenciales leídas correctamente')
     host = creds.host[0]
     database = creds.db[0]
