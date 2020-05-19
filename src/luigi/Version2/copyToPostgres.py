@@ -60,12 +60,11 @@ class copyToPostgres(CopyToTable):
                                       host=creds.host[0],
                                       port=creds.port[0],
                                       database=creds.db[0])
-            df = psql.read_sql('SELECT COUNT(*) FROM cleaned.metro;', connection2)
+            df = psql.read_sql('SELECT * FROM raw.metro;', connection2)
             filas_actuales=len(df)
             total_final = filas_a_cargar+filas_actuales
             data_info = {'datos_a_cargar': [filas_a_cargar], 'total_anterior':[filas_actuales], 'total_final':[total_final]}
             data_to_csv = pd.DataFrame(data=data_info)
-            data_to_csv.to_csv(self.output().path,index=False)
             data_to_csv.to_csv('../../../columnas_leidas.csv')
             #fin de sección
             for line in data['records']:

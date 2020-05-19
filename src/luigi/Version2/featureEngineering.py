@@ -27,7 +27,7 @@ class featureEngineering(PostgresQuery):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name = 'feature_engineering_05_01'
+    task_name = 'feature_engineering_04_01'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
     #==============================================================================================================
@@ -54,7 +54,7 @@ class featureEngineering(PostgresQuery):
         connection.autocommit = self.autocommit
         cursor = connection.cursor()
         
-        df = psql.read_sql('SELECT * FROM cleaned.metro;', connection)
+        df = psql.read_sql('SELECT * FROM semantic.metro;', connection)
         df2 = fb.FeatureBuilder()
         df2 = df2.featurize(df)
         print(df2.shape)

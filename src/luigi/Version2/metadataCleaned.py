@@ -1,4 +1,22 @@
-class metadataCleaned(luigi.Task):
+import luigi
+import logging
+import boto3
+import psycopg2
+import sqlalchemy
+
+
+import pandas as pd
+import pandas.io.sql as psql
+
+
+from luigi.contrib.postgres import PostgresQuery, PostgresTarget
+
+
+from loadCleaned import loadCleaned
+
+logger = logging.getLogger('luigi-interface')
+
+class metadataCleaned(PostgresQuery):
     """
     Function to get metadata from the loading process of mexico city metro data set on the database on postgres.
     It stores the metadata from uploading into the specified S3 bucket on AWS. Note: user MUST have the credentials 
@@ -12,7 +30,135 @@ class metadataCleaned(luigi.Task):
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
     #==============================================================================================================
+    # Parameters for database connection
+    #==============================================================================================================
+    creds = pd.read_csv("../../../credentials_postgres.csv")
+    creds_aws = pd.read_csv("../../../credentials.csv")
+    print('Credenciales leídas correctamente')
+    host = creds.host[0]
+    database = creds.db[0]
+    user = creds.user[0]
+    password = creds.password[0]
+    table = 'cleaned.metadata'
+    port = creds.port[0]
+    query = """SELECT * FROM cleaned.metro"""
+    #=============================================================================================================
 
+    def requires(self):
+        return loadCleaned(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
+
+
+    def run(self):
+        connection = self.output().connect()
+        connection.autocommit = self.autocommit
+        cursor = connection.cursor()
+        
+        df = psql.read_sql('SELECT * FROM cleaned.metro;', connection)
+        #df2 = fb.FeatureBuilder()
+        #df2 = df2.featurize(df)
+        #print(df2.shape)
+        
+        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+
+        table_name= self.table
+        scheme='semantic'
+        df2.to_sql("semantic.metro", con=engine, schema='semantic',if_exists='replace')
+        print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
+        
+        logger.info('Executing query from task: {name}'.format(name=self.task_name))
+
+        self.output().touch(connection)
+
+        # commit and close connection
+        connection.commit()
+        connection.close()
+        
+    
+    def output(self):
+        """
+        Returns a PostgresTarget representing the executed query.
+
+        Normally you don't override this.
+        """
+        return PostgresTarget(
+            host=self.host,
+            database=self.database,
+            user=self.user,
+            password=self.password,
+            table=self.table,
+            update_id=self.update_id,
+            port=self.port
+        )
+
+if __name__ == '__main__':
+    luigi.metadataCleaned()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     # Indica que para iniciar el proceso de carga de metadatos requiere que emetadataloadl task de extractToJson esté terminado
     def requires(self):
         return loadCleaned(bucket=self.bucket, date=self.date)

@@ -2,6 +2,7 @@ import luigi
 import logging
 import psycopg2
 import pandas as pd
+import pandas.io.sql as psql
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
 
 
