@@ -40,92 +40,13 @@ class metadataExtract(CopyToTable):
         return extractToJson(self.bucket,self.date)
     
     
+    
+    
+    
     def rows(self):
         """
         Return/yield tuples or lists corresponding to each row to be inserted.
-        """
-        print("#...")
-        print("##...")
-        print("###...")
-        print("####...")
-        print("#####...")
-        print("######...")
-        print("Inicia la carga de los metadatos del extract...")
-
-        # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
-        file_to_read = 'extractToJson_task_01/metro_'+ self.date +'.json'
-        print("El archivo a buscar es: ",file_to_read)
-
-        #Lee las credenciales de los archivos correspondientes
-        creds = pd.read_csv("../../credentials_postgres.csv")
-        creds_aws = pd.read_csv("../../credentials.csv")
-        print('Credenciales leídas correctamente')
-
-        print("#...")
-        print("##...")
-        print("###...")
-        print("####...")
-        print("#####...")
-        print("######...")
-        print("Conectando al S3 Bucket...")
-        # Conexión a la S3
-        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
-        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
-        dev_s3_client = ses.client('s3')
-        print("conectado al bucket en S3 :)")
-
-
-        # Obtiene el acceso al S3 Bucket con las credenciales correspondientes. Utiliza la paquetería boto3
-        
-        # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
-        clientEC2 = boto3.client('ec2')
-        clientS3 = boto3.client('s3')
-        print("Inicializados el EC2 y el S3")
-
-        # El content object está especificando el objeto que se va a extraer del bucket S3
-        # (la carga que se acaba de hacer desde la API)
-        content_object = s3_resource.Object(self.bucket, file_to_read)
-        print("s3 encontrada exitosamente")
-
-        # Esta línea lee el archivo especificado en content_object
-        file_content = content_object.get()['Body'].read().decode('utf-8')
-        #columns_read = content_object.get()['Body'].read().decode('utf-8')['facet_groups']['facets']['count']
-        print("contenido leído exitosamente")
-        # Carga el Json content desde el archivo leído de la S3 Bucket
-        json_content = json.loads(file_content)
-        print("contenido cargado exitosamente")
-
-        # Inicializa el data frame que se va a meter la información de los metadatos
-#        df = pd.DataFrame(columns=["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "ruta_bucket", "status", "columns_read"])
-        
-        #función de EC2 para describir la instancia en la que se está trabajando
-        information_metadata_ours = clientEC2.describe_instances()
-        print("ec2 descrita correctamente")
-        
-        
-        
-        # Columns read indica la cantidad de columnas leidas
-        columns_read = len(json_content['records'])
-        fecha_ejecucion = pd.Timestamp.now()
-        user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
-        fecha_json = self.date
-        ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
-        nombre_bucket = self.bucket
-        status = 'Loaded'
-        print("variables a cargar listas")
-        
-#        client.get('Reservations')[0].get('Instances')[0].get('KeyName')
-
-        print("#...")
-        print("##...")
-        print("###...")
-        print("####...")
-        print("#####...")
-        print("######...")
-        print("Conectandose a la instancia RDS con los datos RAW...")
-        
-        
+        """        
         with self.input().open('w') as json_file:
             json.dump(data_raw.json(), json_file)
         
