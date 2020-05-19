@@ -88,7 +88,7 @@ class featureEngineering(PostgresQuery):
         for row in df2:
             tupla = [tuple(x) for x in df2.values]
             print(tupla)
-            query = """INSERT INTO {} VALUES {};""".format(self.table,tupla)
+            query = """INSERT INTO {} VALUES {};""".format(self.table,tupla[row])
             sql = query
             cursor.execute(sql)
         
