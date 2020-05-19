@@ -68,7 +68,8 @@ class loadCleaned(PostgresQuery):
         total_final = len(df)
         csv_leido = pd.read_csv('../../../columnas_leidas.csv')
         csv_leido['total_final'][0] = total_final
-        csv_leido.to_csv('../../../columnas_leidas.csv')       
+        csv_leido.to_csv('../../../columnas_leidas.csv')
+        connection2.close()       
         #fin de sección        
         
         # Update marker table
