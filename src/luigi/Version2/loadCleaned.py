@@ -27,7 +27,7 @@ class loadCleaned(PostgresQuery):
     database = creds.db[0]
     user = creds.user[0]
     password = creds.password[0]
-    table = 'raw.metro'
+    table = 'cleaned.metro'
     port = creds.port[0]
     query = """
         drop table if exists cleaned.metro cascade;
