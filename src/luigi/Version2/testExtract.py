@@ -49,7 +49,7 @@ class testExtract(CopyToTable):
             #prueba.setUp()
             df1= pd.DataFrame(prueba.test_extract())
             result = df1['result'][0]
-            time = df1.['time'][0]
+            time = df1['time'][0]
             nombreprueba = df1['nombreprueba'][0]
             yield (result,time,nombreprueba)
 
