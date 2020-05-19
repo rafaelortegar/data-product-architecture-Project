@@ -64,9 +64,9 @@ class metadataCleaned(PostgresQuery):
         
         
         # Columns read indica la cantidad de columnas leidas
-        columns_loaded = columnas_leidas['datos_a_cargar'][0]
-        print("se cargaron:", columns_loaded, " columnas.")
-        print(columns_loaded)
+        #columns_loaded = columnas_leidas['datos_a_cargar'][0]
+        #print("se cargaron:", columns_loaded, " columnas.")
+        #print(columns_loaded)
         fecha_ejecucion = pd.Timestamp.now()
         user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
         fecha_json = self.date
@@ -74,20 +74,23 @@ class metadataCleaned(PostgresQuery):
         nombre_bucket = self.bucket
         status = 'Loaded'   
 
-        df = psql.read_sql('SELECT * FROM cleaned.metro;', connection)
+        #df = psql.read_sql('SELECT * FROM cleaned.metro;', connection)
         #df2 = fb.FeatureBuilder()
         #df2 = df2.featurize(df)
         #print(df2.shape)
         
-        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        #engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
 
-        table_name= self.table
-        scheme='semantic'
-        df2.to_sql("semantic.metro", con=engine, schema='semantic',if_exists='replace')
-        print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
+        #table_name= self.table
+        #scheme='semantic'
+        #df2.to_sql("semantic.metro", con=engine, schema='semantic',if_exists='replace')
+        #print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
+        
+        self.query = "INSERT INTO raw.metadataload  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
+        user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) #, columns_loaded)
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
-
+        cursor.execute(sql)
         self.output().touch(connection)
 
         # commit and close connection
@@ -95,21 +98,21 @@ class metadataCleaned(PostgresQuery):
         connection.close()
         
     
-    def output(self):
-        """
-        Returns a PostgresTarget representing the executed query.
-
-        Normally you don't override this.
-        """
-        return PostgresTarget(
-            host=self.host,
-            database=self.database,
-            user=self.user,
-            password=self.password,
-            table=self.table,
-            update_id=self.update_id,
-            port=self.port
-        )
+#    def output(self):
+#        """
+#        Returns a PostgresTarget representing the executed query.
+#
+#        Normally you don't override this.
+#        """
+#        return PostgresTarget(
+#            host=self.host,
+#            database=self.database,
+#            user=self.user,
+#            password=self.password,
+#            table=self.table,
+#            update_id=self.update_id,
+#            port=self.port
+#        )
 
 if __name__ == '__main__':
     luigi.metadataCleaned()

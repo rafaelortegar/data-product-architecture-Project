@@ -87,22 +87,7 @@ class metadataLoad(PostgresQuery):
         connection.commit()
         connection.close()
         
-        
-    def output(self):
-        """
-        Returns a PostgresTarget representing the executed query.
 
-        Normally you don't override this.
-        """
-        return PostgresTarget(
-            host=self.host,
-            database=self.database,
-            user=self.user,
-            password=self.password,
-            table=self.table,
-            update_id=self.update_id,
-            port=self.port
-        )
 
 if __name__ == '__main__':
     luigi.metadataLoad()

@@ -65,9 +65,9 @@ class featureEngineering(PostgresQuery):
         scheme='semantic'
         df2.to_sql("semantic.metro", con=engine, schema='semantic',if_exists='replace')
         print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
-        
+        sql = self.query
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
-
+        cursor.execute(sql)
         self.output().touch(connection)
 
         # commit and close connection
