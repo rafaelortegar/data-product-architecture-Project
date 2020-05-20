@@ -67,7 +67,7 @@ class metadataFeatureEngineering(PostgresQuery):
         nombre_bucket = self.bucket
         status = 'Loaded'        
         
-        self.query = "INSERT INTO raw.metadataload  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
+        self.query = "INSERT INTO semantic.metadata  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
         user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) # , columns_loaded)
         
         sql = self.query

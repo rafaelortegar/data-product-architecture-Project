@@ -22,7 +22,7 @@ class loadWrapper(luigi.WrapperTask):
     def requires(self):
         yield extractLoadSection(bucket=self.bucket, date=self.date)
         yield metadataLoad(bucket=self.bucket, date=self.date)
-        #yield metadataTestLoad(bucket=self.bucket, date=self.date)
+        yield metadataTestLoad(bucket=self.bucket, date=self.date)
 
 
 if __name__ == '__main__':

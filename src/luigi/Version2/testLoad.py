@@ -5,14 +5,14 @@ import psycopg2
 import pandas as pd
 
 from luigi.contrib.postgres import CopyToTable
-from ExtractTestCase1 import ExtractTestCase
-from extract import extractToJson
+from loadUnitTest import loadUnitTest
+from copyToPostgres import copyToPostgres
 
-class testExtract(CopyToTable):
+class testLoad(CopyToTable):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name = 'test_extract_task_01_03'
+    task_name = 'test_load_task_01_03'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
@@ -25,39 +25,25 @@ class testExtract(CopyToTable):
     database = creds.db[0]
     user = creds.user[0]
     password = creds.password[0]
-    table = 'raw.metatestextract'
+    table = 'raw.metatestload'
     columns = ["result", "time", "nombreprueba"] 
     port = creds.port[0]
-    query = """SELECT * FROM raw.metatestextract"""
+    query = """SELECT * FROM raw.metatestload"""
     #=============================================================================================================
     
     def requires(self):
-        return extractToJson(bucket = self.bucket, date = self.date)
+        return copyToPostgres(bucket = self.bucket, date = self.date)
 
     def rows(self):
         
-        with self.input().open('r') as json_file:
-            data = json.load(json_file)
-            print("imprimiendo data")
-            print(data)
-            columns_read = data['nhits']
-            print(columns_read)
-            status = 'Loaded'
-            #datasetid = data['records'][0].get('datasetid')
-
-            prueba = ExtractTestCase()
-            #prueba.json_file= json_file  # file_content
-            #prueba.pd_json= pd_json
-            prueba.json_file = data
-            print(prueba)
-            #prueba.setUp()
-            data_f = prueba.test_extract()
+            prueba = loadUnitTest()
+            data_f = prueba.test_load()
             df1= pd.DataFrame(data_f)
-            print(df1)
+            print(data_f)
             result = df1['estatus'][0]
             time = df1['hora_ejecucion'][0]
             nombreprueba = df1['prueba'][0]
             yield (result,time,nombreprueba)
 
 if __name__ == '__main__':
-    luigi.testExtract()
+    luigi.testLoad()

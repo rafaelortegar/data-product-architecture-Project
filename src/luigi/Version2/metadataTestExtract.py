@@ -12,11 +12,11 @@ from sqlalchemy import create_engine
 
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
 
-from testLoad import testLoad
+from testExtract import testExtract
 
 logger = logging.getLogger('luigi-interface')
 
-class metadataTestLoad(PostgresQuery):
+class metadataTestExtract(PostgresQuery):
     """
     Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
     uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
@@ -26,7 +26,7 @@ class metadataTestLoad(PostgresQuery):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name = 'metadata_test_load_05_01'
+    task_name = 'metadata_test_extract_04_01'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
     #==============================================================================================================
@@ -39,14 +39,14 @@ class metadataTestLoad(PostgresQuery):
     database = creds.db[0]
     user = creds.user[0]
     password = creds.password[0]
-    table = 'raw.metatestload'
+    table = 'raw.metatestextract'
     port = creds.port[0]
-    query = """SELECT * FROM raw.metatestload ORDER BY time DESC LIMIT 1;"""
+    query = """SELECT * FROM raw.metatestextract ORDER BY time DESC LIMIT 1;"""
     #=============================================================================================================
     
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
-        return testLoad(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
+        return testExtract(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
     
     def run(self):
         connection = self.output().connect()
@@ -75,8 +75,8 @@ class metadataTestLoad(PostgresQuery):
             
         table_name= self.table
         scheme='raw'
-        df_a_subir.to_sql("metadatatestload", con=engine, schema='raw',if_exists='replace')
-        print(psql.read_sql('SELECT * FROM raw.metatestload ORDER BY time DESC LIMIT 1;', connection))
+        df_a_subir.to_sql("raw.test", con=engine, schema='raw',if_exists='replace')
+        print(psql.read_sql('SELECT * FROM raw.metatestextract ORDER BY time DESC LIMIT 1;', connection))
         sql = self.query
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
         cursor.execute(sql)
@@ -104,6 +104,7 @@ class metadataTestLoad(PostgresQuery):
         )
 
 if __name__ == '__main__':
-    luigi.metadataTestLoad()
-
-
+    luigi.metadataTestExtract()
+    
+    
+    
