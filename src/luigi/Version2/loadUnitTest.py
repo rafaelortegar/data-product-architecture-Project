@@ -23,10 +23,15 @@ class loadUnitTest(marbles.core.TestCase):
     def test_load(self):
         cargado = pd.read_csv('../../../columnas_leidas.csv')
         por_cargar = cargado.datos_a_cargar[0]
+        print("por cargar: ",por_cargar)
         anterior = cargado.total_anterior[0]
+        print("anterior: ",anterior)
         total_final = self.len_final
+        print("total_final: ",total_final)
         total_deberia = por_cargar+anterior
+        print("total_deberia: ",total_deberia)
         resta = total_final-total_deberia
+        print("resta: ",resta)
 #       with self.json_file.open('r') as json_file:
         #data = json.load(self.json_file)
         

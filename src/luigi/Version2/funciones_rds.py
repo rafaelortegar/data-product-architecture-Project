@@ -34,7 +34,7 @@ class conectaAtablaRawMetro(object):
     
 class conectaAtablaCleanedMetro(object):
     
-    def __init__(self,host,database,user,password,table,port):  
+    def __init__(self,host,database,user,password,table,port):
         creds = pd.read_csv("../../../credentials_postgres.csv")
         self.host = creds.host[0]
         self.database = creds.database[0]
@@ -45,11 +45,20 @@ class conectaAtablaCleanedMetro(object):
         
         
     def dbaspandas(self):
-        connection = psycopg2.connect(user=self.user,
-                              password=self.password,
-                              host=self.host,
-                              port=self.port,
-                              database=self.database)
+        creds = pd.read_csv("../../../credentials_postgres.csv")
+        connection = psycopg2.connect(user=creds.user[0],
+                              password=creds.password[0],
+                              host=creds.host[0],
+                              port=creds.port[0],
+                              database=creds.database[0])        
+        
+        
+        
+        #connection = psycopg2.connect(user=self.user,
+        #                      password=self.password,
+        #                      host=self.host,
+        #                      port=self.port,
+        #                      database=self.database)
         cursor = connection.cursor()
         
         df = psql.read_sql('SELECT * FROM cleaned.metro;', connection)
