@@ -13,7 +13,7 @@ from funciones_rds import conectaAtablaRawMetro
  
 class loadUnitTest(marbles.core.TestCase):
 
-    def setUp(self):
+    def setUp(self,len_final):
         conecta = conectaAtablaRawMetro()
         self.len_final = conecta.dbaspandas()  
     
