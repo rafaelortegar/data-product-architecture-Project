@@ -73,6 +73,7 @@ class featureEngineering(PostgresQuery):
         self.output().touch(connection)
 
         # commit and close connection
+        cursor.close()
         connection.commit()
         connection.close()
         
