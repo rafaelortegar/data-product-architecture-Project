@@ -8,17 +8,17 @@ import pandas as pd
 
 import pandas.io.sql as psql
 
-from funciones_rds import conectaAtablaRawMetro
+from funciones_rds import conectaAtablaCleanedMetro
 
  
-class loadUnitTest(marbles.core.TestCase):
+class cleanedUnitTest(marbles.core.TestCase):
 
     def setUp(self):
-        conecta = conectaAtablaRawMetro()
+        conecta = conectaAtablaCleanedMetro()
         self.len_final = conecta.dbaspandas()  
     
-        def tearDown(self):
-            delattr(self)
+    def tearDown(self):
+        delattr(self)
         
     def test_load(self):
         cargado = pd.read_csv('../../../columnas_leidas.csv')
@@ -27,8 +27,6 @@ class loadUnitTest(marbles.core.TestCase):
         total_final = self.len_final
         total_deberia = por_cargar+anterior
         resta = total_final-total_deberia
-#       with self.json_file.open('r') as json_file:
-        #data = json.load(self.json_file)
         
         print("-----------------------imprimiendo columnsread")
         print(self.len_final)
@@ -47,5 +45,5 @@ class loadUnitTest(marbles.core.TestCase):
 
 if __name__ == '__main__':
     marbles.core.main()
-    
-    
+
+

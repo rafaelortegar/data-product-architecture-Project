@@ -38,8 +38,8 @@ class testExtract(CopyToTable):
         
         with self.input().open('r') as json_file:
             data = json.load(json_file)
-            print("imprimiendo data")
-            print(data)
+            #print("imprimiendo data")
+            #print(data)
             columns_read = data['nhits']
             print(columns_read)
             status = 'Loaded'
