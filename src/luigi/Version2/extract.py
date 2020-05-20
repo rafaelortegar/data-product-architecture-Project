@@ -4,6 +4,7 @@ import requests
 import boto3
 import pandas as pd
 from luigi.contrib.s3 import S3Target
+from luigi.local_target import LocalTarget
 
 
 
@@ -59,9 +60,12 @@ class extractToJson(luigi.Task):
 
     # Envía el output al S3 cop especificado con el nombre de output_path
     def output(self):
-        output_path = "s3://{}/{}/metro_{}.json". \
-            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
-        return luigi.contrib.s3.S3Target(path=output_path)
+        output_path = "../../../data/{}/{}/metro_{}.json". \
+            format(self.bucket, self.task_name, self.date)
+        #output_path = "s3://{}/{}/metro_{}.json". \
+        #    format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        #return luigi.contrib.s3.S3Target(path=output_path)
+        return luigi.local_target.LocalTarget(path=output_path)
 
 if __name__ == '__main__':
     luigi.extractToJson()

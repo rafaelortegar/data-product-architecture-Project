@@ -32,10 +32,10 @@ class loadUnitTest(marbles.core.TestCase):
         
         print("-----------------------imprimiendo columnsread")
         print(self.len_final)
-        self.assertTrue(resta == 0 , note = 'no se cargaron los datos correctamente')
+        self.assertTrue(resta == 0 , note = 'no se cargaron los datos a la RDS correctamente')
         now = datetime.datetime.now()
         passfail=resta == 0
-        nombreprueba='test load datos raw'
+        nombreprueba='test load datos RAW a RDS'
         print (now.strftime("%Y-%m-%d %H:%M:%S"))
         #return nombreprueba
         
