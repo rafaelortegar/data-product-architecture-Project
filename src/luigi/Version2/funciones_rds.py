@@ -18,11 +18,12 @@ class conectaAtablaRawMetro():
         
         
     def dbaspandas(self):
-        connection = psycopg2.connect(user=self.user,
-                              password=self.password,
-                              host=self.host,
-                              port=self.port,
-                              database=self.database)
+        creds = pd.read_csv("../../../credentials_postgres.csv")
+        connection = psycopg2.connect(user=creds.user[0],
+                              password=creds.password[0],
+                              host=creds.host[0],
+                              port=creds.port[0],
+                              database=creds.database[0])
         cursor = connection.cursor()
         
         df = psql.read_sql('SELECT * FROM raw.metro;', connection)

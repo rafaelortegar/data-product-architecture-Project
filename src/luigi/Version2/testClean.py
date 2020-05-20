@@ -46,4 +46,4 @@ class testClean(CopyToTable):
             yield (result,time,nombreprueba)
 
 if __name__ == '__main__':
-    luigi.testLoad()
+    luigi.testClean()
