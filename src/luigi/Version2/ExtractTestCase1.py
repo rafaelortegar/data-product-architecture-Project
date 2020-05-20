@@ -40,14 +40,6 @@ class ExtractTestCase(marbles.core.TestCase):
                 #return nombreprueba
                 
                 
-                #como estaba antes de cambiarlo
-                #self.assertTrue(self.json_file.read2 != '[]', note = 'json file is empty')
-                #now = datetime.datetime.now()
-                #passfail=self.json_file.read(2) != '[]'
-                #nombreprueba='test load datos raw'
-                #print (now.strftime("%Y-%m-%d %H:%M:%S"))
-                #return nombreprueba
-                
                 data_a_cargar = {'prueba':[nombreprueba], 'estatus':[passfail], 'hora_ejecucion':[now]}
                 df1 = pd.DataFrame(data = data_a_cargar)
                 #print(df1)
