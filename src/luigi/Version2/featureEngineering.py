@@ -59,9 +59,9 @@ class featureEngineering(PostgresQuery):
         df2 = df2.featurize(df)
         print(df2.shape)
         
-        #engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
-        engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'). \
-            format(self.user,self.password, self.host, self.port,self.database)
+        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        #engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'). \
+        #    format(self.user,self.password, self.host, self.port,self.database)
 
         table_name= self.table
         scheme='semantic'
