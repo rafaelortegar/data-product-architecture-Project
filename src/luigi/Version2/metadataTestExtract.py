@@ -70,8 +70,10 @@ class metadataTestExtract(PostgresQuery):
         
         df_a_subir = pd.DataFrame(data=datos_a_insertar)
         
-        engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'). \
-            format(self.user,self.password, self.host, self.port,self.database)
+        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        print(engine)
+        #engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'). \
+        #    format(self.user,self.password, self.host, self.port,self.database)
             
         table_name= self.table
         scheme='raw'
