@@ -44,7 +44,7 @@ class modelingMetro(luigi.task):
     password = creds.password[0]
     table = 'semantic.metro'
     port = creds.port[0]
-    query = """SELECT * FROM semantic.metro"""
+    query = """SELECT * FROM semantic.metro;"""
     #=============================================================================================================
     
     # Indica que para iniciar loadCleaned proceso de carga de metadatos requiere que el task de extractToJson esté terminado
