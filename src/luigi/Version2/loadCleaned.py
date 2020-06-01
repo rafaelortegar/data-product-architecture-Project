@@ -5,7 +5,7 @@ import pandas as pd
 import pandas.io.sql as psql
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
 
-
+from copyToPostgres import copyToPostgres
 #from loadCleaned import loadCleaned
 
 logger = logging.getLogger('luigi-interface')
