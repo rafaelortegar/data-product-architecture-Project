@@ -19,7 +19,7 @@ def dbaspandas():
                           password=creds.password[0],
                           host=creds.host[0],
                           port=creds.port[0],
-                          database=creds.database[0])
+                          database=creds.db[0])
     cursor = connection.cursor()
     
     df = psql.read_sql('SELECT * FROM raw.metro;', connection)
