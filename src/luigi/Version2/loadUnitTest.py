@@ -14,10 +14,9 @@ from funciones_rds import conectaAtablaRawMetro
 class loadUnitTest(marbles.core.TestCase):
 
     def setUp(self,len_final):
-        conecta = conectaAtablaRawMetro()
-        self.len_final = conecta.dbaspandas()  
+        self.len_final = 0  
     
-        def tearDown(self):
+    def tearDown(self):
             delattr(self)
         
     def test_load(self):
@@ -26,6 +25,8 @@ class loadUnitTest(marbles.core.TestCase):
         print("por cargar: ",por_cargar)
         anterior = cargado.total_anterior[0]
         print("anterior: ",anterior)
+        conecta = conectaAtablaRawMetro()
+        self.len_final = conecta.dbaspandas()
         total_final = self.len_final
         print("total_final: ",total_final)
         total_deberia = por_cargar+anterior
