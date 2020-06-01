@@ -86,7 +86,7 @@ class metadataCleaned(PostgresQuery):
         #df2.to_sql("semantic.metro", con=engine, schema='semantic',if_exists='replace')
         #print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
         
-        self.query = "INSERT INTO raw.metadataload  VALUES (%s,%s,%s,%s,%s,%s);"#% (
+        self.query = "INSERT INTO cleaned.metadata  VALUES (%s,%s,%s,%s,%s,%s);"#% (
         #user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) #, columns_loaded)
         sql = self.query
         
