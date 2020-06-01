@@ -70,7 +70,10 @@ class testLoad(PostgresQuery):
         sql = self.query
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        cursor.execute(sql,(result,time,nombreprueba))
+        print(sql)
+        sql=sql.format(result,time,nombreprueba)
+        print(sql)
+        cursor.execute(sql)
         
         self.output().touch(connection)
         connection.commit()
