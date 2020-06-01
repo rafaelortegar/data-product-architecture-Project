@@ -31,7 +31,7 @@ class testLoad(PostgresQuery):
     table = 'raw.metatestload'
     #columns = ["result", "time", "nombreprueba"] 
     port = creds.port[0]
-    query = """INSERT INTO raw.metatestload("result","time","nombreprueba") VALUES({result},{time},{nombreprueba});"""
+    query = """INSERT INTO raw.metatestload("result","time","nombreprueba") VALUES({result},%s,{nombreprueba});"""
     
     #=============================================================================================================
     
@@ -71,9 +71,9 @@ class testLoad(PostgresQuery):
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
         print(sql)
-        sql=sql.format(result=result,time=time,nombreprueba=nombreprueba)
+        sql=sql.format(result=result,nombreprueba=nombreprueba)
         print(sql)
-        cursor.execute(sql)#,(result,time,nombreprueba))
+        cursor.execute(sql,time)#,(result,time,nombreprueba))
         
         self.output().touch(connection)
         connection.commit()
