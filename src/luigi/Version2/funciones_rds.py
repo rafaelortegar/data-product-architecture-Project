@@ -15,14 +15,14 @@ port = creds['port'][0]
 
 class conectaAtablaRawMetro(object):
     
-    def __init__(self,host,database,user,password,table,port):
+    def __init__(self): #host,database,user,password,table,port):
         creds = pd.read_csv("../../../credentials_postgres.csv")
-        self.host = host
-        self.database = database
-        self.user = user
-        self.password = password
-        self.table = table
-        self.port = port
+        #self.host = host
+        #self.database = database
+        #self.user = user
+        #self.password = password
+        #self.table = table
+        #self.port = port
         
         
     def dbaspandas(self):
