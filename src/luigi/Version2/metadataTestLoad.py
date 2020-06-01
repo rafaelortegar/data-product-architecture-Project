@@ -18,7 +18,7 @@ logger = logging.getLogger('luigi-interface')
 
 class metadataTestLoad(PostgresQuery):
     """
-    Function to load metadata from the extracting process from mexico city metro data set on the specified date. It
+    Function to load metadata from the loading process from mexico city metro data set on the specified date. It
     uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
     bucket. Requires extractToJson
     """
@@ -70,12 +70,13 @@ class metadataTestLoad(PostgresQuery):
         
         df_a_subir = pd.DataFrame(data=datos_a_insertar)
         
-        engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'). \
-            format(self.user,self.password, self.host, self.port,self.database)
+        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        #. \
+        #    format(self.user,self.password, self.host, self.port,self.database)
             
         table_name= self.table
         scheme='raw'
-        df_a_subir.to_sql("metadatatestload", con=engine, schema='raw',if_exists='replace')
+        df_a_subir.to_sql("metatestload", con=engine, schema='raw',if_exists='replace')
         print(psql.read_sql('SELECT * FROM raw.metatestload ORDER BY time DESC LIMIT 1;', connection))
         sql = self.query
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
