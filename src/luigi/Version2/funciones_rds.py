@@ -5,7 +5,7 @@ import pandas as pd
 import pandas.io.sql as psql
 from sqlalchemy import create_engine
 
-class conectaAtablaRawMetro():
+class conectaAtablaRawMetro(object):
     
     def __init__(self,host,database,user,password,table,port):
         creds = pd.read_csv("../../../credentials_postgres.csv")
