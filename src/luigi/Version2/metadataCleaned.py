@@ -86,13 +86,13 @@ class metadataCleaned(PostgresQuery):
         #df2.to_sql("semantic.metro", con=engine, schema='semantic',if_exists='replace')
         #print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
         
-        self.query = "INSERT INTO raw.metadataload  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
-        user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) #, columns_loaded)
+        self.query = "INSERT INTO raw.metadataload  VALUES (%s,%s,%s,%s,%s,%s);"#% (
+        #user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) #, columns_loaded)
         sql = self.query
         
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        cursor.execute(sql)
+        cursor.execute(sql,(user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket))
         self.output().touch(connection)
 
         # commit and close connection
