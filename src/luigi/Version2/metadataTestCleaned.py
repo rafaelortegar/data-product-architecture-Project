@@ -12,7 +12,7 @@ from sqlalchemy import create_engine
 
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
 
-from testCleaned import testCleaned
+from testClean import testClean
 
 logger = logging.getLogger('luigi-interface')
 
@@ -39,9 +39,9 @@ class metadataTestCleaned(PostgresQuery):
     database = creds.db[0]
     user = creds.user[0]
     password = creds.password[0]
-    table = 'cleaned.metatestcleaned'
+    table = 'test.metapruebasunit'
     port = creds.port[0]
-    query = """INSERT INTO cleaned.metatestcleaned("usuario","fecha_de_ejecucion","resultado","nombre_de_prueba","ip_ec2") VALUES(%s,%s,%s,%s,%s));"""
+    query = """INSERT INTO test.metapruebasunit("usuario","fecha_de_ejecucion","resultado","nombre_de_prueba","ip_ec2") VALUES(%s,%s,%s,%s,%s);"""
     #=============================================================================================================
     
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
@@ -58,7 +58,7 @@ class metadataTestCleaned(PostgresQuery):
         #fecha_ejecucion = pd.Timestamp.now()
         fecha_json = self.date
         
-        df = psql.read_sql("""SELECT * FROM raw.metatestcleaned ORDER BY time DESC LIMIT 1;""", connection) # debería ser la tabla anterior
+        df = psql.read_sql("""SELECT * FROM cleaned.metatestcleaned ORDER BY time DESC LIMIT 1;""", connection) # debería ser la tabla anterior
         estatus = df['result'][0]
         fecha_ejecucion = df['time'][0]
         nombre_de_la_prueba = df['nombreprueba'][0]
@@ -107,4 +107,4 @@ class metadataTestCleaned(PostgresQuery):
         )
 
 if __name__ == '__main__':
-    luigi.metadataTestLoad()
+    luigi.metadataTestCleaned()
