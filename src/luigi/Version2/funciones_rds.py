@@ -6,12 +6,12 @@ import pandas.io.sql as psql
 from sqlalchemy import create_engine
 
 creds = pd.read_csv("../../../credentials_postgres.csv")
-host = creds.host[0]
-database = creds.database[0]
-user = creds.user[0]
-password = creds.password[0]
+host = creds['host'][0]
+database = creds['database'][0]
+user = creds['user'][0]
+password = creds['password'][0]
 table = 'raw.metro' 
-port = creds.port[0]
+port = creds['port'][0]
 
 class conectaAtablaRawMetro(object):
     
