@@ -41,7 +41,7 @@ class metadataTestLoad(PostgresQuery):
     password = creds.password[0]
     table = 'raw.metatestload'
     port = creds.port[0]
-    query = """SELECT * FROM raw.metatestload ORDER BY time DESC LIMIT 1;"""
+    query = """INSERT INTO raw.metatestload("usuario","fecha_de_ejecucion","resultado","nombre_de_prueba","ip_ec2") VALUES(%s,%s,%s,%s,%s));"""
     #=============================================================================================================
     
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
@@ -58,35 +58,36 @@ class metadataTestLoad(PostgresQuery):
         #fecha_ejecucion = pd.Timestamp.now()
         fecha_json = self.date
         
-        df = psql.read_sql(self.query, connection)
+        df = psql.read_sql("""SELECT * FROM raw.metatestload ORDER BY time DESC LIMIT 1;""", connection)
         estatus = df['result'][0]
         fecha_ejecucion = df['time'][0]
         nombre_de_la_prueba = df['nombreprueba'][0]
         usuario = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
         ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
         
-        datos_a_insertar = {'usuario':[usuario],'fecha_de_ejecucion':[fecha_ejecucion],'resultado':[estatus],
-                            'nombre_de_prueba':[nombre_de_la_prueba],'ip_ec2':[ip_ec2]}
+        #datos_a_insertar = {'usuario':[usuario],'fecha_de_ejecucion':[fecha_ejecucion],'resultado':[estatus],
+        #                    'nombre_de_prueba':[nombre_de_la_prueba],'ip_ec2':[ip_ec2]}
         
-        df_a_subir = pd.DataFrame(data=datos_a_insertar)
+        #df_a_subir = pd.DataFrame(data=datos_a_insertar)
         
-        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        #engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         #. \
         #    format(self.user,self.password, self.host, self.port,self.database)
             
-        table_name= self.table
-        scheme='raw'
-        df_a_subir.to_sql("metatestload", con=engine, schema='raw',if_exists='replace')
-        print(psql.read_sql('SELECT * FROM raw.metatestload ORDER BY time DESC LIMIT 1;', connection))
+        #table_name= self.table
+        #scheme='raw'
+        #df_a_subir.to_sql("raw.test", con=engine, schema='raw',if_exists='replace')
+        #print(psql.read_sql('SELECT * FROM raw.metatestload ORDER BY time DESC LIMIT 1;', connection))
         sql = self.query
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        cursor.execute(sql)
+        cursor.execute(sql,(usuario,fecha_ejecucion,estatus,nombre_de_la_prueba,ip_ec2))
         self.output().touch(connection)
+
 
         # commit and close connection
         connection.commit()
+        #cursor.close()
         connection.close()
-        cursor.close()
         
         
     def output(self):

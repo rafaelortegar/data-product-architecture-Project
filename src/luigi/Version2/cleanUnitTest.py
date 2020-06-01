@@ -3,63 +3,60 @@ import datetime
 import json
 import marbles.core
 import pandas as pd
+import numpy as np
 import psycopg2
 import sqlalchemy
 import pandas.io.sql as psql
 
-from funciones_rds import conectaAtablaCleanedMetro
+from funciones_rds import tiposDBcleaned
 
-#directorio = '/home/alfie-gonzalez/Documentos/Maestría/Segundo Semestre/Métodos de Gran Escala'
-#os.chdir(directorio)
-#file = 'afluencia-diaria-del-metro-cdmx.json'
-#json_file = open(file, 'rb')
-#class ExtractTestCase(marbles.core.TestCase):
-#    def __init__(self):
-#        pass
-#    def featurize(self, X):
+
  
 class cleanUnitTest(marbles.core.TestCase):
-        def setUp(self):
-                conecta = conectaAtablaCleanedMetro()
-                self.cleandf = conecta.dbaspandas()  
-
+        def setUp(self,df):
+                self.cleandf = pd.DataFrame(columns=["columns_name","data_type"])
         
         def tearDown(self):
                 delattr(self)
         
         def test_clean(self):
-            #cargado = pd.read_csv('../../../columnas_leidas.csv')
-            #por_cargar = cargado.datos_a_cargar[0]
-            #anterior = cargado.total_anterior[0]
-            tipos = self.cleandf.dtypes
-            print(tipos)
-            ##passfail = np.all(tipos == np.array(['los que tengan que ser']))
-            ##self.assertTrue(passfail , note = 'no se cargaron los datos a la RDS correctamente')
+            self.cleandf = tiposDBcleaned()
+            print(self.cleandf)
             
-
-            #total_final = len(self.cleandf)
-            #total_deberia = por_cargar+anterior
-            #resta = total_final-total_deberia
+            fecha_tipo = self.cleandf['data_type'][0]
+            ano_tipo = self.cleandf['data_type'][1]
+            linea_tipo = self.cleandf['data_type'][2]
+            estacion_tipo = self.cleandf['data_type'][3]
+            afluencia_tipo = self.cleandf['data_type'][4]
             
-            #dataTypeSeries = self.cleandf.dtypes
-            #tipo1 = dataTypeSeries[0][1]
-            #tipo2 = 
-
-
-            #print("-----------------------imprimiendo columnsread")
-            #print(self.len_final)
-            #self.assertTrue(resta == 0 , note = 'no se cargaron los datos a la RDS correctamente')
-            now = datetime.datetime.now()
-            #passfail=resta == 0
-            nombreprueba='test Clean data'
+            print("El tipo de dato de fecha es {fecha_tipo}").format(fecha_tipo=fecha_tipo)
+            print("El tipo de dato de año es {ano_tipo}").format(ano_tipo=ano_tipo)
+            print("El tipo de dato de linea es {linea_tipo}").format(linea_tipo=linea_tipo)
+            print("El tipo de dato de estacion es {estacion_tipo}").format(estacion_tipo=estacion_tipo)
+            print("El tipo de dato de afluencia es {afluencia_tipo}").format(afluencia_tipo=afluencia_tipo)
+            
+            datos_correctos = ["date","integer","character varying","character varying","integer"]
+            print("Los datos DEBEN SER del tipo:")
+            print(datos_correctos)
+            datos_obtenidos = [fecha_tipo,ano_tipo,linea_tipo,estacion_tipo,afluencia_tipo]
+            print("Los datos SON del tipo")
+            print(datos_obtenidos)
+            booleanresult = (datos_correctos==datos_obtenidos)
+            print("boolean_result")
+            print(booleanresult)
+            
+            self.assertTrue(booleanresult == False, note = 'Los tipos de dato no corresponden a la tabla cleaned')
+            now = datetime.date.now()
+            passfail = booleanresult == False
+            nombreprueba = 'test de limpieza de datos'
             print (now.strftime("%Y-%m-%d %H:%M:%S"))
-            #return nombreprueba
-        
-        
-            ##data_a_cargar = {'prueba':[nombreprueba], 'estatus':[passfail], 'hora_ejecucion':[now]}
-            ##df1 = pd.DataFrame(data = data_a_cargar)
-            ##print(df1)
-            ##return df1
+            now = now.strftime("%H:%M:%S")
+            
+            data_a_cargar = {'prueba':[nombreprueba], 'estatus':[passfail], 'hora_ejecucion':[now]}
+            df1 = pd.DataFrame(data=data_a_cargar)
+            print(df1)
+            return df1
+
 
 if __name__ == '__main__':
     marbles.core.main()

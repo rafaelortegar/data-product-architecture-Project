@@ -30,6 +30,43 @@ def dbaspandas():
     print(len(df))
     return len(df)
 
+def tiposDBcleaned():
+    creds = pd.read_csv("../../../credentials_postgres.csv")
+    connection = psycopg2.connect(user=creds.user[0],
+                          password=creds.password[0],
+                          host=creds.host[0],
+                          port=creds.port[0],
+                          database=creds.db[0])
+    cursor = connection.cursor()
+    
+    df = psql.read_sql("""SELECT column_name, data_type FROM information_schema.columns 
+                       WHERE table_schema = 'cleaned' AND table_name = 'metro';""", connection)
+    print(df.head())
+    # close connection
+    cursor.close()
+    connection.close()
+    return df
+
+def columnasFeatureEngineering():
+    creds = pd.read_csv("../../../credentials_postgres.csv")
+    connection = psycopg2.connect(user=creds.user[0],
+                          password=creds.password[0],
+                          host=creds.host[0],
+                          port=creds.port[0],
+                          database=creds.db[0])
+    cursor = connection.cursor()
+    
+    df = psql.read_sql("""SELECT * FROM semantic.metro;""", connection)
+    print(df.head())
+    numero_de_columnas = len(df.columns)
+    print("numero de columnas funciones_rds:", numero_de_columnas )
+    
+    
+    # close connection
+    cursor.close()
+    connection.close()
+    return numero_de_columnas
+
 
 #class conectaAtablaRawMetro(object):
 #    

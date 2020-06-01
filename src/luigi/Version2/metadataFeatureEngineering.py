@@ -2,6 +2,7 @@ import luigi
 import boto3
 import logging
 import pandas as pd
+import pandas.io.sql as psql
 
 
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
@@ -35,6 +36,7 @@ class metadataFeatureEngineering(PostgresQuery):
     password = creds.password[0]
     table = 'semantic.metadata'
     port = creds.port[0]
+    query = """INSERT INTO raw.metatestload("usuario","fecha_de_ejecucion","fecha_json","ip_ec2","nombre_bucket","columns_created") VALUES(%s,%s,%s,%s,%s,%s));"""
     #=============================================================================================================
     def requires(self):
         return featureEngineering(bucket=self.bucket, date=self.date)
@@ -43,7 +45,6 @@ class metadataFeatureEngineering(PostgresQuery):
         connection = self.output().connect()
         connection.autocommit = self.autocommit
         cursor = connection.cursor()
-
         # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
         clientEC2 = boto3.client('ec2')
         print("Inicializados el EC2")
@@ -55,29 +56,25 @@ class metadataFeatureEngineering(PostgresQuery):
         #columnas_leidas = pd.read_csv('../../columnas_leidas.csv')  #file_content # pd.read_csv('../../columnas_leidas.csv')
         print("csv leido correctamente")
         
-        
-        # Columns read indica la cantidad de columnas leidas
-        #columns_loaded = columnas_leidas['datos_a_cargar'][0]
-        #print("se cargaron:", columns_loaded, " columnas.")
-        #print(columns_loaded)
+        df = psql.read_sql("""SELECT * FROM semantic.metro ORDER BY time DESC LIMIT 1;""", connection)
+        columns_created = len(df.columns)
+        print("Columnas creadas:",columns_created)
         fecha_ejecucion = pd.Timestamp.now()
         user = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
         fecha_json = self.date
         ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
         nombre_bucket = self.bucket
-        status = 'Loaded'        
+        status = 'FeatureEngineering applied'        
         
-        self.query = "INSERT INTO semantic.metadata  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
-        user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) # , columns_loaded)
+        #self.query = "INSERT INTO semantic.metadata  VALUES ('%s', '%s', '%s', '%s', '%s', '%s');" % (
+        #user,fecha_ejecucion, fecha_json,ip_ec2, nombre_bucket) # , columns_loaded)
         
         sql = self.query
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        cursor.execute(sql)
-
+        cursor.execute(sql,(user,fecha_ejecucion,fecha_json,ip_ec2,nombre_bucket,columns_created))
         # Update marker table
         self.output().touch(connection)
-
         # commit and close connection
         connection.commit()
         connection.close()

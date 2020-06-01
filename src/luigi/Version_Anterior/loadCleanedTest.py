@@ -4,15 +4,12 @@ import boto3
 import logging
 import psycopg2
 import pandas as pd
-
-import pandas.io.sql as psql
+import datetime
+from datetime import datetime
 import pandas as pd
 
-from sqlalchemy import create_engine
 
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
-
-from testLoad import testLoad
 
 logger = logging.getLogger('luigi-interface')
 

@@ -86,6 +86,7 @@ class metadataTestExtract(PostgresQuery):
 
         # commit and close connection
         connection.commit()
+        cursor.close()
         connection.close()
         
         

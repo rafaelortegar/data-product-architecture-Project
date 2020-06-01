@@ -1,7 +1,7 @@
 import luigi
 
 from luigi import WrapperTask
-from loadCleaned import loadCleaned
+from loadWrapper import loadWrapper
 from metadataCleaned import metadataCleaned
 from metadataTestCleaned import metadataTestCleaned
 
@@ -18,9 +18,9 @@ class cleanWrapper(luigi.WrapperTask):
 
     
     def requires(self):
-        yield loadCleaned(date =self.date, bucket = self.bucket)
-        yield metadataCleaned(date =self.date, bucket = self.bucet)
-        yield metadataTestCleaned(date =self.date, bucket = self.bucet)
+        yield loadWrapper(date =self.date, bucket = self.bucket)
+        yield metadataCleaned(date =self.date, bucket = self.bucket)
+        yield metadataTestCleaned(date =self.date, bucket = self.bucket)
 
 
 if __name__ == '__main__':
