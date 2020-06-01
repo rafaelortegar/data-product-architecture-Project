@@ -8,7 +8,7 @@ import pandas as pd
 
 import pandas.io.sql as psql
 
-from funciones_rds import conectaAtablaRawMetro
+from funciones_rds import dbaspandas
 
  
 class loadUnitTest(marbles.core.TestCase):
@@ -25,8 +25,8 @@ class loadUnitTest(marbles.core.TestCase):
         print("por cargar: ",por_cargar)
         anterior = cargado.total_anterior[0]
         print("anterior: ",anterior)
-        conecta = conectaAtablaRawMetro()
-        self.len_final = conecta.dbaspandas()
+        #conecta = conectaAtablaRawMetro()
+        self.len_final = dbaspandas()
         total_final = self.len_final
         print("total_final: ",total_final)
         total_deberia = por_cargar+anterior
