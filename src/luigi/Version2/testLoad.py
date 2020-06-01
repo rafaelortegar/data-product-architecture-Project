@@ -1,6 +1,7 @@
 import luigi
 import json
 import boto3
+import logging
 import psycopg2
 import pandas as pd
 
