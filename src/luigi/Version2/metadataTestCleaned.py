@@ -46,7 +46,7 @@ class metadataTestCleaned(PostgresQuery):
     
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
-        return testCleaned(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
+        return testClean(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
     
     def run(self):
         connection = self.output().connect()
