@@ -86,6 +86,7 @@ class metadataTestLoad(PostgresQuery):
         # commit and close connection
         connection.commit()
         connection.close()
+        cursor.close()
         
         
     def output(self):
