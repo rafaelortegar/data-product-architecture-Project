@@ -4,11 +4,11 @@ import boto3
 import psycopg2
 import pandas as pd
 
-from luigi.contrib.postgres import CopyToTable
+from luigi.contrib.postgres import PostgresQuery
 from loadUnitTest import loadUnitTest
 from copyToPostgres import copyToPostgres
 
-class testLoad(CopyToTable):
+class testLoad(copyToTable):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
@@ -37,6 +37,7 @@ class testLoad(CopyToTable):
     def rows(self):
         
             prueba = loadUnitTest()
+            print(prueba)
             data_f = prueba.test_load()
             df1= pd.DataFrame(data_f)
             print(data_f)
@@ -44,6 +45,8 @@ class testLoad(CopyToTable):
             time = df1['hora_ejecucion'][0]
             nombreprueba = df1['prueba'][0]
             yield (result,time,nombreprueba)
+
+        
 
 if __name__ == '__main__':
     luigi.testLoad()

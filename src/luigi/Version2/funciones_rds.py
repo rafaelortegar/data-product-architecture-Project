@@ -31,6 +31,7 @@ class conectaAtablaRawMetro():
         # close connection
         cursor.close()
         connection.close()
+        print(len(df))
         return len(df)
         
     
