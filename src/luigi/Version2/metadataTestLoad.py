@@ -39,9 +39,9 @@ class metadataTestLoad(PostgresQuery):
     database = creds.db[0]
     user = creds.user[0]
     password = creds.password[0]
-    table = 'raw.metatestload'
+    table = 'test.metapruebasunit'
     port = creds.port[0]
-    query = """INSERT INTO raw.metatestload("usuario","fecha_de_ejecucion","resultado","nombre_de_prueba","ip_ec2") VALUES(%s,%s,%s,%s,%s);"""
+    query = """INSERT INTO test.metatestload("usuario","fecha_de_ejecucion","resultado","nombre_de_prueba","ip_ec2") VALUES(%s,%s,%s,%s,%s);"""
     #=============================================================================================================
     
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
