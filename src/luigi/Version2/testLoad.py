@@ -4,7 +4,8 @@ import boto3
 import logging
 import psycopg2
 import pandas as pd
-
+import datetime
+from datetime import datetime
 from luigi.contrib.postgres import PostgresQuery
 from loadUnitTest import loadUnitTest
 from copyToPostgres import copyToPostgres
@@ -31,8 +32,9 @@ class testLoad(PostgresQuery):
     table = 'raw.metatestload'
     #columns = ["result", "time", "nombreprueba"] 
     port = creds.port[0]
-    query = """INSERT INTO raw.metatestload("result","time","nombreprueba") VALUES({result},%s,{nombreprueba});"""
-    
+    print("antes de cargar dtos a rds")
+    query = """INSERT INTO raw.metatestload("result","time","nombreprueba") VALUES(%s,%s,%s);"""
+    print("ya cargo datos a rds")
     #=============================================================================================================
     
     def requires(self):
@@ -60,8 +62,8 @@ class testLoad(PostgresQuery):
         data_f = prueba.test_load()
         df1= pd.DataFrame(data_f)
         print(data_f)
-        result = df1['estatus'][0]
-        time = df1['hora_ejecucion'][0]
+        result = str(df1['estatus'][0])
+        time = str(datetime.now()) #.strftime("%H:%M:%S") #df1['hora_ejecucion'][0]
         nombreprueba = df1['prueba'][0]
         #query = """INSERT INTO raw.metatestload("result","time","nombreprueba") VALUES(%s,%s,%s);"""
         
@@ -69,11 +71,12 @@ class testLoad(PostgresQuery):
         
         sql = self.query
         
-        logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        print(sql)
-        sql=sql.format(result=result,nombreprueba=nombreprueba)
-        print(sql)
-        cursor.execute(sql,time)#,(result,time,nombreprueba))
+        #logger.info('Executing query from task: {name}'.format(name=self.task_name))
+        #print(sql)
+        #sql=sql.format(result=result,nombreprueba=nombreprueba)
+        #print(sql)
+        cursor.execute(sql,(result,time,nombreprueba))
+        #,(result,time,nombreprueba))
         
         self.output().touch(connection)
         connection.commit()
