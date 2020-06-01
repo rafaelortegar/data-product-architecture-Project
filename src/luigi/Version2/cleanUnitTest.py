@@ -30,11 +30,11 @@ class cleanUnitTest(marbles.core.TestCase):
             estacion_tipo = self.cleandf['data_type'][3]
             afluencia_tipo = self.cleandf['data_type'][4]
             
-            print("El tipo de dato de fecha es {fecha_tipo}").format(fecha_tipo=fecha_tipo)
-            print("El tipo de dato de año es {ano_tipo}").format(ano_tipo=ano_tipo)
-            print("El tipo de dato de linea es {linea_tipo}").format(linea_tipo=linea_tipo)
-            print("El tipo de dato de estacion es {estacion_tipo}").format(estacion_tipo=estacion_tipo)
-            print("El tipo de dato de afluencia es {afluencia_tipo}").format(afluencia_tipo=afluencia_tipo)
+            print("El tipo de dato de fecha es {fecha_tipo}".format(fecha_tipo=fecha_tipo))
+            print("El tipo de dato de año es {ano_tipo}".format(ano_tipo=ano_tipo))
+            print("El tipo de dato de linea es {linea_tipo}".format(linea_tipo=linea_tipo))
+            print("El tipo de dato de estacion es {estacion_tipo}".format(estacion_tipo=estacion_tipo))
+            print("El tipo de dato de afluencia es {afluencia_tipo}".format(afluencia_tipo=afluencia_tipo))
             
             datos_correctos = ["date","integer","character varying","character varying","integer"]
             print("Los datos DEBEN SER del tipo:")
