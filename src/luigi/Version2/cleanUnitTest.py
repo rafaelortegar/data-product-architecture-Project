@@ -47,7 +47,7 @@ class cleanUnitTest(marbles.core.TestCase):
             print(booleanresult)
             
             self.assertTrue(booleanresult == True , note = 'Los tipos de dato no corresponden a la tabla cleaned')
-            now = datetime.date.now()
+            now = datetime.datetime.now()
             passfail = booleanresult == True
             nombreprueba = 'test de limpieza de datos'
             print (now.strftime("%Y-%m-%d %H:%M:%S"))
