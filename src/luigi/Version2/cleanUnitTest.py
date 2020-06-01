@@ -21,6 +21,7 @@ class cleanUnitTest(marbles.core.TestCase):
         
         def test_clean(self):
             self.cleandf = tiposDBcleaned()
+            print("debuggeando cleanunittest jala el dataframe de funciones rds")
             print(self.cleandf)
             
             fecha_tipo = self.cleandf['data_type'][0]

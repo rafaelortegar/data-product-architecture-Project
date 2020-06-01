@@ -29,10 +29,10 @@ class testClean(PostgresQuery):
     database = creds.db[0]
     user = creds.user[0]
     password = creds.password[0]
-    table = 'cleaned.metatestclean'
+    table = 'cleaned.metatestcleaned'
     #columns = ["result", "time", "nombreprueba"] 
     port = creds.port[0]
-    query = """INSERT INTO cleaned.metatestclean("result","time","nombreprueba") VALUES(%s,%s,%s);"""
+    query = """INSERT INTO cleaned.metatestcleaned("result","time","nombreprueba") VALUES(%s,%s,%s);"""
     #=============================================================================================================
     
     def requires(self):

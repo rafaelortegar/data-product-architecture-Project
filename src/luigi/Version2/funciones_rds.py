@@ -45,6 +45,8 @@ def tiposDBcleaned():
     # close connection
     cursor.close()
     connection.close()
+    print("debuggeando tiposDBcleaned regresa el dataframe")
+    print(df)
     return df
 
 def columnasFeatureEngineering():
