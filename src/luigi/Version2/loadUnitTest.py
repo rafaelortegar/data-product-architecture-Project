@@ -43,6 +43,7 @@ class loadUnitTest(marbles.core.TestCase):
         passfail=resta == 0
         nombreprueba='test load datos RAW a RDS'
         print (now.strftime("%Y-%m-%d %H:%M:%S"))
+        now = now.strftime("%H:%M:%S")
         #return nombreprueba
         
         
