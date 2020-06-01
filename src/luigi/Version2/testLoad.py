@@ -71,9 +71,9 @@ class testLoad(PostgresQuery):
         
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
         print(sql)
-        #sql=sql.format(result,time,nombreprueba)
-        #print(sql)
-        cursor.execute(sql,(result,time,nombreprueba))
+        sql=sql.format(result,time,nombreprueba)
+        print(sql)
+        cursor.execute(sql)#,(result,time,nombreprueba))
         
         self.output().touch(connection)
         connection.commit()
