@@ -75,7 +75,7 @@ class predictionMetro(luigi.Task):
         modelos = data.copy()
         
         df = pd.read_csv('x_original.csv')
-        print("shape de lo leido",df.shape())
+        print("shape de lo leido",df.shape)
 #        fecha = '2020-06-02'
         
         fecha = self.date
