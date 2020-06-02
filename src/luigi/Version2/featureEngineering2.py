@@ -82,8 +82,12 @@ class featureEngineering2(PostgresQuery):
         #pickle.dump(model_matrix, file)
         #file.close()  
         
-        with open('model_matrix.pkl', 'wb') as f:
-            pickle.dump(model_matrix, f)
+        file = open('model_matrix.pkl', 'wb')
+        data = pickle.dump(model_matrix,file)
+        file.close()
+
+        #with open('model_matrix.pkl', 'wb') as f:
+        #    pickle.dump(model_matrix, f)
 
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         print("ya pasó engine")
