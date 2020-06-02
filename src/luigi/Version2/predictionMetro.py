@@ -54,12 +54,6 @@ class predictionMetro(luigi.Task):
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
-        dev_s3_client = ses.client('s3')
-
-        clientEC2 = boto3.client('ec2')
-        clientS3 = boto3.client('s3')
-        print("Inicializados el EC2 y el S3")
-
         
         # conectamos a la RDS
 #        connection = psycopg2.connect(user=creds.user[0],
@@ -101,16 +95,8 @@ class predictionMetro(luigi.Task):
         datos_a_csv = {'fecha':[fecha],'linea':[linea],'estacion':[estacion],'pronostico_afluencia':[pronostico_afluencia]} 
         pandas_a_csv = pd.DataFrame(data=datos_a_csv)
         print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
-        pandas_a_csv.to_csv("metro_2010-04-19.csv", index=False)
-        #pandas_a_csv.to_csv(self.output().path, index=False)
-        
-        
-        # para los outputs que no vamos a usar
-        vacio = ' '
-        data_vacia = {'vacio':[vacio]}
-        pandas_a_csv = pd.DataFrame(data=data_vacia)
         pandas_a_csv.to_csv(self.output().path, index=False)
-
+       
 
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
@@ -134,8 +120,8 @@ class predictionMetro(luigi.Task):
     #    return luigi.contrib.s3.S3Target(path=output_path)
 
     def output(self):
-        output_path = "s3://{}/{}/metro_{}.csv". \
-            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        output_path = "s3://{}/prediction/metro_{}.csv". \
+            format(self.bucket, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
 
