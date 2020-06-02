@@ -95,8 +95,10 @@ class predictionMetro(luigi.Task):
         datos_a_csv = {'fecha':[fecha],'linea':[linea],'estacion':[estacion],'pronostico_afluencia':[pronostico_afluencia]} 
         pandas_a_csv = pd.DataFrame(data=datos_a_csv)
         print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
-        pandas_a_csv.to_csv(self.output().path, index=False)
-       
+        #pandas_a_csv.to_csv(self.output().path, index=False)
+
+        with self.output().open('w') as output_file:
+            pandas_a_csv.to_csv(output_file)
 
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
@@ -120,8 +122,8 @@ class predictionMetro(luigi.Task):
     #    return luigi.contrib.s3.S3Target(path=output_path)
 
     def output(self):
-        output_path = "s3://{}/prediction/metro_{}.csv". \
-            format(self.bucket, self.date) #Formato del nombre para el json que entra al bucket S3
+        output_path = "s3://{}/{}/metro_{}.csv". \
+            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
 
