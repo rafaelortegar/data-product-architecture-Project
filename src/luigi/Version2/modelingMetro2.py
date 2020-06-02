@@ -88,8 +88,8 @@ class modelingMetro2(luigi.Task):
 #        pickle.dump(modelos, file)
 #        file.close()
 #        
-        with self.output().open('w') as f:
-            pickle.dump(modelos,f)
+        with self.output().open('w') as output_file:
+            pickle.dump(modelos,output_file)
         
         print("#...")
         print("##...")
@@ -111,8 +111,8 @@ class modelingMetro2(luigi.Task):
         
     # Envía el output al S3 cop especificado con el nombre de output_path
     def output(self):
-        output_path = "s3://{}/{}/metro_{}.pkl". \
-            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        output_path = "s3://dpaprojs3/modelingMetro_task_06_01/metro_{}.pkl". \
+            format(self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
 
 
