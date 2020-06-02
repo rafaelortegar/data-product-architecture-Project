@@ -58,6 +58,7 @@ class featureEngineering2(PostgresQuery):
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
         cursor.execute(sql)
         self.output().touch(connection)
+        
         connection.commit()
         connection.close()
         ###################################################################
@@ -75,8 +76,6 @@ class featureEngineering2(PostgresQuery):
         print(df2.shape)
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
-        #engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'). \
-        #    format(self.user,self.password, self.host, self.port,self.database)
         print("ya pasó engine")
         table_name= 'semantic.metro'
         print(table_name)
@@ -84,36 +83,9 @@ class featureEngineering2(PostgresQuery):
         print(scheme)
         df2.to_sql(table_name, con=engine , if_exists='replace')
         print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
-        #print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
+   
         
-        #sql = self.query
-        #print(sql)
-        #logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        #cursor.execute(sql)
-        
-        
-        #self.output().touch(connection)
-
-        # commit and close connection
-        #cursor.close()
-        #connection.commit()
-        #connection.close()
-        
-        
-    #def output(self):
-    #    """
-    #    Returns a PostgresTarget representing the executed query.
-    #    Normally you don't override this.
-    #    """
-    #    return PostgresTarget(
-    #        host=self.host,
-    #        database=self.database,
-    #        user=self.user,
-    #        password=self.password,
-    #        table=self.table,
-    #        update_id=self.update_id,
-    #        port=self.port
-    #    )
+   
 
 if __name__ == '__main__':
     luigi.featureEngineering2()

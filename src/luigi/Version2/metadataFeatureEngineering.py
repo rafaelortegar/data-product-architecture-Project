@@ -7,7 +7,7 @@ import pandas.io.sql as psql
 
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
 
-from featureEngineering import featureEngineering
+from featureEngineering2 import featureEngineering2
 
 logger = logging.getLogger('luigi-interface')
 
@@ -36,10 +36,10 @@ class metadataFeatureEngineering(PostgresQuery):
     password = creds.password[0]
     table = 'semantic.metadata'
     port = creds.port[0]
-    query = """INSERT INTO raw.metatestload("usuario","fecha_de_ejecucion","fecha_json","ip_ec2","nombre_bucket","columns_created") VALUES(%s,%s,%s,%s,%s,%s));"""
+    query = """INSERT INTO semantic.metadata("usuario","fecha_de_ejecucion","fecha_json","ip_ec2","nombre_bucket","columns_created") VALUES(%s,%s,%s,%s,%s,%s);"""
     #=============================================================================================================
     def requires(self):
-        return featureEngineering(bucket=self.bucket, date=self.date)
+        return featureEngineering2(bucket=self.bucket, date=self.date)
     
     def run(self):
         connection = self.output().connect()
