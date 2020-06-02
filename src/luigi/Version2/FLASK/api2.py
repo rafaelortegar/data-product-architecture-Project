@@ -17,8 +17,11 @@ def show_user_profile(username):
 
 @app.route('/date/<string:date>')
 def show_user2_profile(date):
-    print ("hola")
-    return "La fecha ingresada es {}".format(date)
+    year = date[:4]
+    month = date[4:6]
+    day = date[6:]
+
+    return "La fecha ingresada es {}-{}-{}".format(str(year), str(month).zfill(2), str(day).zfill(3)
 #def get(self, date):
 #    year = date[:4]
 #    month = date[4:6]
