@@ -85,8 +85,6 @@ class modelingMetro(PostgresQuery):
         modelos = modelado.ModelBuilder()
         print("modelos...",modelos)
         print("aqui ya hizo model builder")
-        print("modelos...",modelos)
-        print("aqui ya hizo model builder")
         modelos = modelos.build_model(df)
         
         file = open('modelo.pkl', 'wb')
