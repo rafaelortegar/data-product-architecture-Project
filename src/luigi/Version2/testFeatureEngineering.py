@@ -29,10 +29,10 @@ class testFeatureEngineering(PostgresQuery):
     database = creds.db[0]
     user = creds.user[0]
     password = creds.password[0]
-    table = 'semantic.metatestfeatureengineering'
+    table = 'test.pruebasunit'
     #columns = ["result", "time", "nombreprueba"] 
     port = creds.port[0]
-    query =  """INSERT INTO semantic.metatestfeatureengineering("result","time","nombreprueba") VALUES(%s,%s,%s);"""
+    query =  """INSERT INTO test.pruebasunit("result","time","nombreprueba") VALUES(%s,%s,%s);"""
     #=============================================================================================================
     
     def requires(self):
