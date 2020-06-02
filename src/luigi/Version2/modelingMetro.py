@@ -2,6 +2,7 @@ import luigi
 import logging
 import psycopg2
 import sqlalchemy
+import pickle
 
 import pandas.io.sql as psql
 import pandas as pd
@@ -82,6 +83,8 @@ class modelingMetro(PostgresQuery):
         print(df.shape)
         
         modelos = modelado.ModelBuilder()
+        print("modelos...",modelos)
+        print("aqui ya hizo model builder")
         print("modelos...",modelos)
         print("aqui ya hizo model builder")
         modelos = modelos.build_model(df)
