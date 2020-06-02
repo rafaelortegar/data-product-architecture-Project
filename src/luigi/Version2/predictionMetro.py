@@ -114,7 +114,8 @@ class predictionMetro(luigi.Task):
     
     # Envía el output al S3 cop especificado con el nombre de output_path
     def output(self):
-        output_path = "s3://dpaprojs3/predictionMetro_task_07_01/metro_{}.csv".format(self.date) #Formato del nombre para el json que entra al bucket S3
+        output_path = "s3://dpaprojs3/predictionMetro_task_07_01/metro_2010-04-19.csv"#.format(self.date) #Formato del nombre para el json que entra al bucket S3
+        #output_path = "s3://dpaprojs3/predictionMetro_task_07_01/metro_{}.csv".format(self.date) #Formato del nombre para el json que entra al bucket S3
         print("en el output:",output_path)
         return luigi.contrib.s3.S3Target(path=output_path)
 
