@@ -15,7 +15,7 @@ def show_user_profile(username):
     return "Hello user {}".format(username)
 
 
-@api.route("/date/<string:date>")
+@app.route("/date/<string:date>")
 class GetPredictions(Resource):
     def get(self, date):
         year = date[:4]
