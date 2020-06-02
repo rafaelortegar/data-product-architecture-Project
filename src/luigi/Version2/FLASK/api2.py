@@ -16,7 +16,7 @@ def show_user_profile(username):
 
 
 @app.route('/date/<string:date>')
-def show_user_profile(date):
+def show_user2_profile(date):
     print ("hola")
     return "La fecha ingresada es {}".format(date)
 #def get(self, date):
