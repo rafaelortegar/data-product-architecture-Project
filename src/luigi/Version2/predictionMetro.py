@@ -67,16 +67,16 @@ class predictionMetro(luigi.Task):
         print(model)
         #pickledesdeS3 = self.input().open('r')
         #print(pickledesdeS3)
-        archivopickle = open(self.input(), 'rb')
+        #archivopickle = open(self.input(), 'rb')
         #archivopickle = open(pickledesdeS3, 'r')
         print("el archivopikle es:")
-        print(archivopickle)
+        #print(archivopickle)
         
         print("cargando el pikle")
-        loadpickleours = pickle.load(archivopickle)
+        #loadpickleours = pickle.load(archivopickle)
         
-        modelospikledes3 = loadpickleours.copy()
-        print(modelospikledes3)
+        #modelospikledes3 = loadpickleours.copy()
+        #print(modelospikledes3)
         # conectamos a la RDS
 #        connection = psycopg2.connect(user=creds.user[0],
 #                                  password=creds.password[0],
