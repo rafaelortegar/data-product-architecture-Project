@@ -82,9 +82,9 @@ class featureEngineering2(PostgresQuery):
         #pickle.dump(model_matrix, file)
         #file.close()  
         
-        file = open('model_matrix.pkl', 'wb')
-        data = pickle.dump(model_matrix,file)
-        file.close()
+        #file = open('model_matrix.pkl', 'wb')
+        #data = pickle.dump(model_matrix,file)
+        #file.close()
 
         #with open('model_matrix.pkl', 'wb') as f:
         #    pickle.dump(model_matrix, f)
