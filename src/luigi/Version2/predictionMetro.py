@@ -75,12 +75,12 @@ class predictionMetro(luigi.Task):
         
         fecha = self.date
         
-        prediction = prediction.Predict()
-        prediction = prediction.predict(fecha, df, modelos)
-        print(prediction)
+        pred = prediction.Predict()
+        pred = pred.predict(fecha, df, modelos)
+        print(pred)
         
         # para los outputs que no vamos a usar
-        prediction.to_csv(self.output().path, index=False)
+        pred.to_csv(self.output().path, index=False)
         
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
@@ -89,7 +89,7 @@ class predictionMetro(luigi.Task):
         print(table_name)
         scheme='predict'
         print(scheme)
-        prediction.to_sql(table_name, con=engine,schema='predict' , if_exists='append')
+        pred.to_sql(table_name, con=engine,schema='predict' , if_exists='append')
         #df2.to_sql(table_name, con=engine,schema='semantic' , if_exists='replace')
 #        connection.commit()
 #        connection.close()
