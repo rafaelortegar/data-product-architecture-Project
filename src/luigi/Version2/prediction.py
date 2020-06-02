@@ -36,7 +36,7 @@ class Predict():
                             'afluencia':[0]*n})        
         x_mat = FeatureBuilder()
         x_mat = x_mat.featurize(x_original.append(temp))
-        variables_a_eliminar = ['fecha', 'anio', 'afluencia']
+        variables_a_eliminar = ['fecha', 'ano', 'afluencia']
         x_mat = x_mat.drop(variables_a_eliminar, axis = 1)
         x_nuevas = x_mat.tail(n)
         
