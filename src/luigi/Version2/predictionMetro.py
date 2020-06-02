@@ -57,10 +57,10 @@ class predictionMetro(luigi.Task):
         s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
         modelobuscado = "/modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
-        with BytesIO() as nombre:
-            obj.download_fileobj('dpaprojs3',modelobuscado,nombre)
-            nombre.seek(0)
-            model = pickle.load(nombre)
+        with BytesIO() as data:
+            obj.download_fileobj('dpaprojs3',modelobuscado,data)
+            data.seek(0)
+            model = pickle.load(data)
         print("Voy a leer el pikle de la s3")
         print(model)
         #pickledesdeS3 = self.input().open('r')
