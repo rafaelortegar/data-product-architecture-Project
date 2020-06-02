@@ -60,8 +60,7 @@ class predictionMetro(luigi.Task):
         clientS3 = boto3.client('s3')
         print("Inicializados el EC2 y el S3")
 
-        content_object = s3_resource.Object(self.bucket, file_to_read)
-        print("s3 encontrada exitosamente")
+        
         # conectamos a la RDS
 #        connection = psycopg2.connect(user=creds.user[0],
 #                                  password=creds.password[0],
