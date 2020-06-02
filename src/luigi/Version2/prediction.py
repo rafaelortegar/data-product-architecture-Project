@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from feature_builder import FeatureBuilder
 
 def pred_final(pred_bajo, prob_bajo, 
                pred_normal, prob_normal, 

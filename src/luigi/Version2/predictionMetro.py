@@ -21,6 +21,7 @@ from metadataTestFeatureEng import metadataTestFeatureEng
 from modelingMetro2 import modelingMetro2
 import modelado
 import prediction
+from feature_builder import FeatureBuilder
 
 class predictionMetro(luigi.Task):
     """
