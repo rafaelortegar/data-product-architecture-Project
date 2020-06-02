@@ -34,7 +34,7 @@ class featureEngineeringUnitTest(marbles.core.TestCase):
         now = datetime.datetime.now()
         passfail = columnas_obtenidas == 181
         nombreprueba = 'test de feature Engineering'
-        print (now = now.strftime("%H:%M:%S"))
+        #print (now = now.strftime("%H:%M:%S"))
         now = now.strftime("%H:%M:%S")
         
         data_a_cargar = {'prueba':[nombreprueba], 'estatus':[passfail], 'hora_ejecucion':[now]}
