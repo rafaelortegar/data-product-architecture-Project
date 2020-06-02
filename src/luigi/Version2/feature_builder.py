@@ -30,13 +30,3 @@ class FeatureBuilder():
         
         return(x_mat)
         
-    def create_model_matrix(X):
-        X1 = X.copy()
-        def model_matrix(X_nuevas):
-            n = X_nuevas.shape[0]
-            x_mat = self.featurize(X1.append(X_nuevas))
-            variables_a_eliminar = ['fecha', 'anio', 'afluencia']
-            x_mat = x_mat.drop(variables_a_eliminar, axis = 1)
-            return(x_mat.tail(n))
-        return(model_matrix)
-

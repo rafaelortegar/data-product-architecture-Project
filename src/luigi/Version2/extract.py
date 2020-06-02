@@ -40,7 +40,7 @@ class extractToJson(luigi.Task):
         print("#####...")
         print("######...")
         print("Iniciando extracción de datos...")
-
+        
         # Obtiene los datos en formato raw desde la liga de la api
         data_raw = requests.get(
             f"https://datos.cdmx.gob.mx/api/records/1.0/search/?dataset=afluencia-diaria-del-metro-cdmx&rows=10000&sort=-fecha&refine.fecha={self.date}")
