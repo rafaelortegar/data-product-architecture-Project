@@ -70,33 +70,33 @@ class predictionMetro(luigi.Task):
         #df = psql.read_sql('SELECT * FROM semantic.metro;', connection)
         #print(df.shape) 
         ##########################################################
-        # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
-        #file_to_read = 'extractToJson_task_01/metro_'+ self.date +'.json'
-        file_to_read ="s3://dpaprojs3/modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
-        print("El archivo a buscar es: ",file_to_read)
+        ## Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
+        ##file_to_read = 'extractToJson_task_01/metro_'+ self.date +'.json'
+        #file_to_read ="s3://dpaprojs3/modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
+        #print("El archivo a buscar es: ",file_to_read)
 
-        # Conexión a la S3
-        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
-        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
-        dev_s3_client = ses.client('s3')
+        ## Conexión a la S3
+        #ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        #s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+        #obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+        #dev_s3_client = ses.client('s3')
 
-        with BytesIO() as data:
-            s3_resource.Bucket(self.bucket).download_fileobj(file_to_read,data)
-            data.seek(0)
-            modelos = pickle.load(data)
+        #with BytesIO() as data:
+        #    s3_resource.Bucket(self.bucket).download_fileobj(file_to_read,data)
+        #    data.seek(0)
+        #    modelos = pickle.load(data)
 
-        #content_object = dev_s3_client.get_object(Bucket=self.bucket,Key='s3://dpaprojs3/modelingMetro_task_06_01/metro_'+self.date+'.pkl')
-        print("s3 encontrada exitosamente")
+        ##content_object = dev_s3_client.get_object(Bucket=self.bucket,Key='s3://dpaprojs3/modelingMetro_task_06_01/metro_'+self.date+'.pkl')
+        #print("s3 encontrada exitosamente")
         
         
         ##########################################################
         # Cargamos el modelo
-        #file = open('modelo.pkl', 'rb')
+        file = open('modelo.pkl', 'rb')
         #file = open(content_object, 'rb')
-        #data = pickle.load(file)
-        #file.close()
-        #modelos = data.copy()
+        data = pickle.load(file)
+        file.close()
+        modelos = data.copy()
         
         df = pd.read_csv('x_original.csv')
         print("shape de lo leido",df.shape)
