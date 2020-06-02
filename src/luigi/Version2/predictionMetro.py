@@ -141,7 +141,7 @@ class predictionMetro(luigi.Task):
         #pandas_a_csv.to_csv(self.output().path, index=False)
         
         with self.output().open('w') as output_file:
-            pandas_a_csv.to_csv(output_file)
+            pandas_a_csv.to_csv(output_file,index=False)
 
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
