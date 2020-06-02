@@ -42,18 +42,7 @@ class featureEngineering(PostgresQuery):
     password = creds.password[0]
     table = 'semantic.metro'
     port = creds.port[0]
-    query = """
-        drop table if exists semantic.metro cascade;
-        create table semantic.metro as (
-            SELECT 
-            fecha::DATE as fecha, 
-            anio::int as ano, 
-            linea::varchar as linea, 
-            estacion::varchar as estacion,
-            afluencia::int as afluencia
-            from raw.metro
-            );  
-            """ 
+    query = """DROP TABLE IF EXISTS semantic.metro"""  
     #=============================================================================================================
     # Indica que para iniciar el proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
@@ -74,7 +63,7 @@ class featureEngineering(PostgresQuery):
         print(df2.shape)
         
         # query... ¿Cómo meter todo un df a postgres con un query?
-        
+        df2.to_sql(t"metro", con=engine, schema='semantic',if_exists='replace')
         
         #engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         #engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'). \

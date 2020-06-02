@@ -61,6 +61,7 @@ class featureEngineering2(PostgresQuery):
         connection.commit()
         connection.close()
         ###################################################################
+        creds=self.creds
         connection = psycopg2.connect(user=creds.user[0],
                                           password=creds.password[0],
                                           host=creds.host[0],

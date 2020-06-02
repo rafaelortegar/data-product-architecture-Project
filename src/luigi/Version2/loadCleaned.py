@@ -11,6 +11,11 @@ from copyToPostgres import copyToPostgres
 logger = logging.getLogger('luigi-interface')
 
 class loadCleaned(PostgresQuery):
+    """
+    Function to load cleaned data from the extracting process from mexico city metro data set on the specified date. It
+    uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
+    bucket. Requires extractToJson
+    """
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
