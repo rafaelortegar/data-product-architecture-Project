@@ -124,7 +124,7 @@ class predictionMetro(luigi.Task):
         
         pred = prediction.Predict()
         print(pred)
-        pred = pred.predict(fecha, df, modelos)
+        pred = pred.predict(fecha, df, model)
         print(pred)
         print(pred.shape)
         
