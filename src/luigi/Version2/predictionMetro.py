@@ -95,7 +95,7 @@ class predictionMetro(luigi.Task):
         datos_a_csv = {'fecha':[fecha],'linea':[linea],'estacion':[estacion],'pronostico_afluencia':[pronostico_afluencia]} 
         pandas_a_csv = pd.DataFrame(data=datos_a_csv)
         print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
-        
+        pandas_a_csv.to_csv("metro_2010-04-19", index=False)
         pandas_a_csv.to_csv(self.output().path, index=False)
         
         
