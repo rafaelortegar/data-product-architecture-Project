@@ -11,6 +11,7 @@ from luigi.contrib.postgres import PostgresQuery, PostgresTarget
 
 import feature_builder as fb
 from loadCleaned import loadCleaned
+import pickle
 
 logger = logging.getLogger('luigi-interface')
 ##############################################################      SEMANTIC       ####################################
