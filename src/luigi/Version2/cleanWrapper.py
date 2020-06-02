@@ -18,9 +18,9 @@ class cleanWrapper(luigi.WrapperTask):
 
     
     def requires(self):
-        yield loadWrapper(date =self.date, bucket = self.bucket)
-        yield metadataCleaned(date =self.date, bucket = self.bucket)
         yield metadataTestCleaned(date =self.date, bucket = self.bucket)
+        yield metadataCleaned(date =self.date, bucket = self.bucket)
+        yield loadWrapper(date =self.date, bucket = self.bucket)
 
 
 if __name__ == '__main__':

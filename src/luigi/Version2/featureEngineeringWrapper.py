@@ -18,6 +18,6 @@ class featureEngineeringWrapper(luigi.WrapperTask):
 
     
     def requires(self):
-        yield cleanWrapper(date =self.date, bucket = self.bucket)
-        yield metadataFeatureEngineering(date =self.date, bucket = self.bucket)
         yield metadataTestFeatureEng(date =self.date, bucket = self.bucket)
+        yield metadataFeatureEngineering(date =self.date, bucket = self.bucket)
+        yield cleanWrapper(date =self.date, bucket = self.bucket)
