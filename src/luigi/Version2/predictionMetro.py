@@ -57,9 +57,10 @@ class predictionMetro(luigi.Task):
         s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
         print("Voy a leer el pikle de la s3")
-        pickledesdeS3 = self.input().open('r')
-        print(pickledesdeS3)
-        archivopickle = open(pickledesdeS3, 'rb')
+        #pickledesdeS3 = self.input().open('r')
+        #print(pickledesdeS3)
+        archivopickle = open(self.input(), 'rb')
+        #archivopickle = open(pickledesdeS3, 'r')
         print("el archivopikle es:")
         print(archivopickle)
         
