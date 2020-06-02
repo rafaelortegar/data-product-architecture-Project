@@ -19,9 +19,12 @@ from featureEngineering2 import featureEngineering2
 from metadataFeatureEngineering import metadataFeatureEngineering
 from metadataTestFeatureEng import metadataTestFeatureEng
 from modelingMetro2 import modelingMetro2
+
 import modelado
 import prediction
 from feature_builder import FeatureBuilder
+
+
 
 class predictionMetro(luigi.Task):
     """
@@ -72,13 +75,16 @@ class predictionMetro(luigi.Task):
         modelos = data.copy()
         
         df = pd.read_csv('x_original.csv')
-        fecha = '2020-06-02'
+        print("shape de lo leido",df.shape())
+#        fecha = '2020-06-02'
         
         fecha = self.date
         
         pred = prediction.Predict()
+        print(pred)
         pred = pred.predict(fecha, df, modelos)
         print(pred)
+        print(pred.shape)
         
         # para los outputs que no vamos a usar
         
@@ -88,8 +94,9 @@ class predictionMetro(luigi.Task):
         pronostico_afluencia = pred['pronostico_afluencia'][0]
         datos_a_csv = {'fecha':[fecha],'linea':[linea],'estacion':[estacion],'pronostico_afluencia':[pronostico_afluencia]} 
         pandas_a_csv = pd.DataFrame(data=datos_a_csv)
-        print("dimensiones de prediccion",pandas_a_csv)
-        pandas_a_csv.to_csv(self.output().path, index=False)
+        print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
+        
+        pandas_a_csv.to_csv(path=self.output().path, index=False)
         
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
