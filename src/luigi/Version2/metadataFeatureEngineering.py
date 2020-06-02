@@ -36,7 +36,7 @@ class metadataFeatureEngineering(PostgresQuery):
     password = creds.password[0]
     table = 'semantic.metadata'
     port = creds.port[0]
-    query = """INSERT INTO semantic.metadata("usuario","fecha_de_ejecucion","fecha_json","ip_ec2","nombre_bucket","columns_created") VALUES(%s,%s,%s,%s,%s,%s);"""
+    query = """INSERT INTO semantic.metadata("usuario","fecha_ejecucion","fecha_json","ip_ec2","nombre_bucket","columns_created") VALUES(%s,%s,%s,%s,%s,%s);"""
     #=============================================================================================================
     def requires(self):
         return featureEngineering2(bucket=self.bucket, date=self.date)
@@ -56,7 +56,7 @@ class metadataFeatureEngineering(PostgresQuery):
         #columnas_leidas = pd.read_csv('../../columnas_leidas.csv')  #file_content # pd.read_csv('../../columnas_leidas.csv')
         print("csv leido correctamente")
         
-        df = psql.read_sql("""SELECT * FROM semantic.metro ORDER BY time DESC LIMIT 1;""", connection)
+        df = psql.read_sql("""SELECT * FROM semantic.metro ORDER BY index DESC LIMIT 1;""", connection)
         columns_created = len(df.columns)
         print("Columnas creadas:",columns_created)
         fecha_ejecucion = pd.Timestamp.now()
