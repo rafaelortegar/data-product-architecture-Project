@@ -21,15 +21,27 @@ def show_user2_profile(date):
     month = date[4:6]
     day = date[6:]
 
-    return "La fecha ingresada es: {}-{}-{}".format(str(year), str(month).zfill(2), str(day).zfill(2))
+    #return "La fecha ingresada es: {}-{}-{}".format(str(year), str(month).zfill(2), str(day).zfill(2))
+
+    ses = boto3.session.Session(profile_name='rafael-dpa-proj', region_name='us-west-2')
+    s3_resource = ses.resource('s3')
+
+    obj = s3_resource.Object("dpaprojs3", "predictionMetro_task_07_01/metro_{}-{}-{}.csv".format(str(year), str(month).zfill(2), str(day).zfill(2)))
+    file_content = obj.get()['Body'].read().decode('utf-8')
+    df = pd.read_csv(StringIO(file_content))
+    dfJson = df.to_json(orient='table')
+
+    #return "La fecha ingresada es {}-{}-{}".format(str(year), str(month).zfill(2), str(day).zfill(2)), print(dfJson)
+    return dfJson
+
 
 #def get(self, date):
 #    year = date[:4]
 #    month = date[4:6]
 #    day = date[6:]
 
-#    ses = boto3.session.Session(profile_name='rafael-dpa-proj', region_name='us-west-2')
-#    s3_resource = ses.resource('s3')
+    #ses = boto3.session.Session(profile_name='rafael-dpa-proj', region_name='us-west-2')
+    #s3_resource = ses.resource('s3')
 
     #s3://dpaprojs3/predictionMetro_task_07_01/metro_2010-05-07.csv
         
