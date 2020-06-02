@@ -10,7 +10,7 @@ git clone https://github.com/valencig/data-product-architecture-Project.git
 cd data-product-architecture-Project/src/luigi/Version2
 ```
 
-## Correr los tasks de luigi
+## Ejecutar los tasks de luigi
 
 En el directorio /src/luigi/Version2 están todos los tasks de luigi que conforman parte del pipeline de este trabajo. Para correr un task, se hace lo siguiente:
 
