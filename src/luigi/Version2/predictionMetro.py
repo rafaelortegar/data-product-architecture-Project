@@ -96,9 +96,16 @@ class predictionMetro(luigi.Task):
         pandas_a_csv = pd.DataFrame(data=datos_a_csv)
         print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
         pandas_a_csv.to_csv("metro_2010-04-19.csv", index=False)
+        #pandas_a_csv.to_csv(self.output().path, index=False)
+        
+        
+        # para los outputs que no vamos a usar
+        vacio = ' '
+        data_vacia = {'vacio':[vacio]}
+        pandas_a_csv = pd.DataFrame(data=data_vacia)
         pandas_a_csv.to_csv(self.output().path, index=False)
-        
-        
+
+
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         print("ya pasó engine")
