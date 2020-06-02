@@ -74,7 +74,16 @@ class featureEngineering2(PostgresQuery):
         df2 = fb.FeatureBuilder()
         df2 = df2.featurize(df)
         print(df2.shape)
+
+        model_matrix = fb.FeatureBuilder.create_matrix(df)
         
+        #file = open('model_matrix.pkl', 'wb')
+        #pickle.dump(model_matrix, file)
+        #file.close()  
+        
+        with open('model_matrix.pkl', 'wb') as f:
+            pickle.dump(model_matrix, f)
+
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         print("ya pasó engine")
         table_name= 'semantic.metro'

@@ -3,23 +3,24 @@ import logging
 import psycopg2
 import sqlalchemy
 
-from sklearn.impute import SimpleImputer
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import confusion_matrix
-
 import pandas.io.sql as psql
 import pandas as pd
 
 from sqlalchemy import create_engine
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
-from featureEngineering import featureEngineering
-import modelado
+from luigi.contrib.s3 import S3Target
 
+from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix
+
+from featureEngineering2 import featureEngineering2
+import modelado
 
 logger = logging.getLogger('luigi-interface')
 
 
-class modelingMetro(luigi.task):
+class modelingMetro(PostgresQuery):
     """
     Function to train model from the mexico city metro data set on the database on postgres.
     It stores the metadata from uploading into the specified S3 bucket on AWS. Note: user MUST have the credentials 
@@ -49,21 +50,40 @@ class modelingMetro(luigi.task):
     
     # Indica que para iniciar loadCleaned proceso de carga de metadatos requiere que el task de extractToJson esté terminado
     def requires(self):
-        return featureEngineering(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
+        return featureEngineering2(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
 
 
     def run(self):
         connection = self.output().connect()
         connection.autocommit = self.autocommit
         cursor = connection.cursor()
+        sql = self.query
         
-        df = psql.read_sql(self.query, connection)
+        logger.info('Executing query from task: {name}'.format(name=self.task_name))
+        cursor.execute(sql)
+        self.output().touch(connection)
+        
+        connection.commit()
+        connection.close()
+        ############################################################################################
+        creds=self.creds
+        connection = psycopg2.connect(user=creds.user[0],
+                                          password=creds.password[0],
+                                          host=creds.host[0],
+                                          port=creds.port[0],
+                                          database=creds.db[0])
+        cursor = connection.cursor()
+
+        df = psql.read_sql('SELECT * FROM semantic.metro;', connection)
         print(df.shape)
         
         modelos = modelado.ModelBuilder()
         modelos = modelos.build_model(df)
         
-        sql = self.query
+        file = open('modelo.pkl', 'wb')
+        pickle.dump(modelos, file)
+        file.close()
+
         logger.info('Executing query from task: {name}'.format(name=self.task_name))
         cursor.execute(sql)
         self.output().touch(connection)
@@ -72,22 +92,46 @@ class modelingMetro(luigi.task):
         connection.commit()
         connection.close()
         
-        
-    def output(self):
-        """
-        Returns a PostgresTarget representing the executed query.
+        creds_aws = pd.read_csv("../../../credentials.csv")
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        s3_resource = ses.resource('s3')
+        obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
 
-        Normally you don't override this.
-        """
-        return PostgresTarget(
-            host=self.host,
-            database=self.database,
-            user=self.user,
-            password=self.password,
-            table=self.table,
-            update_id=self.update_id,
-            port=self.port
-        )
+                # Escribe un JSON con la información descargada de la API, aqui esta el output
+        with self.output().open('w') as json_file:
+            json.dump(data_raw.json(), json_file)
+
+        print("#...")
+        print("##...")
+        print("###...")
+        print("####...")
+        print("#####...")
+        print("######...")
+        print("Extracción de los datos completa!! :)")
+
+    # Envía el output al S3 cop especificado con el nombre de output_path
+    def output(self):
+        #output_path = "../../../data/{}/{}/metro_{}.json". \
+        #    format(self.bucket, self.task_name, self.date)
+        output_path = "s3://{}/{}/metro_{}.json". \
+            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        return luigi.contrib.s3.S3Target(path=output_path)
+        
+#    def output(self):
+#        """
+#        Returns a PostgresTarget representing the executed query.
+#
+#        Normally you don't override this.
+#        """
+#        return PostgresTarget(
+#            host=self.host,
+#            database=self.database,
+#            user=self.user,
+#            password=self.password,
+#            table=self.table,
+#            update_id=self.update_id,
+#            port=self.port
+#        )
 
 
 
