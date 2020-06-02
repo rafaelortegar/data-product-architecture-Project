@@ -44,7 +44,7 @@ class copyToPostgres(CopyToTable):
     def requires(self):
         def _requires(self):
             return metadataExtract(bucket=self.bucket,date=self.date)
-        return extractToJson(bucket=self.bucket, date=self.date) # , metadataExtract(bucket=self.bucket, date=self.date) # , testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date),metadataExtract(bucket=self.bucket, date=self.date) # , metadataExtract(bucket=self.bucket, date=self.date) # , testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
 #        def _requires(self):
 #            return metadataExtract(bucket=self.bucket,date=self.date)
 
