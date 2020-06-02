@@ -3,6 +3,7 @@ import logging
 import psycopg2
 import sqlalchemy
 import pickle
+import boto3
 
 import pandas.io.sql as psql
 import pandas as pd
