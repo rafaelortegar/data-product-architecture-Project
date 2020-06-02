@@ -95,8 +95,9 @@ class predictionMetro(luigi.Task):
         datos_a_csv = {'fecha':[fecha],'linea':[linea],'estacion':[estacion],'pronostico_afluencia':[pronostico_afluencia]} 
         pandas_a_csv = pd.DataFrame(data=datos_a_csv)
         print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
-        pandas_a_csv.to_csv("s3://dpaprojs3/predictionMetro_task_07_01/metro_2010-04-19.csv", index=False)
+        pandas_a_csv.to_csv("metro_2010-04-19.csv", index=False)
         pandas_a_csv.to_csv(self.output().path, index=False)
+        #pandas_a_csv.to_csv(self.output().output_path, index=False)
         
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
@@ -113,13 +114,16 @@ class predictionMetro(luigi.Task):
         #return prediction
     
     # Envía el output al S3 cop especificado con el nombre de output_path
+    #def output(self):
+    #    #output_path = "s3://dpaprojs3/predictionMetro_task_07_01/metro_2010-04-19.csv"#.format(self.date) #Formato del nombre para el json que entra al bucket S3
+    #    output_path = "s3://dpaprojs3/predictionMetro_task_07_01/metro_{}.csv".format(self.date) #Formato del nombre para el json que entra al bucket S3
+    #    print("en el output:",output_path)
+    #    return luigi.contrib.s3.S3Target(path=output_path)
+
     def output(self):
-        output_path = "s3://dpaprojs3/predictionMetro_task_07_01/metro_2010-04-19.csv"#.format(self.date) #Formato del nombre para el json que entra al bucket S3
-        #output_path = "s3://dpaprojs3/predictionMetro_task_07_01/metro_{}.csv".format(self.date) #Formato del nombre para el json que entra al bucket S3
-        print("en el output:",output_path)
+        output_path = "s3://{}/{}/metro_{}.csv". \
+            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
         return luigi.contrib.s3.S3Target(path=output_path)
-
-
 
 
 if __name__ == '__main__':
