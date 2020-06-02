@@ -110,28 +110,28 @@ class modelingMetro(PostgresQuery):
         print("Extracción de los datos completa!! :)")
 
     # Envía el output al S3 cop especificado con el nombre de output_path
-    def output(self):
-        #output_path = "../../../data/{}/{}/metro_{}.json". \
-        #    format(self.bucket, self.task_name, self.date)
-        output_path = "s3://{}/{}/metro_{}.json". \
-            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
-        return luigi.contrib.s3.S3Target(path=output_path)
-        
 #    def output(self):
-#        """
-#        Returns a PostgresTarget representing the executed query.
-#
-#        Normally you don't override this.
-#        """
-#        return PostgresTarget(
-#            host=self.host,
-#            database=self.database,
-#            user=self.user,
-#            password=self.password,
-#            table=self.table,
-#            update_id=self.update_id,
-#            port=self.port
-#        )
+#        #output_path = "../../../data/{}/{}/metro_{}.json". \
+#        #    format(self.bucket, self.task_name, self.date)
+#        output_path = "s3://{}/{}/metro_{}.json". \
+#            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+#        return luigi.contrib.s3.S3Target(path=output_path)
+        
+    def output(self):
+        """
+        Returns a PostgresTarget representing the executed query.
+
+        Normally you don't override this.
+        """
+        return PostgresTarget(
+            host=self.host,
+            database=self.database,
+            user=self.user,
+            password=self.password,
+            table=self.table,
+            update_id=self.update_id,
+            port=self.port
+        )
 
 
 
