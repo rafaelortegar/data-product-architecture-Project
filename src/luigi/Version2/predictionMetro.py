@@ -107,7 +107,7 @@ class predictionMetro(luigi.Task):
         print(table_name)
         scheme='predict'
         print(scheme)
-        pred.to_sql(table_name, con=engine,schema='predict' , if_exists='replace')
+        pred.to_sql(table_name, con=engine,schema='predict' , if_exists='append')
         #df2.to_sql(table_name, con=engine,schema='semantic' , if_exists='replace')
 #        connection.commit()
 #        connection.close()
