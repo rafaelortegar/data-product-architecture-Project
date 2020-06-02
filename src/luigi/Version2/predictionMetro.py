@@ -85,15 +85,19 @@ class predictionMetro(luigi.Task):
 
         # El content object está especificando el objeto que se va a extraer del bucket S3
         # (la carga que se acaba de hacer desde la API)
+        
         content_object = s3_resource.Object(self.bucket, file_to_read)
         print("s3 encontrada exitosamente")
-
+        
+        #response = dev_s3_client.get_object(Bucket='name_of_your_bucket', Key='path/to_your/file.pkl')
+        body = content_object['Body'].read()
+        data = pickle.loads(body)
         ##########################################################
         # Cargamos el modelo
         #file = open('modelo.pkl', 'rb')
-        file = open(content_object, 'rb')
-        data = pickle.load(file)
-        file.close()
+        #file = open(content_object, 'rb')
+        #data = pickle.load(file)
+        #file.close()
         modelos = data.copy()
         
         df = pd.read_csv('x_original.csv')
