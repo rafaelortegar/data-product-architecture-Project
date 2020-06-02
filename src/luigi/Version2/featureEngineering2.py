@@ -95,10 +95,14 @@ class featureEngineering2(PostgresQuery):
         print(table_name)
         scheme='semantic'
         print(scheme)
+        print("Esperame tantito, toy pensando...")
         df2.to_sql(table_name, con=engine , if_exists='replace')
         print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
-   
-        
+
+        print("head:")
+        print(df2.head(10))
+        print("tail:")
+        print(df2.tail(10))
    
 
 if __name__ == '__main__':
