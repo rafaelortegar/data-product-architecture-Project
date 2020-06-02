@@ -63,7 +63,7 @@ class Predict():
         resultado = pd.DataFrame({'fecha':[fecha]*n, 
                                   'linea':estaciones['linea'], 
                                   'estacion':estaciones['estacion'], 
-                                  'pronostico_aflunecia':pred_f})
+                                  'pronostico_afluencia':pred_f})
         
         return(resultado)
 
