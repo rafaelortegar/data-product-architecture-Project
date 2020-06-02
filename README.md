@@ -1,9 +1,7 @@
-# data-product-architecture-Project
+## data-product-architecture-Project
 Final project of Data product architecture class
 
-
-# Análisis de las estaciones de metro de CDMX según su afluencia diaria
-
+## Análisis de las estaciones de metro de CDMX según su afluencia diaria
 
 La base de datos a analizar concentra información sobre la alfuencia diaria en las estaciones del sistema de transporte colectivo Metro en la ciudad de México. Su frecuencia de actualización es mensual y los datos se encuentran detallados a nivel diario. Las columnas que componen la base son las siguientes:
 
@@ -212,7 +210,7 @@ El gobierno de datos se ocupa:
 
 - Encontrar la tecnología adecuada para cubrir las distintas necesidades.
 
-### Metadata
+## Metadata
 -  Raw
     - Día/mes/año de acceso
     - Hora de acceso
@@ -253,17 +251,16 @@ El gobierno de datos se ocupa:
     - Estatus de ejecución: fallido, exitoso, etc.
 
 
-### Linaje de datos
+## Linaje de datos
 
 El linaje de datos es sumamente importante debido a que los datos durante el proceso de análisis son transformados en repetidas ocasiones. Lo cual crea una especie de telefono descompuesto, los datos originales no se parecen a los finales y puede crear confusión. Para evitar eso está el linaje de datos que le da confiabilidad a los datos a través de las diversas transformaciones que se realicen.
 
 Describe el origen, movimientos, características y calidad de los datos. Dónde comienza cada dato y cómo se transforma hasta llegar a resultados en distintos proyectos empresariales.
 
-### Bias and Fairness
+## Bias and Fairness
 
 La variable estación podría estar sujeta a sesgo. Para poder estimarlo podría agregarse al conjunto de datos la geolocalización de las estaciones, información con la cual se podría identificar la distribución de nivel socioeconómico que más frecuenta cada estación.
 
-<<<<<<< HEAD
 =======
 Seleccionamos una variable protegida:  Afluencianivel que es la variable que que clasifica las estaciones de metro con base en la prediccion del nivel de afluencia, esta variable es protegida porque no queremos que discrimine las estaciones donde hay mas usuarios de grupos etnicos marginales, o de algun nivel socio economico en especifico. 
 Un ejemplo, es que con base en la predicción de la Afluencia de la estación se van a distribuir los recursos del metro, que son finitos,
@@ -293,8 +290,22 @@ https://blog.powerdata.es/el-valor-de-la-gestion-de-datos/bid/243575/data-govern
 
 https://blog.powerdata.es/el-valor-de-la-gestion-de-datos/entendiendo-lo-que-es-data-lineage
 
+## Cómo reproducir este trabajo
 
+### Descargar el repositorio
 
+```
+git clone https://github.com/valencig/data-product-architecture-Project.git
+cd data-product-architecture-Project/src/luigi/Version2
+```
 
+### Ejecutar los tasks de luigi
 
+En el directorio /src/luigi/Version2 están todos los tasks de luigi que conforman parte del pipeline de este trabajo. Para correr un task, se hace lo siguiente:
+
+```
+PYTHONPATH='.' python3 -m luigi --module modelingMetro2 modelingMetro2 --scheduler-host localhost --date 2010-04-19
+```
+
+Por ejemplo, el código anterior ejecuta los tasks de luigi desde el inicio hasta el task modelingMetro2 extrayendo datos para la fecha 2010-04-19.
 
