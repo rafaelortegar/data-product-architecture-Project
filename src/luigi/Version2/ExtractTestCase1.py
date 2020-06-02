@@ -42,7 +42,7 @@ class ExtractTestCase(marbles.core.TestCase):
                 
                 data_a_cargar = {'prueba':[nombreprueba], 'estatus':[passfail], 'hora_ejecucion':[now]}
                 df1 = pd.DataFrame(data = data_a_cargar)
-                #print(df1)
+                print(df1)
                 return df1
 
 if __name__ == '__main__':
