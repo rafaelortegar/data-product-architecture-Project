@@ -42,16 +42,17 @@ class copyToPostgres(CopyToTable):
     columns = [("fecha","TEXT"),("anio","TEXT"),("linea", "TEXT"),("estacion", "TEXT"),("afluencia","TEXT")]
     port = creds.port[0]
     #=============================================================================================================
-    def requires(self):
-        return {'a': metadataExtract(bucket=self.bucket,date=self.date), 'b': [metadataTestExtract(bucket=self.bucket,date=self.date)]}
-
-
 #    def requires(self):
-#        def _requires(self):
-#            return metadataExtract(bucket=self.bucket,date=self.date)
-#        return extractToJson(bucket=self.bucket, date=self.date)# ,metadataExtract(bucket=self.bucket, date=self.date) # , metadataExtract(bucket=self.bucket, date=self.date) # , testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
-##        def _requires(self):
-#            return metadataExtract(bucket=self.bucket,date=self.date)
+#        return {'a': metadataExtract(bucket=self.bucket,date=self.date), 'b': [metadataTestExtract(bucket=self.bucket,date=self.date)]}
+
+
+    def requires(self):
+        #def _requires(self):
+        #    return metadataExtract(bucket=self.bucket,date=self.date)
+        return extractToJson(bucket=self.bucket, date=self.date)# ,metadataExtract(bucket=self.bucket, date=self.date) # , metadataExtract(bucket=self.bucket, date=self.date) # , testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
+
+    def _requires(self):
+        return {'a': metadataExtract(bucket=self.bucket,date=self.date), 'b': [metadataTestExtract(bucket=self.bucket,date=self.date)]}
 
     
     def rows(self):
