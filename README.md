@@ -1,6 +1,24 @@
 # data-product-architecture-Project
 Final project of Data product architecture class
 
+# Cómo reproducir este trabajo
+
+## Descargar el repositorio
+
+```
+git clone https://github.com/valencig/data-product-architecture-Project.git
+cd data-product-architecture-Project/src/luigi/Version2
+```
+
+## Correr los tasks de luigi
+
+Vemos que en /src/luigi/Version2 están todos los tasks de luigi que conforman parte del pipeline de este trabajo. Para correr un task, se hace lo siguiente:
+
+```
+PYTHONPATH='.' python3 -m luigi --module modelingMetro2 modelingMetro2 --scheduler-host localhost --date 2010-04-19
+```
+
+Por ejemplo, el código anterior ejecuta los tasks de luigi desde el inicio hasta el task modelingMetro2 extrayendo datos para la fecha 2010-04-19.
 
 # Análisis de las estaciones de metro de CDMX según su afluencia diaria
 
