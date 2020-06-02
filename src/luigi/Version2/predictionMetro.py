@@ -57,7 +57,7 @@ class predictionMetro(luigi.Task):
         s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
         dev_s3_client = ses.client('s3')
-        modelobuscado = "/modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
+        modelobuscado = "modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
         print(modelobuscado)
         with BytesIO() as data:
             s3_resource.Bucket(self.bucket).download_fileobj(modelobuscado,data)
