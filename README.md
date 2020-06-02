@@ -12,7 +12,7 @@ cd data-product-architecture-Project/src/luigi/Version2
 
 ## Correr los tasks de luigi
 
-Vemos que en /src/luigi/Version2 están todos los tasks de luigi que conforman parte del pipeline de este trabajo. Para correr un task, se hace lo siguiente:
+En el directorio /src/luigi/Version2 están todos los tasks de luigi que conforman parte del pipeline de este trabajo. Para correr un task, se hace lo siguiente:
 
 ```
 PYTHONPATH='.' python3 -m luigi --module modelingMetro2 modelingMetro2 --scheduler-host localhost --date 2010-04-19
