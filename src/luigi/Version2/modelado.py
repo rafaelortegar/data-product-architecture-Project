@@ -48,7 +48,7 @@ class ModelBuilder():
     def build_model(self, x_mat):
         indice_ent = x_mat['fecha'] <= '2019-11-30'
         
-        variables_a_eliminar = ['fecha', 'anio', 'afluencia']
+        variables_a_eliminar = ['fecha', 'ano', 'afluencia']
 
         x_ent = x_mat[indice_ent].drop(variables_a_eliminar, axis = 1)
         x_pr = x_mat[~indice_ent].drop(variables_a_eliminar, axis = 1)
