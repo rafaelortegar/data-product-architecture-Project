@@ -99,7 +99,19 @@ class predictionMetro(luigi.Task):
 
         ##content_object = dev_s3_client.get_object(Bucket=self.bucket,Key='s3://dpaprojs3/modelingMetro_task_06_01/metro_'+self.date+'.pkl')
         #print("s3 encontrada exitosamente")
-        
+        def run(self):
+		ses = boto3.session.Session(profile_name='omar', region_name='us-east-1')
+		s3_resource = ses.resource('s3')
+
+		with BytesIO() as data:
+			s3_resource.Bucket('dpa-metro-model').download_fileobj("year={}/month={}/{}.pkl".format(str(self.year), str(self.month).zfill(2), str(self.year)+str(self.month).zfill(2)), data)
+			data.seek(0)
+			model = pickle.load(data)
+
+		obj = s3_resource.Object("dpa-metro-predictions", "year={}/month={}/{}.csv".format(str(self.year), str(self.month).zfill(2), str(self.year)+str(self.month).zfill(2)))
+
+		file_content = obj.get()['Body'].read().decode('utf-8')
+		df = pd.read_csv(StringIO(file_content))
         
         ##########################################################
         # Cargamos el modelo
