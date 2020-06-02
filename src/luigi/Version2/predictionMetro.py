@@ -87,7 +87,7 @@ class predictionMetro(luigi.Task):
         # El content object está especificando el objeto que se va a extraer del bucket S3
         # (la carga que se acaba de hacer desde la API)
         
-        content_object = dev_s3_client.get_object(Bucket=self.bucket,Key=file_to_read)
+        content_object = dev_s3_client.get_object(Bucket=self.bucket,Key='s3://dpaprojs3/modelingMetro_task_06_01/metro_'+self.date+'.pkl')
         print("s3 encontrada exitosamente")
         
         #response = dev_s3_client.get_object(Bucket='name_of_your_bucket', Key='path/to_your/file.pkl')
