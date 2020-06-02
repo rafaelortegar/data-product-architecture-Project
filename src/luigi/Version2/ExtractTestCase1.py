@@ -30,7 +30,7 @@ class ExtractTestCase(marbles.core.TestCase):
                 #data = json.load(self.json_file)
                 data = self.json_file
                 columns_read = data['nhits']
-                print("-----------------------imprimiendo columnsread")
+                print("-----------------------imprimiendo columns_read")
                 print(columns_read)
                 self.assertTrue(columns_read != 0 , note = 'json file is empty')
                 now = datetime.datetime.now()
