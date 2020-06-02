@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from math import floor
 from sklearn.linear_model import LogisticRegression
 import feature_builder as fb
 
@@ -47,6 +48,8 @@ class ModelBuilder():
         pass
     def build_model(self, x_mat):
         print("Entrando a ModelBuilder...")
+        #indice_ent = x_mat['fecha'] <= '2019-11-30'
+        x_mat.shape[0]*.80
         indice_ent = x_mat['fecha'] <= '2019-11-30'
         print("indice_ent...",indice_ent)
         

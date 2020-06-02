@@ -95,12 +95,12 @@ class featureEngineering2(PostgresQuery):
 
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         print("ya pasó engine")
-        table_name= 'semantic.metro'
+        table_name= 'metro'
         print(table_name)
         scheme='semantic'
         print(scheme)
         print("Esperame tantito, toy pensando...")
-        df2.to_sql(table_name, con=engine , if_exists='replace')
+        df2.to_sql(table_name, con=engine,scheme='semantic' , if_exists='replace')
         print(psql.read_sql('SELECT * FROM semantic.metro LIMIT 10;', connection))
 
         print("head:")
