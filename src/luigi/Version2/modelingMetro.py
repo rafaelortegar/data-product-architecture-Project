@@ -102,18 +102,14 @@ class modelingMetro(PostgresQuery):
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
-
-                # Escribe un JSON con la información descargada de la API, aqui esta el output
-        with self.output().open('w') as json_file:
-            json.dump(data_raw.json(), json_file)
-
+        
         print("#...")
         print("##...")
         print("###...")
         print("####...")
         print("#####...")
         print("######...")
-        print("Extracción de los datos completa!! :)")
+        print("Modelado completado!! :)")
 
     # Envía el output al S3 cop especificado con el nombre de output_path
 #    def output(self):
@@ -126,7 +122,6 @@ class modelingMetro(PostgresQuery):
     def output(self):
         """
         Returns a PostgresTarget representing the executed query.
-
         Normally you don't override this.
         """
         return PostgresTarget(
