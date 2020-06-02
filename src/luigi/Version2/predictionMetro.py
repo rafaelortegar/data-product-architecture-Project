@@ -58,7 +58,7 @@ class predictionMetro(luigi.Task):
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
         modelobuscado = "s3://dpaprojs3/modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
         with BytesIO() as nombre:
-            obj.download_fileobj('dpaprojs3',modelobuscado,nombre)
+            obj.download_fileobj(modelobuscado,nombre)
             nombre.seek(0)
             model = pickle.load(nombre)
         print("Voy a leer el pikle de la s3")
@@ -136,7 +136,7 @@ class predictionMetro(luigi.Task):
         pandas_a_csv = pd.DataFrame(data=datos_a_csv)
         print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
         #pandas_a_csv.to_csv(self.output().path, index=False)
-        
+
         with self.output().open('w') as output_file:
             pandas_a_csv.to_csv(output_file)
 
