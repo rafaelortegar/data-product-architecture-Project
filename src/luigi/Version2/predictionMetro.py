@@ -71,7 +71,7 @@ class predictionMetro(luigi.Task):
         # Cargamos el modelo
         file = open('modelo.pkl', 'rb')
         data = pickle.load(file)
-        file.close()
+        file.close()path=output_path
         modelos = data.copy()
         
         df = pd.read_csv('x_original.csv')
