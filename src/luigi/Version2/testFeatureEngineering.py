@@ -36,7 +36,7 @@ class testFeatureEngineering(PostgresQuery):
     #=============================================================================================================
     
     def requires(self):
-        return featureEngineering(bucket = self.bucket, date = self.date)
+        return featureEngineering2(bucket = self.bucket, date = self.date)
       
     def run(self):
         #conectamos
