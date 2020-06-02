@@ -6,6 +6,8 @@ import sqlalchemy
 import pickle
 import boto3
 import boto3.session
+from io import BytesIO
+
 
 import pandas.io.sql as psql
 import pandas as pd
@@ -79,27 +81,22 @@ class predictionMetro(luigi.Task):
         obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
         dev_s3_client = ses.client('s3')
 
-        # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
-        #clientEC2 = boto3.client('ec2')
-        #clientS3 = boto3.client('s3')
-        #print("Inicializados el EC2 y el S3")
+        with BytesIO() as data:
+            s3_resource.Bucket(self.bucket).download_fileobj(file_to_read,data)
+            data.seek(0)
+            modelos = pickle.load(data)
 
-        # El content object está especificando el objeto que se va a extraer del bucket S3
-        # (la carga que se acaba de hacer desde la API)
-        
-        content_object = dev_s3_client.get_object(Bucket=self.bucket,Key='s3://dpaprojs3/modelingMetro_task_06_01/metro_'+self.date+'.pkl')
+        #content_object = dev_s3_client.get_object(Bucket=self.bucket,Key='s3://dpaprojs3/modelingMetro_task_06_01/metro_'+self.date+'.pkl')
         print("s3 encontrada exitosamente")
         
-        #response = dev_s3_client.get_object(Bucket='name_of_your_bucket', Key='path/to_your/file.pkl')
-        body = content_object['Body'].read()
-        data = pickle.loads(body)
+        
         ##########################################################
         # Cargamos el modelo
         #file = open('modelo.pkl', 'rb')
         #file = open(content_object, 'rb')
         #data = pickle.load(file)
         #file.close()
-        modelos = data.copy()
+        #modelos = data.copy()
         
         df = pd.read_csv('x_original.csv')
         print("shape de lo leido",df.shape)
