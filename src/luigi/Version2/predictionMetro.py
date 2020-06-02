@@ -56,9 +56,10 @@ class predictionMetro(luigi.Task):
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
+        dev_s3_client = ses.client('s3')
         modelobuscado = "/modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
         with BytesIO() as data:
-            obj.download_fileobj('dpaprojs3',modelobuscado,data)
+            obj.download_Fileobj('dpaprojs3',modelobuscado,data)
             data.seek(0)
             model = pickle.load(data)
         print("Voy a leer el pikle de la s3")
