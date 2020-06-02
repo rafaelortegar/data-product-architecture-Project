@@ -30,7 +30,7 @@ class FeatureBuilder():
         
         return(x_mat)
         
-    def create_model_matrix(self, X):
+    def create_model_matrix(X):
         X1 = X.copy()
         def model_matrix(X_nuevas):
             n = X_nuevas.shape[0]
