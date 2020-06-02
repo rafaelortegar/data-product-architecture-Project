@@ -59,7 +59,7 @@ class predictionMetro(luigi.Task):
         dev_s3_client = ses.client('s3')
         modelobuscado = "/modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
         with BytesIO() as data:
-            obj.download_Fileobj('dpaprojs3',modelobuscado,data)
+            obj.download_fileobj('dpaprojs3',modelobuscado,data)
             data.seek(0)
             model = pickle.load(data)
         print("Voy a leer el pikle de la s3")
