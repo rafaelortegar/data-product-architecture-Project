@@ -56,7 +56,7 @@ class metadataFeatureEngineering(PostgresQuery):
         #columnas_leidas = pd.read_csv('../../columnas_leidas.csv')  #file_content # pd.read_csv('../../columnas_leidas.csv')
         print("csv leido correctamente")
         
-        df = psql.read_sql("""SELECT * FROM semantic.metro ORDER BY index DESC LIMIT 1;""", connection)
+        df = psql.read_sql("""SELECT * FROM semantic.metro ORDER BY fecha DESC LIMIT 1;""", connection)
         columns_created = len(df.columns)
         print("Columnas creadas:",columns_created)
         fecha_ejecucion = pd.Timestamp.now()
