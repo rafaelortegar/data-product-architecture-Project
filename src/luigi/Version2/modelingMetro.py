@@ -110,6 +110,13 @@ class modelingMetro(PostgresQuery):
         print("#####...")
         print("######...")
         print("Modelado completado!! :)")
+        
+        
+        
+        output_path = "s3://{}/{}/metro_{}". \
+            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+        luigi.contrib.s3.S3Target(path=output_path)
+        print("y el Pickle correspondiente cargado correctamente! :)")
 
     # Envía el output al S3 cop especificado con el nombre de output_path
 #    def output(self):
@@ -117,6 +124,11 @@ class modelingMetro(PostgresQuery):
 #        #    format(self.bucket, self.task_name, self.date)
 #        output_path = "s3://{}/{}/metro_{}.json". \
 #            format(self.bucket, self.task_name, self.date) #Formato del nombre para el json que entra al bucket S3
+#        return luigi.contrib.s3.S3Target(path=output_path)
+        
+    def output(self):
+        """
+        Returns a PostgresTarget representing the executed query.
 #        return luigi.contrib.s3.S3Target(path=output_path)
         
     def output(self):
