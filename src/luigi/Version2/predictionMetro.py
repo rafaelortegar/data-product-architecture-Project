@@ -96,7 +96,6 @@ class predictionMetro(luigi.Task):
         pandas_a_csv = pd.DataFrame(data=datos_a_csv)
         print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
         
-        print(self.output.path)
         pandas_a_csv.to_csv(self.output().path, index=False)
         
         
