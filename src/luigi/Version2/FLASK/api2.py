@@ -1,20 +1,40 @@
 from flask import Flask
+import pandas as pd
+from io import StringIO
+import json
+import boto3
 
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return "Hello DPA world!"
-
-
-import flask
-import predict_sales
-app = flask.Flask(__name__)
-
-@app.route("/")
 def root():
-    return "Welcome to Roseman Sales Prediction API!"
+    return "API DE Predicciones de Afluencia del metro CDMX"
 
+@app.route('/user/<string:username>')
+def show_user_profile(username):
+    return "Hello user {}".format(username)
+
+
+@api.route("/date/<string:date>")
+class GetPredictions(Resource):
+    def get(self, date):
+        year = date[:4]
+        month = date[5:7]
+        day = date[8:]
+
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj', region_name='us-west-2')
+        s3_resource = ses.resource('s3')
+
+        #s3://dpaprojs3/predictionMetro_task_07_01/metro_2010-05-07.csv
+        
+        obj = s3_resource.Object("dpaprojs3", "predictionMetro_task_07_01/metro_{}-{}-{}.csv".format(str(year), str(month).zfill(2), str(day).zfill(3)))
+
+        file_content = obj.get()['Body'].read().decode('utf-8')
+        df = pd.read_csv(StringIO(file_content))
+
+        dfJson = df.to_json(orient='table')
+
+        return dfJson
 
 @app.route("/loadModels/")
 def load_model():
