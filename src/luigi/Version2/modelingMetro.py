@@ -64,12 +64,12 @@ class modelingMetro(PostgresQuery):
         cursor = connection.cursor()
         sql = self.query
         
-        logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        cursor.execute(sql)
-        self.output().touch(connection)
-        
-        connection.commit()
-        connection.close()
+        #logger.info('Executing query from task: {name}'.format(name=self.task_name))
+        #cursor.execute(sql)
+        #self.output().touch(connection)
+        #
+        #connection.commit()
+        #connection.close()
         ############################################################################################
         creds=self.creds
         connection = psycopg2.connect(user=creds.user[0],
@@ -86,13 +86,11 @@ class modelingMetro(PostgresQuery):
         print("modelos...",modelos)
         print("aqui ya hizo model builder")
         modelos = modelos.build_model(df)
-        
+
         file = open('modelo.pkl', 'wb')
         pickle.dump(modelos, file)
         file.close()
-
-        logger.info('Executing query from task: {name}'.format(name=self.task_name))
-        cursor.execute(sql)
+        
         self.output().touch(connection)
         
         # commit and close connection
