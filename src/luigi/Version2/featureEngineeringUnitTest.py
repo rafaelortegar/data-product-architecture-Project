@@ -23,14 +23,14 @@ class featureEngineeringUnitTest(marbles.core.TestCase):
         print(self.num_cols)
         
         
-        num_de_cols_correctos = 181
+        num_de_cols_correctos = 231
         print("El número de columnas DEBE SER:",num_de_cols_correctos)
         print(num_de_cols_correctos)
         columnas_obtenidas = self.num_cols
         print("El número de columnas real ES:",columnas_obtenidas)
         print(columnas_obtenidas)
         
-        self.assertTrue(columnas_obtenidas == 181, note = 'La cantidad de columnas ha cambiado')
+        self.assertTrue(columnas_obtenidas == 231, note = 'La cantidad de columnas ha cambiado')
         now = datetime.datetime.now()
         passfail = columnas_obtenidas == 181
         nombreprueba = 'test de feature Engineering'
