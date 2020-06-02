@@ -1,3 +1,4 @@
+import requests
 import luigi
 import logging
 import psycopg2
@@ -65,9 +66,32 @@ class predictionMetro(luigi.Task):
         # Leemos los datos de la RDS
         #df = psql.read_sql('SELECT * FROM semantic.metro;', connection)
         #print(df.shape) 
-        
+        ##########################################################
+        # Lee nuevamente el archivo JSON que se subió al S3 bucket, para después obtener metadatos sobre la carga
+        #file_to_read = 'extractToJson_task_01/metro_'+ self.date +'.json'
+        file_to_read ="s3://dpaprojs3/modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
+        print("El archivo a buscar es: ",file_to_read)
+
+        # Conexión a la S3
+        ses = boto3.session.Session(profile_name='rafael-dpa-proj') #, region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
+        s3_resource = ses.resource('s3') # Inicialzamos e recursoS3
+        obj = s3_resource.Bucket(self.bucket) # Metemos el bucket S3 en una variable obj
+        dev_s3_client = ses.client('s3')
+
+        # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
+        #clientEC2 = boto3.client('ec2')
+        #clientS3 = boto3.client('s3')
+        #print("Inicializados el EC2 y el S3")
+
+        # El content object está especificando el objeto que se va a extraer del bucket S3
+        # (la carga que se acaba de hacer desde la API)
+        content_object = s3_resource.Object(self.bucket, file_to_read)
+        print("s3 encontrada exitosamente")
+
+        ##########################################################
         # Cargamos el modelo
-        file = open('modelo.pkl', 'rb')
+        #file = open('modelo.pkl', 'rb')
+        file = open(content_object, 'rb')
         data = pickle.load(file)
         file.close()
         modelos = data.copy()
