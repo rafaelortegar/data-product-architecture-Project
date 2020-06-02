@@ -56,7 +56,18 @@ class predictionMetro(luigi.Task):
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
+        print("Voy a leer el pikle de la s3")
+        pickledesdeS3 = self.input().open('r')
+        print(pickledesdeS3)
+        archivopickle = open(pickledesdeS3, 'rb')
+        print("el archivopikle es:")
+        print(archivopickle)
         
+        print("cargando el pikle")
+        loadpickleours = pickle.load(archivopickle)
+        
+        modelospikledes3 = loadpickleours.copy()
+        print(modelospikledes3)
         # conectamos a la RDS
 #        connection = psycopg2.connect(user=creds.user[0],
 #                                  password=creds.password[0],
