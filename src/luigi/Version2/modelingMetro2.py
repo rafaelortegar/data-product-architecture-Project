@@ -81,9 +81,15 @@ class modelingMetro2(luigi.Task):
         print("######...")
         print("Modelado completado!! :)")
         
-        # Escribe un JSON con la información descargada de la API, aqui esta el output
-        with self.output().open('w') as picklemodelo:
-            pickle.dump(modelos)
+#        # Escribe un JSON con la información descargada de la API, aqui esta el output
+#        with self.output().open('w') as picklemodelo:
+#            pickle.dump(modelos,file)
+#        file = open('modelo.pkl', 'wb')
+#        pickle.dump(modelos, file)
+#        file.close()
+        
+        with self.output().open('w') as f:
+            pickle.dump(modelos,f)
         
         print("#...")
         print("##...")
