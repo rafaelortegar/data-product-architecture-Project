@@ -130,12 +130,13 @@ class predictionMetro(luigi.Task):
         
         # para los outputs que no vamos a usar
         
-        fecha = pred['fecha'][0]
-        linea = pred['linea'][0]
-        estacion = pred['estacion'][0]
-        pronostico_afluencia = pred['pronostico_afluencia'][0]
-        datos_a_csv = {'fecha':[fecha],'linea':[linea],'estacion':[estacion],'pronostico_afluencia':[pronostico_afluencia]} 
-        pandas_a_csv = pd.DataFrame(data=datos_a_csv)
+        #fecha = pred['fecha'][0]
+        #linea = pred['linea'][0]
+        #estacion = pred['estacion'][0]
+        #pronostico_afluencia = pred['pronostico_afluencia'][0]
+        #datos_a_csv = {'fecha':[fecha],'linea':[linea],'estacion':[estacion],'pronostico_afluencia':[pronostico_afluencia]} 
+        #pandas_a_csv = pd.DataFrame(data=datos_a_csv)
+        pandas_a_csv = pred
         print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
         #pandas_a_csv.to_csv(self.output().path, index=False)
         
