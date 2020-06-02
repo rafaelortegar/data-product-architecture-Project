@@ -136,7 +136,7 @@ class modelingMetro(PostgresQuery):
 
 
 if __name__ == '__main__':
-    luigi.runAll()
+    luigi.modelingMetro()
 ############################################################### EMPEZAR MODELADO ###################################
 #class modelingMetro(luigi.task):
 #    """
