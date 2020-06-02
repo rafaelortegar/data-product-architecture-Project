@@ -15,6 +15,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
 
 from featureEngineering2 import featureEngineering2
+from metadataFeatureEngineering import metadataFeatureEngineering
+from metadataTestFeatureEng import metadataTestFeatureEng
 import modelado
 
 logger = logging.getLogger('luigi-interface')
@@ -52,6 +54,8 @@ class modelingMetro(PostgresQuery):
     def requires(self):
         return featureEngineering2(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
 
+    def _requires(self):
+        return {'a': metadataTestFeatureEng(bucket=self.bucket,date=self.date), 'b': [metadataFeatureEngineering(bucket=self.bucket,date=self.date)]}
 
     def run(self):
         connection = self.output().connect()

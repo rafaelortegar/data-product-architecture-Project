@@ -11,6 +11,8 @@ from luigi.contrib.postgres import PostgresQuery, PostgresTarget
 
 import feature_builder as fb
 from loadCleaned import loadCleaned
+from metadataCleaned import metadataCleaned
+from metadataTestCleaned import metadataTestCleaned
 import pickle
 
 logger = logging.getLogger('luigi-interface')
@@ -49,6 +51,8 @@ class featureEngineering2(PostgresQuery):
     def requires(self):
         return loadCleaned(bucket=self.bucket, date=self.date) # , metadataCleaned(bucket = self.bucket, date=  self.date)
 
+    def _requires(self):
+        return {'a': metadataTestCleaned(bucket=self.bucket,date=self.date), 'b': [metadataCleaned(bucket=self.bucket,date=self.date)]}
 
     def run(self):
         connection = self.output().connect()

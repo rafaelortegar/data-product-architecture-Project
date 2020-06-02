@@ -6,6 +6,8 @@ import pandas.io.sql as psql
 from luigi.contrib.postgres import PostgresQuery, PostgresTarget
 
 from copyToPostgres import copyToPostgres
+from metadataLoad import metadataLoad
+from metadataTestLoad import metadataTestLoad
 #from loadCleaned import loadCleaned
 
 logger = logging.getLogger('luigi-interface')
@@ -50,6 +52,9 @@ class loadCleaned(PostgresQuery):
     #=============================================================================================================
     def requires(self):
         return copyToPostgres(bucket=self.bucket, date=self.date)
+    
+    def _requires(self):
+        return {'a': metadataLoad(bucket=self.bucket,date=self.date), 'b': [metadataTestLoad(bucket=self.bucket,date=self.date)]}
     
     def run(self):
         connection = self.output().connect()
