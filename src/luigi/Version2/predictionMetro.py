@@ -56,7 +56,13 @@ class predictionMetro(luigi.Task):
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
+        modelobuscado = "s3://dpaprojs3/modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
+        with BytesIO() as nombre:
+            obj.download_fileobj('dpaprojs3',modelobuscado,nombre)
+            nombre.seek(0)
+            model = pickle.load(nombre)
         print("Voy a leer el pikle de la s3")
+        print(model)
         #pickledesdeS3 = self.input().open('r')
         #print(pickledesdeS3)
         archivopickle = open(self.input(), 'rb')
@@ -100,20 +106,6 @@ class predictionMetro(luigi.Task):
 
         ##content_object = dev_s3_client.get_object(Bucket=self.bucket,Key='s3://dpaprojs3/modelingMetro_task_06_01/metro_'+self.date+'.pkl')
         #print("s3 encontrada exitosamente")
-        def run(self):
-		ses = boto3.session.Session(profile_name='omar', region_name='us-east-1')
-		s3_resource = ses.resource('s3')
-
-		with BytesIO() as data:
-			s3_resource.Bucket('dpa-metro-model').download_fileobj("year={}/month={}/{}.pkl".format(str(self.year), str(self.month).zfill(2), str(self.year)+str(self.month).zfill(2)), data)
-			data.seek(0)
-			model = pickle.load(data)
-
-		obj = s3_resource.Object("dpa-metro-predictions", "year={}/month={}/{}.csv".format(str(self.year), str(self.month).zfill(2), str(self.year)+str(self.month).zfill(2)))
-
-		file_content = obj.get()['Body'].read().decode('utf-8')
-		df = pd.read_csv(StringIO(file_content))
-        
         ##########################################################
         # Cargamos el modelo
         file = open('modelo.pkl', 'rb')
@@ -124,7 +116,7 @@ class predictionMetro(luigi.Task):
         
         df = pd.read_csv('x_original.csv')
         print("shape de lo leido",df.shape)
-#        fecha = '2020-06-02'
+        #        fecha = '2020-06-02'
         
         fecha = self.date
         
@@ -144,7 +136,7 @@ class predictionMetro(luigi.Task):
         pandas_a_csv = pd.DataFrame(data=datos_a_csv)
         print("dimensiones de prediccion pandas_a_csv",pandas_a_csv.shape)
         #pandas_a_csv.to_csv(self.output().path, index=False)
-
+        
         with self.output().open('w') as output_file:
             pandas_a_csv.to_csv(output_file)
 
