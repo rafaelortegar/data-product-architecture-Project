@@ -54,7 +54,14 @@ class predictionMetro(luigi.Task):
         ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
         s3_resource = ses.resource('s3')
         obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
-        
+        dev_s3_client = ses.client('s3')
+
+        clientEC2 = boto3.client('ec2')
+        clientS3 = boto3.client('s3')
+        print("Inicializados el EC2 y el S3")
+
+        content_object = s3_resource.Object(self.bucket, file_to_read)
+        print("s3 encontrada exitosamente")
         # conectamos a la RDS
 #        connection = psycopg2.connect(user=creds.user[0],
 #                                  password=creds.password[0],
