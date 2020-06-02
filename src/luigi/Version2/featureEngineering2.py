@@ -82,7 +82,7 @@ class featureEngineering2(PostgresQuery):
 
         #model_matrix = fb.FeatureBuilder.create_model_matrix(df)
         x_original = df.copy()
-        x_original.to_csv("x_original.csv")
+        x_original.to_csv("x_original.csv",index=False)
         
         #file = open('model_matrix.pkl', 'wb')
         #pickle.dump(model_matrix, file)
