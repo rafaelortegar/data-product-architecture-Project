@@ -75,7 +75,7 @@ class featureEngineering2(PostgresQuery):
         df2 = df2.featurize(df)
         print(df2.shape)
 
-        model_matrix = fb.FeatureBuilder.create_matrix(df)
+        model_matrix = fb.FeatureBuilder.create_model_matrix(df)
         
         #file = open('model_matrix.pkl', 'wb')
         #pickle.dump(model_matrix, file)
