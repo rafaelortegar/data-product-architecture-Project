@@ -129,6 +129,7 @@ class modelingMetro3(luigi.Task):
         
         
         print("info ultimo modelo",infoUltimoModelo)
+        infoUltimoModelo = pd.DataFrame(infoUltimoModelo)
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         print("ya pasó engine")
