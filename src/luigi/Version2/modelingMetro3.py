@@ -109,6 +109,7 @@ class modelingMetro3(luigi.Task):
                                      'recall':[recall_baja,recall_normal,recall_alta]}
         
         infoUltimoModelo = pd.DataFrame(data=diccionario_de_resultados)
+        print(infoUltimoModelo)
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         print("ya pasó engine")
