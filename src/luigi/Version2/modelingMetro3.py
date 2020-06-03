@@ -77,20 +77,32 @@ class modelingMetro3(luigi.Task):
         modelosDummy,probs,accs,precs,recs = modelos1.build_model(df)
         
         probabilidad_baja = probs[0]
+        print('probabilidad_baja',probabilidad_baja)
         probabilidad_normal = probs[1]
+        print('probabilidad_normal',probabilidad_normal)
         probabilidad_alta = probs[2]
+        print('probabilidad_alta',probabilidad_alta)
         
         accuracy_baja = accs[0]
+        print('accuracy_baja',accuracy_baja)
         accuracy_normal = accs[1]
+        print('accuracy_normal',accuracy_normal)
         accuracy_alta = accs[2]
+        print('accuracy_alta',accuracy_alta)
         
         precision_baja = precs[0]
+        print('precision_baja',precision_baja)
         precision_normal = precs[1]
+        print('precision_normal',precision_normal)
         precision_alta = precs[2]
+        print('precision_alta',precision_alta)
         
         recall_baja = recs[0]
+        print('recall_baja',recall_baja)
         recall_normal = recs[1]
+        print('recall_normal',recall_normal)
         recall_alta = recs[2]
+        print('recall_alta',recall_alta)
         
         diccionario_de_resultados = {'tipo_de_afluencia':['baja','normal','alta'],'probabilidad': [probabilidad_baja,probabilidad_normal,probabilidad_alta],
                                      'accuracy':[accuracy_baja,accuracy_normal,accuracy_alta],'precision':[precision_baja,precision_normal,precision_alta],
