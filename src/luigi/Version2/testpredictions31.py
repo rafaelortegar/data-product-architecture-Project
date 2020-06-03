@@ -46,7 +46,7 @@ class testpredictions31(PostgresQuery):
 
         #probamos
         prueba = predictionUnitTest1()
-        data_f = prueba.test_prediction1()
+        data_f = prueba.test_prediction1(self.date)
         df1= pd.DataFrame(data_f)
         print(data_f)
         result = str(df1['estatus'][0])
