@@ -23,7 +23,7 @@ import modelado3
 logger = logging.getLogger('luigi-interface')
 
 
-class modelingMetro2(luigi.Task):
+class modelingMetro3(luigi.Task):
     """
     Function to train model from the mexico city metro data set on the database on postgres.
     It stores the metadata from uploading into the specified S3 bucket on AWS. Note: user MUST have the credentials 
