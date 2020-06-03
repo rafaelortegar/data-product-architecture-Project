@@ -12,7 +12,7 @@ from predictionMetro3 import predictionMetro3
 
 logger = logging.getLogger('luigi-interface')
 
-class testpredictions3_1(PostgresQuery):
+class testpredictions31(PostgresQuery):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
@@ -62,4 +62,4 @@ class testpredictions3_1(PostgresQuery):
         connection.close()
 
 if __name__ == '__main__':
-    luigi.testpredictions3_1()
+    luigi.testpredictions31()
