@@ -2,6 +2,7 @@ import luigi
 import pandas as pd
 import boto3
 import json
+import logging
 #import metadataExtract
 #from luigi import extractToJson
 #from luigi.Version2.metadataExtract import metadataExtract
