@@ -136,14 +136,14 @@ class ModelBuilderModelado():
         recall_modelo_bajo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['recall']
         
         cat = 'Normal'
-        sc = 0.56
+        sc = 0.50
         prob_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['prob']
         accuracy_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['accuracy']
         precision_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['precision']
         recall_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['recall']
         
         cat = 'Alto'
-        sc = 0.56
+        sc = 0.50
         prob_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['prob']
         accuracy_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['accuracy']
         precision_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['precision']
