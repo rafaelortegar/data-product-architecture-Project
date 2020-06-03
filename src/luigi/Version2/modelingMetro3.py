@@ -71,8 +71,37 @@ class modelingMetro2(luigi.Task):
         modelos = modelado3.ModelBuilder()
         print("modelos...",modelos)
         print("aqui ya hizo model builder")
-        modelos = modelos.build_model(df)
+        modelos,probs,accs,precs,recs = modelos.build_model(df)
         
+        probabilidad_baja = probs[0]
+        probabilidad_normal = probs[1]
+        probabilidad_alta = probs[2]
+        
+        accuracy_baja = accs[0]
+        accuracy_normal = accs[1]
+        accuracy_alta = accs[2]
+        
+        precision_baja = precs[0]
+        precision_normal = precs[1]
+        precision_alta = precs[2]
+        
+        recall_baja = recs[0]
+        recall_normal = recs[1]
+        recall_alta = recs[2]
+        
+        diccionario_de_resultados = {'tipo_de_afluencia':['baja','normal','alta'],'probabilidad': [probabilidad_baja,probabilidad_normal,probabilidad_alta],
+                                     'accuracy':[accuracy_baja,accuracy_normal,accuracy_alta],'precision':[precision_baja,precision_normal,precision_alta],
+                                     'recall':[recall_baja,recall_normal,recall_alta]}
+        
+        infoUltimoModelo = pd.DataFrame(data=diccionario_de_resultados)
+        
+        engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
+        print("ya pasó engine")
+        table_name= 'metro'
+        print(table_name)
+        scheme='modeling'
+        print(scheme)
+        infoUltimoModelo.to_sql(table_name, con=engine,schema='modeling' , if_exists='replace', index=False)
         
         
         print("#...")
@@ -99,7 +128,7 @@ class modelingMetro2(luigi.Task):
         print("####...")
         print("#####...")
         print("######...")
-        print("Modelado completado!! :)")
+        print("Pickle del modelado completado!! :)")
         #connection = self.output().connect()
         #connection.autocommit = self.autocommit
         #cursor = connection.cursor()

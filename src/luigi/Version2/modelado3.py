@@ -84,20 +84,26 @@ class ModelBuilder():
         modelos = [modelo_bajo, modelo_normal, modelo_alto]
         print("modelos...",modelos)
         
+        cat = 'Bajo'
+        sc = 0.56
         prob_modelo_bajo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['prob']
         accuracy_modelo_bajo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['accuracy']
         precision_modelo_bajo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['precision']
         recall_modelo_bajo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['recall']
         
-        prob_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['prob']
-        accuracy_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['accuracy']
-        precision_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['precision']
-        recall_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['recall']
+        cat = 'Normal'
+        sc = 0.56
+        prob_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['prob']
+        accuracy_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['accuracy']
+        precision_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['precision']
+        recall_modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['recall']
         
-        prob_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['prob']
-        accuracy_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['accuracy']
-        precision_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['precision']
-        recall_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['recall']
+        cat = 'Alto'
+        sc = 0.56
+        prob_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['prob']
+        accuracy_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['accuracy']
+        precision_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['precision']
+        recall_modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['recall']
         
         probs = [prob_modelo_bajo, prob_modelo_normal, prob_modelo_alto]
         print("probs...",probs)
@@ -108,8 +114,8 @@ class ModelBuilder():
         precs = [precision_modelo_bajo, precision_modelo_normal, precision_modelo_alto]
         print("precisions...",precs)
         
-        recs = [modelo_bajo, modelo_normal, modelo_alto]
+        recs = [recall_modelo_bajo, recall_modelo_normal, recall_modelo_alto]
         print("recalls...",recs)
         
-        return(modelos)
+        return(modelos,probs,accs,precs,recs)
 
