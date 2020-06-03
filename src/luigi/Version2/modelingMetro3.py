@@ -152,4 +152,4 @@ class modelingMetro3(luigi.Task):
 
 
 if __name__ == '__main__':
-    luigi.modelingMetro2()
+    luigi.modelingMetro3()
