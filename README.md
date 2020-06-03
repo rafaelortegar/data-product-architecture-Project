@@ -51,6 +51,8 @@ Consumiremos este conjunto de datos a través de una API que permite buscar y de
 	Investigación de mercados para estratificación de consumidores.
 
 ## ETL
+**DAG Pipeline Luigi**
+![Luigi Pipeline](https://github.com/valencig/data-product-architecture-Project/blob/master/images/dag-luigi-pipeline.png)
 
 **ETL MOCKUP (High-level)**
 ![ETL MOCKUP](https://1fykyq3mdn5r21tpna3wkdyi-wpengine.netdna-ssl.com/wp-content/uploads/2019/10/image1.png)
@@ -272,7 +274,7 @@ Nos equivocamos en la misma proporción en la clasificación del nivel de afluen
  ![BiasandFairnessTree](http://www.datasciencepublicpolicy.org//wp-content/uploads/2018/05/metrictree-1200x750.png)
 tomado de la pagina de Aequitas
 
->>>>>>> 60fd0789da1f2be9c3944b41cd52069b762037f0
+
 **Otros proyectos similares:**
 
 https://www.kaggle.com/dashaa/a-geospatial-analysis-of-the-nyc-subway-in-r  
@@ -308,4 +310,6 @@ PYTHONPATH='.' python3 -m luigi --module modelingMetro2 modelingMetro2 --schedul
 ```
 
 Por ejemplo, el código anterior ejecuta los tasks de luigi desde el inicio hasta el task modelingMetro2 extrayendo datos para la fecha 2010-04-19.
-
+## Linea del tiempo del proyecto y colaboradores
+![lineadeltiempo](https://github.com/valencig/data-product-architecture-Project/blob/master/images/Annotation%202020-06-02%20210543.png)
+![contributors](https://github.com/valencig/data-product-architecture-Project/blob/master/images/contributors.png)
