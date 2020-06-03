@@ -110,6 +110,23 @@ class ModelBuilderModelado():
                   x_mat['afluencia'][indice_ent])
         print("y_pr...",y_pr)
         
+        
+        cat = 'Bajo'
+        sc = 0.56
+        modelo1 = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)
+        print('modelo1',modelo1)
+        
+        cat = 'Normal'
+        sc = 0.50
+        modelo2 = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)
+        print('modelo1',modelo2)
+        
+        cat = 'Alto'
+        sc = 0.50
+        modelo2 = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)
+        print('modelo1',modelo2)
+        
+        
         cat = 'Bajo'
         sc = 0.56
         modelo_bajo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['modelo']
