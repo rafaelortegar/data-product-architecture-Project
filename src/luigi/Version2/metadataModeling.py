@@ -11,9 +11,10 @@ from io import BytesIO
 import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable
 from luigi.contrib.postgres import PostgresTarget, PostgresQuery
+import pickle
 
-from modelingMetro2 import modelingMetro2
-
+from modelingMetro3 import modelingMetro3
+logger = logging.getLogger('luigi-interface')
 
 class metadataModeling(PostgresQuery):
     """
@@ -41,9 +42,13 @@ class metadataModeling(PostgresQuery):
     table = 'raw.metro'
     columns = ["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "nombre_bucket","nombre_modelo","error_de_modelado_bajo","error_de_modelado_normal",
                "error_de_modelado_alto" , 'probabilidad_bajo','probabilidad_normal','probabilidad_alto' , 'accuracy_bajo','accuracy_normal',
-               'accuracy_alto','accuracy_promedio','precision_bajo','precision_normal','precision_alto','precision_promedio','recall_bajo',
+               'accuracy_alto','accuracy_promedio','precision_bajo','precision_normal','precision_alto','precision_promedio',
                'recall_bajo','recall_normal','recall_alto','recall_promedio']
     port = creds.port[0]
+    query = """INSERT INTO modeling.metadata("fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "nombre_bucket","nombre_modelo","error_de_modelado_bajo","error_de_modelado_normal",
+               "error_de_modelado_alto" , 'probabilidad_bajo','probabilidad_normal','probabilidad_alto' , 'accuracy_bajo','accuracy_normal',
+               'accuracy_alto','accuracy_promedio','precision_bajo','precision_normal','precision_alto','precision_promedio',
+               'recall_bajo','recall_normal','recall_alto','recall_promedio') VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,)"""
     #=============================================================================================================
 #    def requires(self):
 #        return {'a': metadataExtract(bucket=self.bucket,date=self.date), 'b': [metadataTestExtract(bucket=self.bucket,date=self.date)]}
@@ -52,73 +57,73 @@ class metadataModeling(PostgresQuery):
     def requires(self):
         #def _requires(self):
         #    return metadataExtract(bucket=self.bucket,date=self.date)
-        return modelingMetro2(bucket=self.bucket, date=self.date)# ,metadataExtract(bucket=self.bucket, date=self.date) # , metadataExtract(bucket=self.bucket, date=self.date) # , testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
+        return modelingMetro3(bucket=self.bucket, date=self.date)# ,metadataExtract(bucket=self.bucket, date=self.date) # , metadataExtract(bucket=self.bucket, date=self.date) # , testExtract(bucket=self.bucket, date=self.date), metadataTestExtract(bucket=self.bucket, date=self.date)
         
             
-    def rows(self):
+    def run(self):
+        
+        connection = self.output().connect()
+        connection.autocommit = self.autocommit
+        cursor = connection.cursor()
+
+        # Metemos el ec2 y el s3 actuales en un objeto, para poder obtener sus metadatos
+        clientEC2 = boto3.client('ec2')
+        print("Inicializados el EC2")
+        
+        #función de EC2 para describir la instancia en la que se está trabajando
+        information_metadata_ours = clientEC2.describe_instances()
+        print("ec2 descrita correctamente")
+        
+        #columnas_leidas = pd.read_csv('../../../columnas_leidas.csv')  #file_content # pd.read_csv('../../columnas_leidas.csv')
+        #print("csv leido correctamente")
         
         # Conectamos al bucket
-        ses = boto3.session.Session(profile_name='rafael-dpa-proj') # , region_name='us-west-2') # Pasamos los parámetros apra la creación del recurso S3 (bucket) al que se va a conectar
-        s3_resource = ses.resource('s3')
-        obj = s3_resource.Bucket(self.bucket) # metemos el bucket S3 en una variable obj
-        dev_s3_client = ses.client('s3')
-        modelobuscado = "modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
-        print(modelobuscado)
-        with BytesIO() as data:
-            s3_resource.Bucket(self.bucket).download_fileobj(modelobuscado,data)
-            data.seek(0)
-            model = pickle.load(data)
-        print("Voy a leer el pikle de la s3")
-        print(model)
+        nombre_modelo = "modelingMetro_task_06_01/metro_{}.pkl".format(self.date)
+        print(nombre_modelo)
         
+        df = psql.read_sql("""SELECT * FROM modeling.metro;""", connection)
         
-        with self.input().open('r') as json_file:
-            data = json.load(json_file)
-            filas_a_cargar = len(data['records'])
-            print(filas_a_cargar)
-            #seccion añadida despues de que ya corria
-            creds2 = pd.read_csv("../../../credentials_postgres.csv")
-            connection2 = psycopg2.connect(user=creds2.user[0],
-                                      password=creds2.password[0],
-                                      host=creds2.host[0],
-                                      port=creds2.port[0],
-                                      database=creds2.db[0])
-            df = psql.read_sql('SELECT * FROM raw.metro;', connection2)
-            filas_actuales=len(df)
-            total_final = filas_a_cargar+filas_actuales
-            data_info = {'datos_a_cargar': [filas_a_cargar], 'total_anterior':[filas_actuales], 'total_final':[total_final]}
-            data_to_csv = pd.DataFrame(data=data_info)
-            data_to_csv.to_csv('../../../columnas_leidas.csv')
-            #fin de sección
-            for line in data['records']:
-
-                fecha_ingreso = line.get('fields').get('fecha')
-                anio_ingreso = line.get('fields').get('anio')
-                linea_ingreso = line.get('fields').get('linea')
-                estacion_ingreso = line.get('fields').get('estacion')
-                afluencia_ingreso = line.get('fields').get('afluencia')
-                yield (fecha_ingreso,anio_ingreso,linea_ingreso,estacion_ingreso,afluencia_ingreso)
-    
-    
-    def output(self):
-        """
-        Returns a PostgresTarget representing the inserted dataset.
-
-        Normally you don't override this.
-        """
+        fecha_ejecucion = pd.Timestamp.now()
+        usuario = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('KeyName')
+        fecha_json = self.date
+        ip_ec2 = information_metadata_ours.get('Reservations')[0].get('Instances')[0].get('PrivateIpAddress')
+        nombre_bucket = self.bucket
         
-        return PostgresTarget(
-            host=self.host,
-            database=self.database,
-            user=self.user,
-            password=self.password,
-            table=self.table,
-            update_id=self.update_id,
-            port=self.port
-        )
+        error_de_modelado_bajo = 0
+        error_de_modelado_normal = 0
+        error_de_modelado_alto = 0
+        probabilidad_bajo = 0
+        probabilidad_normal = 0
+        probabilidad_alto = 0
+        accuracy_bajo = df['accuracy'][0]
+        accuracy_normal = df['accuracy'][1]
+        accuracy_alto = df['accuracy'][2]
+        accuracy_promedio =(accuracy_bajo+accuracy_normal+accuracy_alto)/3
+        precision_bajo = df['precision'][0]
+        precision_normal = df['precision'][1]
+        precision_alto = df['precision'][2]
+        precision_promedio =(precision_bajo+precision_normal+precision_alto)/3
+        recall_bajo = df['recall'][0]
+        recall_normal = df['recall'][1]
+        recall_alto = df['recall'][3]
+        recall_promedio =(recall_bajo+recall_normal+recall_alto)/3
+        #fin de sección
+        
+        sql = self.query
+        
+        logger.info('Executing query from task: {name}'.format(name=self.task_name))
+        cursor.execute(sql,(fecha_ejecucion, fecha_json, usuario, ip_ec2, nombre_bucket,nombre_modelo,error_de_modelado_bajo,error_de_modelado_normal,
+               error_de_modelado_alto , probabilidad_bajo,probabilidad_normal,probabilidad_alto , accuracy_bajo,accuracy_normal,
+               accuracy_alto,accuracy_promedio,precision_bajo,precision_normal,precision_alto,precision_promedio,
+               recall_bajo,recall_normal,recall_alto,recall_promedio))
+        # Update marker table
+        self.output().touch(connection)
+        # commit and close connection
+        connection.commit()
+        connection.close()
 
 
 if __name__ == '__main__':
-    luigi.copyToPostgres()
+    luigi.metadataModeling()
 
 
