@@ -10,12 +10,12 @@ import psycopg2
 from io import BytesIO
 import pandas.io.sql as psql
 from luigi.contrib.postgres import CopyToTable
-from luigi.contrib.postgres import PostgresTarget
+from luigi.contrib.postgres import PostgresTarget, PostgresQuery
 
 from modelingMetro2 import modelingMetro2
 
 
-class metadataModeling(CopyToTable):
+class metadataModeling(PostgresQuery):
     """
     Function to copy raw data from the extracting process from mexico city metro data set on the database on postgres.
     It uploads the data into the specified S3 bucket on AWS. Note: user MUST have the credentials to use the aws s3
@@ -25,7 +25,7 @@ class metadataModeling(CopyToTable):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name = 'metadata_modelingMetro2_02_01'
+    task_name = 'metadata_modelingMetro3_02_01'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3')
     #==============================================================================================================
@@ -39,7 +39,10 @@ class metadataModeling(CopyToTable):
     user = creds.user[0]
     password = creds.password[0]
     table = 'raw.metro'
-    columns = ["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "nombre_bucket", "hiper_parámetros_modelo","error_de_modelado"]
+    columns = ["fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "nombre_bucket","nombre_modelo","error_de_modelado_bajo","error_de_modelado_normal",
+               "error_de_modelado_alto" , 'probabilidad_bajo','probabilidad_normal','probabilidad_alto' , 'accuracy_bajo','accuracy_normal',
+               'accuracy_alto','accuracy_promedio','precision_bajo','precision_normal','precision_alto','precision_promedio','recall_bajo',
+               'recall_bajo','recall_normal','recall_alto','recall_promedio']
     port = creds.port[0]
     #=============================================================================================================
 #    def requires(self):

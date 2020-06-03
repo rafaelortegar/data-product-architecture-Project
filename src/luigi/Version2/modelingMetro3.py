@@ -68,10 +68,13 @@ class modelingMetro3(luigi.Task):
         print(df.shape) 
         
         # Hacemos el modelado
-        modelos = modelado3.ModelBuilderModelado()
+        modelos = modelado3.ModelBuilder()
         print("modelos...",modelos)
         print("aqui ya hizo model builder")
-        modelos,probs,accs,precs,recs = modelos.build_model(df)
+        modelos = modelos.build_model(df)
+        
+        modelos1 = modelado3.ModelBuilderModelado()
+        modelosDummy,probs,accs,precs,recs = modelos1.build_model(df)
         
         probabilidad_baja = probs[0]
         probabilidad_normal = probs[1]
