@@ -44,6 +44,8 @@ class testpredictions31(PostgresQuery):
         connection.autocommit = self.autocommit
         cursor = connection.cursor()
         
+        
+        
         fechastring = str(self.date)
         #probamos
         prueba = predictionUnitTest1()

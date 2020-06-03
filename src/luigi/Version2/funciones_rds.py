@@ -78,7 +78,7 @@ def obtienePrediccionesdeldia(fecha):
                           database=creds.db[0])
     cursor = connection.cursor()
     
-    query = """SELECT * FROM predict.metro WHERE fecha = {fecha} ;""".format(fecha=fecha)
+    query = """SELECT * FROM predict.metro WHERE fecha = '{fecha}' ;""".format(fecha=fecha)
     
     df = psql.read_sql(query, connection)
     print(df.head())
