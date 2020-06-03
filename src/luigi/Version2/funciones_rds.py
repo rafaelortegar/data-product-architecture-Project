@@ -69,6 +69,28 @@ def columnasFeatureEngineering():
     connection.close()
     return numero_de_columnas
 
+def obtienePrediccionesdeldia(fecha):
+    creds = pd.read_csv("../../../credentials_postgres.csv")
+    connection = psycopg2.connect(user=creds.user[0],
+                          password=creds.password[0],
+                          host=creds.host[0],
+                          port=creds.port[0],
+                          database=creds.db[0])
+    cursor = connection.cursor()
+    
+    query = """SELECT * FROM predict.metro WHERE fecha = {fecha} ;""".format(fecha=fecha)
+    
+    df = psql.read_sql(query, connection)
+    print(df.head())
+    numero_de_columnas = len(df.columns)
+    print("numero de columnas funciones_rds:", numero_de_columnas )
+    
+    
+    # close connection
+    cursor.close()
+    connection.close()
+    return numero_de_columnas
+
 
 #class conectaAtablaRawMetro(object):
 #    
