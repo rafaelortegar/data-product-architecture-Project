@@ -106,7 +106,7 @@ class metadataModeling(PostgresQuery):
         precision_promedio =(precision_bajo+precision_normal+precision_alto)/3
         recall_bajo = df['recall'][0]
         recall_normal = df['recall'][1]
-        recall_alto = df['recall'][3]
+        recall_alto = df['recall'][2]
         recall_promedio =(recall_bajo+recall_normal+recall_alto)/3
         #fin de sección
         
