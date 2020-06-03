@@ -52,7 +52,7 @@ Consumiremos este conjunto de datos a través de una API que permite buscar y de
 
 ## ETL
 **DAG Pipeline Luigi**
-![Luigi Pipeline](https://raw.githubusercontent.com/valencig/data-product-architecture-Project/master/images/dag-luigi-pipeline.png)
+![Luigi Pipeline](https://github.com/valencig/data-product-architecture-Project/blob/master/images/dag-luigi-pipeline.png)
 
 **ETL MOCKUP (High-level)**
 ![ETL MOCKUP](https://1fykyq3mdn5r21tpna3wkdyi-wpengine.netdna-ssl.com/wp-content/uploads/2019/10/image1.png)
