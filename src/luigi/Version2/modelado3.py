@@ -84,6 +84,50 @@ class ModelBuilder():
         modelos = [modelo_bajo, modelo_normal, modelo_alto]
         print("modelos...",modelos)
         
+        return(modelos)
+    
+    
+class ModelBuilderModelado():
+    def __init__(self):
+        pass
+    def build_model(self, x_mat):
+        print("Entrando a ModelBuilder...")
+        #indice_ent = x_mat['fecha'] <= '2019-11-30'
+        x_mat.shape[0]*.80
+        indice_ent = x_mat['fecha'] <= '2019-11-30'
+        print("indice_ent...",indice_ent)
+        
+        variables_a_eliminar = ['fecha', 'ano', 'afluencia']
+        print("variables_a_eliminar...",variables_a_eliminar)
+        x_ent = x_mat[indice_ent].drop(variables_a_eliminar, axis = 1)
+        print("x_ent...",x_ent)
+        x_pr = x_mat[~indice_ent].drop(variables_a_eliminar, axis = 1)
+        print("x_pr...",x_pr)
+        y_ent = categorias(x_mat['afluencia'][indice_ent], 
+                   x_mat['afluencia'][indice_ent])
+        print("y_ent...",y_ent)
+        y_pr = categorias(x_mat['afluencia'][~indice_ent], 
+                  x_mat['afluencia'][indice_ent])
+        print("y_pr...",y_pr)
+        
+        cat = 'Bajo'
+        sc = 0.56
+        modelo_bajo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['modelo']
+        print("modelo_bajo...",modelo_bajo)
+        
+        cat = 'Normal'
+        sc = 0.50
+        modelo_normal = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['modelo']
+        print("modelo_normal...",modelo_normal)
+
+        cat = 'Alto'
+        sc = 0.50
+        modelo_alto = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc)['modelo']
+        print("modelo_alto...",modelo_alto)
+        
+        modelos = [modelo_bajo, modelo_normal, modelo_alto]
+        print("modelos...",modelos)
+        
         cat = 'Bajo'
         sc = 0.56
         prob_modelo_bajo = modelo_cat(cat, x_ent, y_ent, x_pr, y_pr, sc=.56)['prob']

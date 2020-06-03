@@ -68,7 +68,7 @@ class modelingMetro3(luigi.Task):
         print(df.shape) 
         
         # Hacemos el modelado
-        modelos = modelado3.ModelBuilder()
+        modelos = modelado3.ModelBuilderModelado()
         print("modelos...",modelos)
         print("aqui ya hizo model builder")
         modelos,probs,accs,precs,recs = modelos.build_model(df)
