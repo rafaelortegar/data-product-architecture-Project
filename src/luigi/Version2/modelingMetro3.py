@@ -76,12 +76,12 @@ class modelingMetro3(luigi.Task):
         modelos1 = modelado3.ModelBuilderModelado()
         modelosDummy,probs,accs,precs,recs = modelos1.build_model(df)
         
-        probabilidad_baja = probs[0]
-        print('probabilidad_baja',probabilidad_baja)
-        probabilidad_normal = probs[1]
-        print('probabilidad_normal',probabilidad_normal)
-        probabilidad_alta = probs[2]
-        print('probabilidad_alta',probabilidad_alta)
+#        probabilidad_baja = probs[0]
+#        print('probabilidad_baja',probabilidad_baja)
+#        probabilidad_normal = probs[1]
+#        print('probabilidad_normal',probabilidad_normal)
+#        probabilidad_alta = probs[2]
+#        print('probabilidad_alta',probabilidad_alta)
         
         accuracy_baja = accs[0]
         print('accuracy_baja',accuracy_baja)
@@ -104,7 +104,7 @@ class modelingMetro3(luigi.Task):
         recall_alta = recs[2]
         print('recall_alta',recall_alta)
         
-        diccionario_de_resultados = {'tipo_de_afluencia':['baja','normal','alta'],'probabilidad': [probabilidad_baja,probabilidad_normal,probabilidad_alta],
+        diccionario_de_resultados = {'tipo_de_afluencia':['baja','normal','alta'],'probabilidad': [0,0,0],
                                      'accuracy':[accuracy_baja,accuracy_normal,accuracy_alta],'precision':[precision_baja,precision_normal,precision_alta],
                                      'recall':[recall_baja,recall_normal,recall_alta]}
         
@@ -129,7 +129,7 @@ class modelingMetro3(luigi.Task):
         
         
         print("info ultimo modelo",infoUltimoModelo)
-        infoUltimoModelo = pd.DataFrame(infoUltimoModelo[0])
+        infoUltimoModelo = pd.DataFrame(infoUltimoModelo)
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         print("ya pasó engine")
