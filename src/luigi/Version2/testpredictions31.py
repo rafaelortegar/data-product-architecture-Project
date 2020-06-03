@@ -43,10 +43,11 @@ class testpredictions31(PostgresQuery):
         connection = self.output().connect()
         connection.autocommit = self.autocommit
         cursor = connection.cursor()
-
+        
+        fechastring = str(self.date)
         #probamos
         prueba = predictionUnitTest1()
-        data_f = prueba.test_prediction1(self.date)
+        data_f = prueba.test_prediction1(fechastring)
         df1= pd.DataFrame(data_f)
         print(data_f)
         result = str(df1['estatus'][0])
