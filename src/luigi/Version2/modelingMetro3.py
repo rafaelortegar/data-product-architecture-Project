@@ -104,31 +104,31 @@ class modelingMetro3(luigi.Task):
         recall_alta = recs[2]
         print('recall_alta',recall_alta)
         
-#        diccionario_de_resultados = {'tipo_de_afluencia':['baja','normal','alta'],'probabilidad': [probabilidad_baja,probabilidad_normal,probabilidad_alta],
-#                                     'accuracy':[accuracy_baja,accuracy_normal,accuracy_alta],'precision':[precision_baja,precision_normal,precision_alta],
-#                                     'recall':[recall_baja,recall_normal,recall_alta]}
-#        
-#        infoUltimoModelo = pd.DataFrame(data=diccionario_de_resultados)
-        diccionario_de_resultados = {'tipo_de_afluencia':['baja'],'probabilidad': [probabilidad_baja],
-                                     'accuracy':[accuracy_baja],'precision':[precision_baja],
-                                     'recall':[recall_baja]}
-        
-        diccionario_de_resultados2 = {'tipo_de_afluencia':['normal'],'probabilidad': [probabilidad_normal],
-                                     'accuracy':[accuracy_normal],'precision':[precision_normal],
-                                     'recall':[recall_normal]}
-        
-        diccionario_de_resultados3 = {'tipo_de_afluencia':['alta'],'probabilidad': [probabilidad_alta],
-                                     'accuracy':[accuracy_alta],'precision':[precision_alta],
-                                     'recall':[recall_alta]}
+        diccionario_de_resultados = {'tipo_de_afluencia':['baja','normal','alta'],'probabilidad': [probabilidad_baja,probabilidad_normal,probabilidad_alta],
+                                     'accuracy':[accuracy_baja,accuracy_normal,accuracy_alta],'precision':[precision_baja,precision_normal,precision_alta],
+                                     'recall':[recall_baja,recall_normal,recall_alta]}
         
         infoUltimoModelo = pd.DataFrame(data=diccionario_de_resultados)
-        infoUltimoModelo2 = pd.DataFrame(data=diccionario_de_resultados2)
-        infoUltimoModelo3 = pd.DataFrame(data=diccionario_de_resultados3)
+#        diccionario_de_resultados = {'tipo_de_afluencia':['baja'],'probabilidad': [probabilidad_baja],
+#                                     'accuracy':[accuracy_baja],'precision':[precision_baja],
+#                                     'recall':[recall_baja]}
+#        
+#        diccionario_de_resultados2 = {'tipo_de_afluencia':['normal'],'probabilidad': [probabilidad_normal],
+#                                     'accuracy':[accuracy_normal],'precision':[precision_normal],
+#                                     'recall':[recall_normal]}
+#        
+#        diccionario_de_resultados3 = {'tipo_de_afluencia':['alta'],'probabilidad': [probabilidad_alta],
+#                                     'accuracy':[accuracy_alta],'precision':[precision_alta],
+#                                     'recall':[recall_alta]}
+#        
+#        infoUltimoModelo = pd.DataFrame(data=diccionario_de_resultados)
+#        infoUltimoModelo2 = pd.DataFrame(data=diccionario_de_resultados2)
+#        infoUltimoModelo3 = pd.DataFrame(data=diccionario_de_resultados3)
+#        
+#        infoUltimoModelo = infoUltimoModelo.append()
         
-        infoUltimoModelo = infoUltimoModelo.append(infoUltimoModelo2)
-        infoUltimoModelo = infoUltimoModelo.append(infoUltimoModelo3)
         
-        print(infoUltimoModelo)
+        print("info ultimo modelo",infoUltimoModelo)
         
         engine = create_engine('postgresql+psycopg2://postgres:12345678@database-1.cqtrfcufxibu.us-west-2.rds.amazonaws.com:5432/dpa')
         print("ya pasó engine")
