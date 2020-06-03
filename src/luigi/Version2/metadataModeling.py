@@ -49,7 +49,7 @@ class metadataModeling(PostgresQuery):
     query = """INSERT INTO modeling.metadata("fecha_ejecucion", "fecha_json", "usuario", "ip_ec2", "nombre_bucket","nombre_modelo","error_de_modelado_bajo","error_de_modelado_normal",
                "error_de_modelado_alto" ,"probabilidad_bajo","probabilidad_normal","probabilidad_alto" , "accuracy_bajo","accuracy_normal",
                "accuracy_alto","accuracy_promedio","precision_bajo","precision_normal","precision_alto","precision_promedio",
-               "recall_bajo","recall_normal","recall_alto","recall_promedio") VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,)"""
+               "recall_bajo","recall_normal","recall_alto","recall_promedio") VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
     #=============================================================================================================
 #    def requires(self):
 #        return {'a': metadataExtract(bucket=self.bucket,date=self.date), 'b': [metadataTestExtract(bucket=self.bucket,date=self.date)]}
