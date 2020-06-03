@@ -30,7 +30,7 @@ from feature_builder import FeatureBuilder
 
 
 
-class predictionMetro(luigi.Task):
+class predictionMetro3(luigi.Task):
     """
     Falta el comentario
     """
@@ -38,7 +38,7 @@ class predictionMetro(luigi.Task):
     #==============================================================================================================
     # Parameters
     #==============================================================================================================
-    task_name = 'predictionMetro_task_07_01'
+    task_name = 'predictionMetro3_task_07_01'
     date = luigi.Parameter()
     bucket = luigi.Parameter(default='dpaprojs3') # default='dpaprojs3')
     #==============================================================================================================
@@ -183,5 +183,5 @@ class predictionMetro(luigi.Task):
 
 
 if __name__ == '__main__':
-    luigi.predictionMetro()
+    luigi.predictionMetro3()
 
